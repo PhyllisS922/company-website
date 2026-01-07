@@ -62,13 +62,13 @@ def load_config() -> Dict:
 
 
 def format_date(date_str: str) -> str:
-    """格式化日期为 YY-MM-DD 格式"""
+    """格式化日期为 DD-MM-YY 格式（日-月-年）"""
     try:
         # 尝试解析各种日期格式
         dt = feedparser._parse_date(date_str)
-        return dt.strftime("%y-%m-%d")
+        return dt.strftime("%d-%m-%y")
     except:
-        return datetime.now().strftime("%y-%m-%d")
+        return datetime.now().strftime("%d-%m-%y")
 
 
 def extract_summary(entry: Dict) -> str:
@@ -251,14 +251,14 @@ def fetch_and_filter_news(config: Dict) -> Dict:
     policy_news.sort(key=lambda x: x['date'], reverse=True)
     industry_news.sort(key=lambda x: x['date'], reverse=True)
     
-    # 分配政策类新闻到各地区（控制数量）
+    # 分配政策类新闻到各地区（控制数量：每个地区固定5条）
+    target_per_region = 5  # 马来西亚和新加坡各5条
+    
     for item in policy_news:
         region = item['region']
         if region in all_news['recent_observations']:
             current_count = len(all_news['recent_observations'][region])
-            # 每个地区最多 policy_target['max'] / 2 条（假设新马各一半）
-            max_per_region = policy_target['max'] // 2
-            if current_count < max_per_region:
+            if current_count < target_per_region:
                 all_news['recent_observations'][region].append(item)
     
     # 分配行业类新闻（控制数量）
