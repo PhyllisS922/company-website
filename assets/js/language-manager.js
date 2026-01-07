@@ -15,17 +15,24 @@
      * 初始化语言管理器
      */
     function init() {
+        console.log('初始化语言管理器...');
+        
         // 从localStorage读取语言设置
         const savedLang = localStorage.getItem(STORAGE_KEY);
         if (savedLang && (savedLang === 'zh' || savedLang === 'en')) {
             currentLang = savedLang;
+            console.log('从localStorage读取语言:', currentLang);
+        } else {
+            console.log('使用默认语言:', currentLang);
         }
         
         // 更新页面语言属性
         updatePageLanguage();
         
-        // 绑定语言切换按钮事件
-        bindLanguageSwitch();
+        // 延迟绑定按钮，确保DOM已完全加载
+        setTimeout(() => {
+            bindLanguageSwitch();
+        }, 100);
     }
 
     /**
@@ -41,11 +48,21 @@
      */
     function bindLanguageSwitch() {
         const langSwitches = document.querySelectorAll('.lang-switch');
-        langSwitches.forEach(switchBtn => {
+        console.log('找到语言切换按钮:', langSwitches.length, '个');
+        
+        if (langSwitches.length === 0) {
+            console.warn('⚠ 未找到语言切换按钮！');
+            return;
+        }
+        
+        langSwitches.forEach((switchBtn, index) => {
+            console.log(`绑定按钮 ${index + 1}:`, switchBtn);
             switchBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                console.log('✓ 按钮被点击！');
                 toggleLanguage();
             });
+            console.log(`✓ 按钮 ${index + 1} 事件已绑定`);
         });
     }
 
