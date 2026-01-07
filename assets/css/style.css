@@ -1,0 +1,1760 @@
+/*
+====================================================
+⚠️ BASE CSS — STRUCTURE LOCKED
+File: style.css
+
+Purpose:
+- Reset, typography, container, header, footer
+- This file is considered STABLE FOUNDATION
+
+Rules:
+❌ No page-specific fixes here
+❌ No layout debugging here
+❌ No visual experiments here
+
+All future adjustments must happen in page-level CSS.
+====================================================
+*/
+
+/* ===== Functional Color System: System Workspace ===== */
+
+/* Color Roles: Logical, product-oriented, startup clarity
+ * 
+ * Functional Rules:
+ * - Color indicates function, not decoration
+ * - Use value (lightness) differences before hue differences
+ * - Accent color NEVER used as background decoration
+ * - No gradients, no shadows for visual flair
+ * 
+ * Accessibility:
+ * - WCAG AA minimum contrast
+ * - Avoid pure white + pure black pairing
+ * - Reduce eye fatigue for long-form reading
+ */
+
+:root {
+    /* Primary Background: Light, neutral, low-glare, supports long reading */
+    --bg-base: #fafafa;
+    
+    /* Main Text: Near-black, deep charcoal, avoids pure black */
+    --text-primary: #1a1a1a;
+    
+    /* Secondary Text: Lower contrast, readable metadata */
+    --text-secondary: #666666;
+    
+    /* Structural Borders: Subtle dividers, section borders, structural separation */
+    --border-structural: #e0e0e0;
+    
+    /* Secondary Surface: Optional workspace zoning (nav area, grouped blocks) */
+    --surface-secondary: #f5f5f5;
+    
+    /* System Accent: Muted, low saturation, for interactive states only
+     * Used ONLY for: hover/active states, system indicators, links
+     * NEVER used as background decoration
+     */
+    --accent-system: #5a6c7d;
+    
+    /* Legacy variable mappings (for backward compatibility during transition) */
+    --bg-color: var(--bg-base);
+    --text-main: var(--text-primary);
+    --accent-color: var(--accent-system);
+    --border-subtle: var(--border-structural);
+    --hover-bg: var(--surface-secondary);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== Typography System: Structured Insight ===== */
+
+/* ===== Bilingual Typography: EN Primary / ZH Optimized ===== */
+
+/* EN-ZH Typographic Mapping Rules:
+ * 
+ * 1. Heading Hierarchy (H1/H2/H3):
+ *    - Structure and relative importance remain identical across languages
+ *    - Same size ratios, weight logic, and spacing
+ * 
+ * 2. Paragraph Rhythm:
+ *    - Line-height: Consistent (1.65) for both languages
+ *    - Chinese may have different perceived line-length but spacing logic matches EN
+ * 
+ * 3. Emphasis Rules:
+ *    - No font-weight for emotional emphasis in either language
+ *    - Structural emphasis (strong/b) uses weight 500 consistently
+ * 
+ * 4. Metadata / Secondary Text:
+ *    - System-like feel in both languages
+ *    - No stylistic deviation between EN and ZH
+ */
+
+/* Primary Reading Typeface: Modern Neo-Grotesque, system-safe */
+/* English: System Neo-Grotesque stack */
+/* Chinese: Modern, neutral, system-oriented sans-serif (to be specified) */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    font-weight: 400;
+    color: var(--text-primary);
+    background-color: var(--bg-base);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Chinese Typography Principles:
+ * 
+ * Characteristics:
+ * - Modern, neutral, system-oriented, professional, research-driven
+ * - Aligns with English in: perceived density, line-height stability, structural hierarchy
+ * 
+ * Avoid:
+ * - Calligraphic or humanistic fonts
+ * - Editorial or newspaper-like fonts
+ * - Decorative or expressive fonts
+ * - Overly rounded or playful fonts
+ * 
+ * Font Stack Strategy:
+ * - System Chinese fonts (PingFang SC, Hiragino Sans GB, Microsoft YaHei)
+ * - Fallback to system sans-serif
+ * - No decorative or serif Chinese fonts
+ */
+
+/* HARD RULE: .container has no interaction effects - pure layout only */
+.container {
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 40px;
+    box-sizing: border-box;
+    /* No hover, pointer, or motion styles - layout container only */
+}
+  
+
+header {
+    padding: 30px 0;
+    border-bottom: 1px solid var(--border-structural);
+    background-color: var(--bg-base);
+}
+
+.header-content {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+/* Language Switch: System parameter, not CTA */
+/* Text-based, low-visibility, structural placeholder */
+.lang-switch {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.lang-switch:hover {
+    color: var(--text-primary);
+    opacity: 1;
+    text-decoration: none;
+}
+
+.lang-switch:focus {
+    outline: 1px solid var(--accent-system);
+    outline-offset: 2px;
+}
+
+.lang-switch:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* System / Metadata Text: UI-adjacent, precise, systematic */
+/* EN-ZH: System-like feel in both languages, no stylistic deviation */
+.logo-box {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1.5px solid var(--text-primary);
+    padding: 2px 6px;
+    background-color: var(--bg-base);
+}
+
+.company-name {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+nav {
+    margin-top: 20px;
+}
+
+/* System / Metadata: Navigation links */
+/* EN-ZH: System-like feel, no stylistic deviation */
+nav a {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    margin-right: 24px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.25s ease, border-bottom-color 0.25s ease;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+}
+
+/* Navigation: Current Page State - Persistent, system-defined */
+/* Note: Requires adding 'active' class or aria-current="page" to active nav link in HTML */
+nav a.active,
+nav a[aria-current="page"] {
+    color: var(--accent-system);
+    border-bottom-color: var(--accent-system);
+}
+
+/* Navigation: Hover State - Immediate but subtle feedback */
+nav a:hover {
+    color: var(--accent-system);
+    border-bottom-color: var(--border-structural);
+}
+
+/* System / Metadata: Footer and secondary text */
+/* EN-ZH: System-like feel, no stylistic deviation */
+footer {
+    padding: 60px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--text-secondary);
+    background-color: var(--bg-base);
+    border-top: 1px solid var(--border-structural);
+}
+
+footer .container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ===== Global Reading System (B2) ===== */
+
+/* 1. 基础字体与颜色 */
+/* (已在 body 中定义) */
+
+/* 2. 容器宽度（阅读友好，不铺满） */
+/* (已在 .container 中定义) */
+
+/* Structural Typeface: Hierarchy through size and spacing, not weight */
+/* EN-ZH Mapping: Same structure, same relative importance, same spacing logic */
+
+/* H1: Regular to Medium weight, importance by size and whitespace */
+/* EN-ZH: Identical size (32px), weight (500), line-height (1.35), spacing */
+h1 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 32px;
+    line-height: 1.35;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+/* H2: Structural landmark, slightly stronger than body */
+/* EN-ZH: Identical size (24px), weight (500), line-height (1.4), spacing */
+h2 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 24px;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    margin-top: 48px;
+    margin-bottom: 16px;
+}
+
+/* H3: Structural sub-landmark */
+/* EN-ZH: Identical size (19px), weight (500), line-height (1.45), spacing */
+h3 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 19px;
+    line-height: 1.45;
+    font-weight: 500;
+    letter-spacing: 0;
+    margin-top: 32px;
+    margin-bottom: 12px;
+}
+
+/* Primary Reading: Body text - Regular weight, stable line-height */
+/* EN-ZH: Same line-height (1.65), same spacing, same weight (400) */
+/* Chinese may have different perceived line-length but spacing logic matches EN */
+p {
+    font-weight: 400;
+    line-height: 1.65;
+    margin-bottom: 16px;
+}
+
+ul {
+    margin-bottom: 16px;
+    padding-left: 20px;
+}
+
+li {
+    font-weight: 400;
+    line-height: 1.65;
+    margin-bottom: 8px;
+}
+
+/* Emphasis: Subtle, not dramatic */
+/* EN-ZH: Structural emphasis uses weight 500 consistently, no emotional emphasis */
+strong,
+b {
+    font-weight: 500;
+}
+
+/* 5. Section 间距（页面呼吸感） */
+section {
+    margin-bottom: 56px;
+    position: relative;
+}
+
+/* ===== System Rhythm Hierarchy: Primary vs Secondary Modules ===== */
+
+/* Primary System Nodes: Core logic, anchored, system-defined
+ * - Page-level introduction sections (first h1)
+ * - Core product/flagship modules
+ * - Key entry points
+ * 
+ * Characteristics: slower, more stable, more "considered"
+ */
+
+/* Primary Nodes: Structural boundaries and rhythm */
+/* More spacing, more considered separation */
+main > .container > section.system-primary {
+    position: relative;
+    padding-bottom: 28px;
+    margin-bottom: 72px;
+}
+
+/* Core Module 5% Reinforcement: Slightly clearer structural boundaries */
+main > .container > section.system-primary::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--border-structural);
+    opacity: 0.7;
+    transition: opacity 0.28s ease;
+}
+
+/* Primary Nodes: Hover feedback - slower, more stable, more resolved */
+/* 5% Reinforcement: +12% transition duration (0.25s -> 0.28s) for state persistence */
+/* 2% Interaction Confirmation: Extended persistence (0.28s -> 0.30s) for complete system response */
+/* HARD ISOLATION: Each section.system-primary has its own isolated ::before pseudo-element */
+/* Each section's hover effect is completely independent - no shared interaction boundaries */
+/* Selector targets individual sections only: main > .container > section (not parent containers) */
+main > .container > section.system-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    border: 1px solid transparent;
+    pointer-events: none;
+    transition: background-color 0.30s ease, border-color 0.30s ease;
+    z-index: -1;
+    /* HARD ISOLATION: Pseudo-element is contained within this section's boundaries only */
+    /* Does NOT extend to adjacent sections - each section has its own ::before */
+}
+
+/* HARD ISOLATION: Hover effects scoped to individual sections only */
+/* Each section.system-primary:hover triggers only that section's ::before */
+/* No cross-section interaction - each section is self-contained */
+main > .container > section.system-primary:hover::before,
+main > .container > section.system-primary:focus-within::before {
+    background-color: var(--surface-secondary);
+    border-color: var(--border-structural);
+}
+
+/* Enhanced boundary clarity on interaction */
+/* 2% Interaction Confirmation: Slightly clearer boundary (0.85 -> 0.9) for complete resolution */
+main > .container > section.system-primary:hover::after,
+main > .container > section.system-primary:focus-within::after {
+    opacity: 0.9;
+    transition: opacity 0.30s ease;
+}
+
+/* Primary Nodes: Links within - consistent, calm, deterministic */
+/* 5% Reinforcement: Slightly longer transition for state persistence */
+/* 2% Interaction Confirmation: Extended persistence for complete system response */
+main > .container > section.system-primary a {
+    transition: color 0.30s ease, text-decoration-color 0.30s ease;
+}
+
+/* Core Module: Course-based enterprise application (Collaboration page) */
+/* Same reinforcement applied to nested core modules */
+.system-core-module {
+    position: relative;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+}
+
+.system-core-module::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--border-structural);
+    opacity: 0.5;
+    transition: opacity 0.30s ease;
+}
+
+/* 2% Interaction Confirmation: Clearer boundary resolution for complete system recognition */
+.system-core-module:hover::after,
+.system-core-module:focus-within::after {
+    opacity: 0.75;
+}
+
+/* ===== Actionability Layer: Exploration Nodes (Type A) ===== */
+
+/* Exploration Nodes: Weak clickability, system-oriented, non-promotional
+ * 
+ * Type A modules:
+ * - Home: flagship course entries, other course entries, content highlights
+ * - Courses: flagship course module, course series entries
+ * - Insights: individual insight titles
+ * - Collaboration: link to Company page only
+ * 
+ * Interaction feels like: "Continue exploring this system"
+ * NOT: "Click here to take action"
+ */
+
+/* Exploration Link: Entire module or title clickable */
+.exploration-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.exploration-link:hover,
+.exploration-link:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+.exploration-link h2,
+.exploration-link h3,
+.exploration-link p {
+    color: inherit;
+}
+
+/* Exploration Node: Weak clickability with cursor indication */
+.exploration-node {
+    cursor: pointer;
+}
+
+/* Reuse existing system hover logic - no new visual effects */
+/* Existing hover states from section/system-primary will apply automatically */
+
+/* Highlight items as exploration nodes */
+.highlight-item.exploration-node {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.highlight-item.exploration-node:hover,
+.highlight-item.exploration-node:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Motion group as exploration node */
+.motion-group.exploration-node {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.motion-group.exploration-node:hover,
+.motion-group.exploration-node:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Secondary Content Modules: Lighter, quicker, less persistent */
+/* HARD ISOLATION: Each section has its own isolated interaction scope */
+main > .container > section:not(.system-primary) {
+    position: relative;
+}
+
+/* HARD ISOLATION: Each section gets its own ::before pseudo-element */
+/* No shared interaction boundaries - each section is independent */
+main > .container > section:not(.system-primary)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    border: 1px solid transparent;
+    pointer-events: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    z-index: -1;
+    /* HARD ISOLATION: Contained within this section's boundaries only */
+}
+
+/* HARD ISOLATION: Hover scoped to individual sections only */
+main > .container > section:not(.system-primary):hover::before {
+    background-color: var(--surface-secondary);
+    border-color: var(--border-structural);
+}
+
+/* Links: Use system accent for interactive states */
+/* Exclude navigation links (handled separately) */
+a:not(nav a):not(.lang-switch) {
+    color: var(--accent-system);
+    text-decoration: none;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    text-underline-offset: 2px;
+}
+
+/* Links: Hover State - Immediate but subtle feedback */
+a:not(nav a):not(.lang-switch):hover {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-system);
+}
+
+/* Links: Focus State - Accessibility support */
+a:not(nav a):not(.lang-switch):focus {
+    outline: 1px solid var(--accent-system);
+    outline-offset: 2px;
+    color: var(--text-primary);
+}
+
+a:not(nav a):not(.lang-switch):focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* System / Metadata: Secondary text, labels, contextual information */
+/* EN-ZH: System-like feel, no stylistic deviation */
+small,
+.text-secondary {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+/* ===== Page Entry Rhythm ===== */
+
+/* Main content area: Unified top spacing */
+/* HARD RULE: No hover, pointer, or motion effects on main */
+/* All interaction effects must be scoped to individual sections only */
+main {
+    padding-top: 72px;
+    background-color: var(--bg-base);
+    /* No hover, pointer, or motion styles - layout container only */
+}
+
+/* 移除 section 默认的顶部 margin（避免叠加） */
+section {
+    margin-top: 0;
+}
+
+/* ===== Section Rhythm Refinement ===== */
+
+/* 1. 页面级 section（直接位于 main > .container 下） */
+main > .container > section {
+    margin-bottom: 72px;
+}
+
+/* 2. section 内部的子块（如 section > div > h3 这类结构） */
+section > div {
+    margin-bottom: 32px;
+}
+
+/* 3. 最后一个子块不需要额外留白 */
+section > div:last-child {
+    margin-bottom: 0;
+}
+
+/* 4. 页面最后一个 section 不需要额外留白 */
+main > .container > section:last-child {
+    margin-bottom: 0;
+}
+
+/* ===== Structural Grammar Refinement ===== */
+
+/* 1. 拉开 section 之间的主结构关系 */
+main > .container > section {
+    margin-bottom: 88px;
+}
+
+/* Typography Rhythm: Consistent vertical spacing */
+
+/* Title-to-content binding: Tight relationship between heading and first paragraph */
+h1 + p,
+h2 + p,
+h3 + p {
+    margin-top: 12px;
+}
+
+/* Heading spacing: Computed and predictable */
+h1 {
+    margin-bottom: 16px;
+}
+
+h2 {
+    margin-bottom: 12px;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+/* 4. 同一 section 内，不同子模块之间的间距 */
+section > div {
+    margin-top: 32px;
+}
+
+/* 5. 避免第一个子模块被额外拉开 */
+section > div:first-child {
+    margin-top: 0;
+}
+
+/* ===== Courses Page: 课程使用方式横向对照布局 ===== */
+
+/* 将「课程使用方式」section 下包裹使用场景的父级容器改为横向两列布局 */
+main > .container > section:nth-of-type(2) > div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+}
+
+/* 重置该容器下直接子 div 的 margin-top（因为使用 gap 控制间距） */
+main > .container > section:nth-of-type(2) > div > div {
+    margin-top: 0;
+}
+
+/* ===== Courses Page: 旗舰课程层级区分 ===== */
+
+/* 为「柔新经济特区30讲｜专题系列」（旗舰课程）增加更大的底部间距，明确区分主次层级 */
+main > .container > section:nth-of-type(3) {
+    margin-bottom: 128px;
+}
+
+/* ===== Courses Page: 新马营商通识系列横向布局 ===== */
+
+/* 将「新马营商通识3讲｜通识系列」section 下的子模块改为横向两列布局 */
+main > .container > section:nth-of-type(4) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+}
+
+/* h2 和 p 占据整行 */
+main > .container > section:nth-of-type(4) > h2,
+main > .container > section:nth-of-type(4) > p {
+    grid-column: 1 / -1;
+}
+
+/* 重置该 section 下 div 的 margin-top（因为使用 gap 控制间距） */
+main > .container > section:nth-of-type(4) > div {
+    margin-top: 0;
+}
+
+/* ===== Insights Page: 核心关注领域横向并列布局 ===== */
+
+/* 将「核心关注领域」section 下的多个关注方向改为横向三列布局 */
+/* 仅作用于 Insights 页面：第 2 个 section */
+/* 使用 :has() 选择器确保只匹配包含多个 div 的 section */
+main > .container > section:nth-of-type(2):has(> h2 + div + div + div) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+/* h2 占据整行 */
+main > .container > section:nth-of-type(2):has(> h2 + div + div + div) > h2 {
+    grid-column: 1 / -1;
+}
+
+/* 重置该 section 下直接子 div 的 margin-top（因为使用 gap 控制间距） */
+main > .container > section:nth-of-type(2):has(> h2 + div + div + div) > div {
+    margin-top: 0;
+}
+
+/* === 内容精选模块 V1 固定布局 === */
+.highlights-track {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .highlight-item {
+    flex: 0 0 25%;
+    box-sizing: border-box;
+    padding-right: 24px; /* 如果你想要间距，用 padding 而不是 gap */
+  }
+
+/* ===== Regional Pulse: Semantic Motion System ===== */
+
+/* State-Based Motion: Entrance Animation */
+.motion-entrance {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.75s ease-out, transform 0.75s ease-out;
+}
+
+.motion-entrance.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Page-Definition Content: Appears immediately, no animation */
+.motion-page-definition {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: none !important;
+}
+
+/* Cognitive Flow Motion: Sequential Appearance */
+.motion-group {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.motion-group.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* System Hint Motion: Subtle Hover Effects */
+.motion-hover {
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.motion-hover:hover {
+    border-color: var(--border-structural);
+    background-color: var(--surface-secondary);
+}
+
+/* Navigation: Focus State - Accessibility support */
+nav a:focus {
+    outline: 1px solid var(--accent-system);
+    outline-offset: 2px;
+}
+
+nav a:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Section Hover: Override for motion-hover class if needed */
+section.motion-hover {
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+}
+
+section.motion-hover:hover {
+    background-color: var(--surface-secondary);
+    border-color: var(--border-structural);
+}
+
+/* List Items: Sequential Group Motion */
+.motion-group-item {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.motion-group-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Cooperation Groups: Structural Emphasis for Distinct Cooperation Models */
+/* Minimal structural differentiation - spacing and subtle divider */
+.cooperation-group {
+    margin-top: 48px;
+    position: relative;
+}
+
+/* First cooperation-group has reduced top margin */
+.cooperation-group:first-of-type {
+    margin-top: 24px;
+}
+
+/* Subtle divider between cooperation groups */
+.cooperation-group:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--border-structural);
+    opacity: 0.4;
+}
+
+/* Motion effects apply independently to each cooperation-group */
+.cooperation-group.motion-entrance {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.cooperation-group.motion-entrance.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Observations Grid: Two-column layout for periodic observations */
+.observations-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 48px;
+    margin-top: 24px;
+}
+
+.observations-column h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.observations-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.observations-column a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: block;
+    line-height: 1.6;
+}
+
+.observations-column a:hover {
+    color: var(--accent-system);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Highlight Items: Sequential Appearance */
+.highlight-item {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.highlight-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Archive List: Single-column historical index */
+.archive-list {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0 0;
+}
+
+.archive-list li {
+    margin-bottom: 12px;
+}
+
+.archive-list a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: block;
+    line-height: 1.6;
+}
+
+.archive-list a:hover {
+    color: var(--accent-system);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Secondary Link: Low-visual-weight link for delayed-use actions */
+.link-secondary {
+    color: var(--text-secondary);
+    font-size: 0.95em;
+}
+
+.link-secondary:hover {
+    color: var(--accent-system);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Course Action Button: Top-right external access link */
+/* Positioned above H1, visually lighter than main heading, not sticky */
+.course-action {
+    text-align: right;
+    margin-bottom: 24px;
+    margin-top: 24px;
+    position: relative;
+    /* Not sticky - normal flow positioning */
+}
+
+.course-action-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95em;
+    transition: color 0.2s ease;
+    display: inline-block;
+    /* Visually lighter than H1 heading */
+}
+
+.course-action-link:hover {
+    color: var(--accent-system);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Course Topics Catalog: Grid layout for topic items */
+.course-topics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 24px;
+}
+
+.course-topic-item {
+    margin: 0;
+}
+
+.course-topic-item h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.course-topic-item p {
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.course-topic-item p:last-child {
+    margin-bottom: 0;
+}
+
+/* Course Scroll Track: Horizontal scrolling library strip */
+/* Consistent with homepage "内容精选" module visual rhythm */
+.course-scroll-track {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 24px;
+    padding-bottom: 8px;
+    margin-top: 24px;
+    /* Natural scroll with mouse/trackpad - no auto-scroll, no carousel */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-structural) transparent;
+}
+
+.course-scroll-track::-webkit-scrollbar {
+    height: 6px;
+}
+
+.course-scroll-track::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.course-scroll-track::-webkit-scrollbar-thumb {
+    background-color: var(--border-structural);
+    border-radius: 3px;
+}
+
+.course-scroll-item {
+    flex: 0 0 320px;
+    box-sizing: border-box;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 20px;
+    border: 1px solid var(--border-structural);
+    background-color: var(--bg-base);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Note: Card hover effects are now defined in global-brand-system.css */
+/* This rule is kept for backward compatibility but will be overridden */
+.course-scroll-item:hover {
+    background-color: var(--surface-secondary);
+    border-color: var(--accent-system);
+}
+
+.course-scroll-item h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.course-scroll-item p {
+    margin: 0;
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 0.95em;
+}
+
+/* Full-width scroll track for highlights section */
+.highlights .course-scroll-track {
+    width: 100%;
+    max-width: none;
+    padding-left: 40px;
+    padding-right: 40px;
+    box-sizing: border-box;
+}
+
+/* ===== Section Header: Title + Secondary Link Alignment (Fixed) ===== */
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 用 center，避免 baseline + 中文/英文差异 */
+    gap: 24px;
+    margin-bottom: 12px;
+}
+
+/* 关键修复点：清除 h2 的全局 margin 影响 */
+.section-header h2 {
+    margin: 0;
+    padding: 0;
+    flex: 1;
+}
+
+/* 右侧次级链接：稳定贴右 */
+.section-header .link-secondary {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+
+.section-header h2 {
+    margin: 0;
+    flex: 1;
+}
+
+.section-header .link-secondary {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* Title Link: Clickable heading that maintains heading appearance */
+.section-header .title-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.section-header .title-link:hover,
+.section-header .title-link:focus {
+    color: var(--accent-system);
+    text-decoration: none;
+}
+
+.section-header h2 .title-link {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+/* ===== FORCE FIX: Section Header Alignment ===== */
+
+section .section-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 24px;
+}
+
+section .section-header h2 {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.3;
+}
+
+section .section-header a {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+/* ===== Homepage Highlights: Full-width but Controlled Scroll ===== */
+
+.highlights {
+    margin-top: 72px;
+}
+
+/* 视觉全宽，但不失控 */
+.highlights-viewport {
+    width: 100%;
+    overflow-x: auto;              /* 恢复滚动 */
+    padding-left: calc((100vw - 1100px) / 2);
+    padding-right: calc((100vw - 1100px) / 2);
+    box-sizing: border-box;
+}
+
+/* 真正的滚动轨道 */
+.highlights-track {
+    display: flex;
+    gap: 24px;
+    padding: 16px 0 24px;
+    min-width: max-content;        /* 强制横向溢出 */
+}
+
+/* 单个内容卡片：固定宽度，制造"可滚动感" */
+.highlight-item {
+    flex: 0 0 320px;
+    padding: 16px;
+    background: #fafafa;
+    border: 1px solid #e5e5e5;
+}
+
+/* ===== 临时占位样式：Collaboration 滚动图片区块 ===== */
+
+.evidence-scroll {
+    margin-top: 24px;
+    margin-bottom: 48px;
+    padding: 16px;
+    border: 1px dashed #ccc;
+}
+
+.evidence-scroll-track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+}
+
+.evidence-item {
+    min-width: 180px;
+    height: 120px;
+    background: #f2f2f2;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #777;
+}
+
+/* ===== 以上样式仅用于结构确认，后续将被视觉系统替换 ===== */
+
+/* ======================================================
+   COLLABORATION PAGE — DE-SERVICE SEMANTIC ADJUSTMENT
+   ====================================================== */
+
+/* 合作页方法类模块，弱化"可选项"感 */
+body .cooperation-group h3 {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+body .cooperation-group ul {
+    margin-top: 8px;
+}
+
+/* 列表呈现为"发生过的可能性"，而非菜单 */
+body .cooperation-group li {
+    list-style-type: "– ";
+    padding-left: 0;
+}
+
+/* ======================================================
+   COLLABORATION PAGE — SYSTEM HIERARCHY BRAND SIGNAL
+   ====================================================== */
+
+/* 注意：品牌色变量已在 global-brand-system.css 中定义 */
+
+/* ======================================================
+   COLLABORATION PAGE — PAGE-SPECIFIC RULES
+   ====================================================== */
+   /* 注意：这些规则应该迁移到 global-collaboration.css */
+   
+body.collaboration h1 {
+    position: relative;
+    padding-left: 20px;
+}
+
+body.collaboration section.system-primary > h2 {
+    position: relative;
+    padding-left: 20px;
+}
+
+body.collaboration h3 {
+    font-weight: 500;
+}
+
+body.collaboration section.motion-entrance > h2 {
+    position: relative;
+    padding-left: 20px;
+}
+
+/* ======================================================
+   NAVIGATION — COLLABORATION ACTIVE STATE FIX
+   ====================================================== */
+
+/* 确保合作页导航 active 状态显示品牌色 */
+body.collaboration nav a.active,
+body.collaboration nav a[aria-current="page"] {
+    color: var(--brand-solid);
+}
+
+/* ======================================================
+   ACTIVITIES PAGE — PAGE-SPECIFIC RULES
+   ====================================================== */
+   /* 注意：这些规则应该迁移到 global-activities.css */
+   
+body.activities h1 {
+    position: relative;
+    padding-left: 20px;
+}
+
+body.activities section > h2 {
+    position: relative;
+    padding-left: 20px;
+}
+
+/* 弱化活动类型标签（论坛 / 圆桌等） */
+body.activities .course-scroll-item p strong {
+    font-weight: 400;
+    opacity: 0.6;
+}
+
+/* 活动卡片作为"现实节点"，而非营销块 */
+body.activities .course-scroll-item {
+    border: 1px solid var(--border-subtle);
+}
+
+/* ======================================================
+   NAVIGATION — ACTIVITIES ACTIVE STATE FIX
+   ====================================================== */
+
+body.activities nav a.active,
+body.activities nav a[aria-current="page"] {
+    color: var(--brand-solid);
+}
+
+/* ======================================================
+   COMPANY PAGE — PAGE-SPECIFIC RULES
+   ====================================================== */
+   /* 注意：这些规则应该迁移到 global-company.css */
+   
+body.company h1 {
+    position: relative;
+    padding-left: 20px;
+}
+
+/* ======================================================
+   COMPANY PAGE — MEDIA LIST VERTICAL FIX
+   ====================================================== */
+
+body.company #media-coverage {
+    display: block;
+}
+
+body.company #media-coverage .media-item {
+    display: block;
+    width: 100%;
+}
+
+body.company #media-coverage .media-title,
+body.company #media-coverage .media-source {
+    display: block;
+}
+
+/* 防止继承 flex / grid 布局 */
+body.company #media-coverage > *,
+body.company #media-coverage .motion-group-container,
+body.company #media-coverage ul {
+    display: block;
+}
+
+/* ======================================================
+   NAVIGATION — COMPANY ACTIVE STATE FIX
+   ====================================================== */
+
+body.company nav a.active,
+body.company nav a[aria-current="page"] {
+    color: var(--brand-solid);
+}
+
+/* ======================================================
+   GLOBAL HEADER — LOGO SIZE CONSTRAINT
+   ====================================================== */
+
+.logo-box img {
+    display: block;
+    height: 28px;
+    width: auto;
+    max-width: 140px;
+    object-fit: contain;
+}
+
+/* ======================================================
+   HEADER LOGO — REMOVE IMAGE BORDER
+   ====================================================== */
+
+.logo-box img {
+    border: none !important;
+}
+
+/* ======================================================
+   HEADER LOGO — HARD RESET ALL FRAME EFFECTS
+   ====================================================== */
+
+.logo-box,
+.logo-box img {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* ======================================================
+   HEADER IDENTITY — LOGO AS PRIMARY MARK
+   ====================================================== */
+
+/* 隐藏重复的公司名称文本（Logo 已包含） */
+.company-name {
+    display: none;
+}
+
+/* 适度放大 Logo，作为完整主体标识 */
+.logo-box img {
+    height: 48px;
+    max-width: 280px;
+}
+
+/* ======================================================
+   HEADER LOGO — TRANSPARENT BACKGROUND GUARANTEE
+   ====================================================== */
+
+.logo-box {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.logo-box img {
+    background: transparent !important;
+    display: block;
+}
+
+/* === Logo 白底强制清除（兜底） === */
+
+header,
+header * {
+    background-color: transparent !important;
+}
+
+.logo-box,
+.logo-box img {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* ==================================================
+   Header / Logo 最终稳定层（一次性兜底修复）
+   ================================================== */
+
+/* Header 作为稳定背景层，禁止任何透传 */
+header {
+    background-color: #ffffff;
+    position: relative;
+    z-index: 100;
+}
+
+/* 清除 header 内所有潜在背景污染 */
+header * {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Logo 容器与图片的最终规范 */
+.logo-box {
+    background: transparent !important;
+    padding: 0;
+    margin: 0;
+}
+
+.logo-box img {
+    height: 72px !important;
+    max-width: 400px !important;
+    display: block;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* ==================================================
+   Header 系统层隔离（全站最终方案）
+   ================================================== */
+
+/* Header 从页面语义层中彻底隔离 */
+body > header {
+    background-color: #ffffff !important;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* 禁止任何 body.class（home / insights / courses 等）
+   对 header 及其子元素产生影响 */
+body.home header,
+body.insights header,
+body.courses header,
+body.activities header,
+body.collaboration header,
+body.company header {
+    background: #ffffff !important;
+}
+
+/* Header 内部彻底去背景 */
+body > header * {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Logo 最终统一规范 */
+body > header .logo-box {
+    background: transparent !important;
+    padding: 0;
+    margin: 0;
+}
+
+body > header .logo-box img {
+    height: 60px;
+    max-width: 360px;
+    display: block;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Header / Logo 全站最终规范 */
+body > header {
+    background-color: #ffffff !important;
+    position: relative;
+    z-index: 1000;
+}
+
+body > header *,
+.logo-box,
+.logo-box img {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* ==================================================
+   全站 Header / Logo 统一行为（最终兜底）
+   ================================================== */
+
+/* Header 永远是稳定背景层（所有页面一致） */
+header {
+    background-color: #ffffff;
+    position: relative;
+    z-index: 100;
+}
+
+/* 禁止任何页面样式污染 header 内部 */
+header * {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Logo 容器与图片的全站最终规范 */
+.logo-box {
+    background: transparent !important;
+    padding: 0;
+    margin: 0;
+}
+
+.logo-box img {
+    height: 72px !important;
+    max-width: 400px !important;
+    display: block;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* ==================================================
+   Header 系统层隔离（全站最终方案）
+   ================================================== */
+
+/* Header 从页面语义层中彻底隔离 */
+body > header {
+    background-color: #ffffff !important;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* 禁止任何 body.class（home / insights / courses 等）
+   对 header 及其子元素产生影响 */
+body.home header,
+body.insights header,
+body.courses header,
+body.activities header,
+body.collaboration header,
+body.company header {
+    background: #ffffff !important;
+}
+
+/* Header 内部彻底去背景 */
+body > header * {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Logo 最终统一规范 */
+body > header .logo-box {
+    background: transparent !important;
+    padding: 0;
+    margin: 0;
+}
+
+body > header .logo-box img {
+    height: 60px;
+    max-width: 360px;
+    display: block;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Header / Logo 全站最终规范 */
+body > header {
+    background-color: #ffffff !important;
+    position: relative;
+    z-index: 1000;
+}
+
+body > header *,
+.logo-box,
+.logo-box img {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+/* ==================================================
+   Header 内 container 背景隔离（修复首页 logo 灰底）
+   ================================================== */
+
+/* Header 自身是系统层 */
+body > header {
+    background-color: #ffffff !important;
+}
+
+/* Header 内的 container 永远透明，不继承页面背景 */
+body > header .container {
+    background: transparent !important;
+}
+
+/* ==================================================
+   Header 绝对隔离舱（终结首页 logo 底色问题）
+   ================================================== */
+
+/* Header 本体：强制独立系统层 */
+body > header {
+    background-color: #ffffff !important;
+    position: relative;
+    z-index: 9999;
+    isolation: isolate;
+}
+
+/* Header 内部创建白色隔离层 */
+body > header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #ffffff;
+    z-index: -1;
+}
+
+/* Header 内所有元素强制透明，禁止继承任何背景 */
+body > header *,
+body > header *::before,
+body > header *::after {
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+}
+
+/* Header 内 container 特别兜底 */
+body > header .container {
+    background: transparent !important;
+}
+
+/* Logo 最终规范 */
+body > header .logo-box,
+body > header .logo-box img {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* =========================================================
+   Phase 3 清理收尾｜标题左对齐修复
+   ========================================================= */
+
+/* 所有页面：第一个 section 内的主标题强制归零对齐 */
+/* 注意：如果标题有 .accent-title 类，则保留 padding-left 用于橙色竖线 */
+main > .container > section:first-of-type h1:not(.accent-title),
+main > .container > section:first-of-type h2:not(.accent-title):not(.section-title) {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    text-indent: 0 !important;
+}
+
+/* 防止 system-primary 残留位移影响标题 */
+/* 注意：如果标题有 .accent-title 或 .section-title 类，则保留 padding-left 用于橙色竖线 */
+section.system-primary h1:not(.accent-title),
+section.system-primary h2:not(.section-title) {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+/* 确保标题与正文共享同一基准线 */
+section h1,
+section h2 {
+    box-sizing: border-box;
+}
+
+/* =====================================================
+   修复 system-primary 标题 + 橙色竖线的结构对齐问题
+   ===================================================== */
+
+/* 1. system-primary 本身不再挤压内容 */
+section.system-primary {
+    padding-left: 0;
+    border-left: none;
+    position: relative;
+}
+
+/* 2. 给 system-primary 内的第一个标题建立结构容器感 */
+section.system-primary > h1,
+section.system-primary > h2 {
+    position: relative;
+    padding-left: 20px; /* 统一间距 */
+}
+
+/* 3. 橙色竖线已禁用 */
+/*
+section.system-primary > h1::before,
+section.system-primary > h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    width: 3px;
+    height: 1.2em;
+    background-color: var(--brand-solid, #E65100);
+    border-radius: 1px;
+}
+*/
+
+/* 4. 确保标题文本与正文左边界一致 */
+section.system-primary > h1,
+section.system-primary > h2 {
+    margin-left: 0;
+}
+
+/* =========================================================
+   内容页首段空白统一（以课程页为基准）
+   ========================================================= */
+
+/* 统一洞察 / 活动 / 合作 / 公司页的首段间距 */
+body.insights main > .container > section:first-of-type,
+body.activities main > .container > section:first-of-type,
+body.collaboration main > .container > section:first-of-type,
+body.company main > .container > section:first-of-type {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* 统一 header 与正文之间的间距（与课程页一致） */
+body.insights header,
+body.activities header,
+body.collaboration header,
+body.company header {
+    margin-bottom: 40px;
+}
+
+/* =========================================
+   FIX: Header Logo Image Disappearing
+   Scope: All pages (safe override)
+   ========================================= */
+
+/* 1. 确保 header 中的 logo 图片永远可见 */
+header .logo-box img {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/* 2. 防止 logo-box 的"文字渐变规则"影响图片 */
+header .logo-box {
+    background: none !important;
+    background-clip: initial !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+/* 3. Logo 尺寸统一规范（增大尺寸） */
+header .logo-box img {
+    height: 72px !important;
+    max-width: 400px !important;
+    width: auto;
+}
+
+/* 4. 防止 courses / insights 页面被特殊规则误伤 */
+body.courses header img,
+body.insights header img {
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* ==================================================
+   LOGO SIZE — UNIFIED LARGER SIZE (ALL PAGES)
+   ================================================== */
+
+/* 统一增大所有页面的 logo 尺寸 */
+header .logo-box img,
+body > header .logo-box img,
+.logo-box img {
+    height: 72px !important;
+    max-width: 400px !important;
+    width: auto;
+    display: block !important;
+}

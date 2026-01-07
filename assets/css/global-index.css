@@ -1,0 +1,943 @@
+/* ===== Global Index Styles: Homepage Visual Pilot ===== */
+/* This file is for visual testing on index.html only */
+
+/* ===== Safe Body Grid Background ===== */
+/* Removed: All grid background rules - grid system disabled */
+
+/* ===== Image Styles (Safe) ===== */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(0.1) contrast(1.05) brightness(0.98);
+    /* mix-blend-mode: multiply; REMOVED for safety */
+}
+
+/* ===== Button & CTA Reset (Precise, not all: unset) ===== */
+button,
+a.cta,
+.button {
+    /* Precise reset instead of all: unset */
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    
+    /* Preserved properties */
+    display: inline-block;
+    cursor: pointer;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    border-radius: 2px;
+}
+
+/* ===== Section Padding with Responsive Hooks ===== */
+:root {
+    --section-padding-base: 120px;
+    --section-padding-mobile: 60px;
+    --section-padding-tablet: 80px;
+}
+
+section {
+    padding-top: var(--section-padding-base);
+    padding-bottom: var(--section-padding-base);
+}
+
+/* Responsive hooks (can be adjusted via media queries) */
+@media (max-width: 768px) {
+    section {
+        padding-top: var(--section-padding-mobile);
+        padding-bottom: var(--section-padding-mobile);
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    section {
+        padding-top: var(--section-padding-tablet);
+        padding-bottom: var(--section-padding-tablet);
+    }
+}
+
+/* === STEP 2.6 | Homepage Perceptual Layer Patch === */
+
+/* Define CSS variables if not already defined */
+:root {
+    --bg-primary: var(--bg-base, #fafafa);
+    --bg-secondary: var(--surface-secondary, #f5f5f5);
+    --border-fine: var(--border-structural, #e0e0e0);
+}
+
+/* 1. 强化 section 的"系统模块感" */
+body.home section {
+    background-color: #ffffff !important; /* 强制白色背景 */
+}
+
+body.home section > .container {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+/* 2. 让 H2 成为真正的结构锚点 */
+body.home h2 {
+    position: relative;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-fine);
+    margin-bottom: 32px;
+}
+
+/* 内容精选标题：移除底部边框 */
+body.home .highlights h2 {
+    border-bottom: none !important;
+    padding-bottom: 0;
+}
+
+/* 3. 提供一个"系统式 CTA 视觉锚" */
+body.home a,
+body.home .button,
+body.home button {
+    margin-top: 24px;
+}
+
+/* 4. 给 Hero 一个清晰的系统入口感 */
+body.home section:first-of-type {
+    background-color: #ffffff !important; /* 强制白色背景 */
+}
+
+/* 5. 限制正文最大宽度，避免"散" */
+body.home p {
+    max-width: 64ch;
+}
+
+/* === FIX | Homepage Spacing Normalization === */
+
+/* 1. 首页：取消 section 的全局 padding */
+body.home section {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* 2. 由 container 来负责垂直节奏 */
+body.home .container > section {
+    padding: 72px 0;
+}
+
+/* 3. Hero 单独定义（入口要有气势，但不虚） */
+body.home .hero {
+    padding-top: 96px;
+    padding-bottom: 96px;
+}
+
+/* 4. 连续 section 不再重复制造空白 */
+body.home .container > section + section {
+    margin-top: 0;
+}
+
+/* 5. highlights 是全宽模块，单独控制 */
+body.home .highlights {
+    margin-top: -32px;          /* 关键：向上吸附 */
+    padding-top: 64px;          /* 保留自身呼吸 */
+    padding-bottom: 96px;
+    background-color: #ffffff !important;  /* 强制白色背景 */
+}
+
+/* 6. 防止 motion-entrance 额外撑高布局 */
+body.home .motion-entrance {
+    margin: 0;
+}
+
+/* === STEP 2.7 | Homepage System Anchors === */
+
+/* Define CSS variables if not already defined */
+:root {
+    --text-muted: var(--text-secondary, #666666);
+    --border-subtle: var(--border-structural, #e0e0e0);
+}
+
+/* 1. 给首页一级 section 增加"系统边界感" */
+body.home .container > section,
+body.home .highlights {
+    position: relative;
+}
+
+/* 2. 系统编号锚点（非装饰，是认知锚） */
+body.home .container > section::before,
+body.home .highlights::before {
+    content: attr(data-section);
+    position: absolute;
+    top: 16px;
+    left: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+}
+
+/* 3. 默认编号（不依赖 HTML 也能工作） */
+body.home .container > section:nth-of-type(1)::before {
+    content: "[01]";
+}
+body.home .container > section:nth-of-type(2)::before {
+    content: "[02]";
+}
+body.home .container > section:nth-of-type(3)::before {
+    content: "[03]";
+}
+body.home .container > section:nth-of-type(4)::before {
+    content: "[04]";
+}
+
+/* highlights 是独立系统节点 */
+body.home .highlights::before {
+    content: "[MID]";
+}
+
+/* 4. 增强 section 的"底部边界" */
+body.home .container > section {
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* === STEP 2.8 | Remove Debug Markers & Activate Brand Signals === */
+
+/* Define CSS variables if not already defined */
+:root {
+    /* 品牌色已在 global-brand-system.css 中定义，这里只定义页面特定变量 */
+    --radius-system: 4px;
+    --transition-base: 0.2s ease;
+    --brand-gradient: linear-gradient(135deg, #FF6D00 0%, #D50000 100%);
+}
+
+/* 1. 隐藏调试编号（结构保留，但不对用户显示） */
+body.home .container > section::before,
+body.home .highlights::before {
+    display: none;
+}
+
+/* 2. 用"真实边界"替代编号感知 */
+body.home .container > section {
+    border-top: 1px solid var(--border-subtle);
+}
+
+/* 3. Hero 的主 CTA 使用品牌色（唯一显性品牌点） */
+body.home .primary-cta {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 14px 32px;
+    font-weight: 500;
+    border-radius: var(--radius-system);
+    border: 1px solid var(--brand-solid);
+    color: var(--brand-solid);
+    background: transparent;
+    transition: var(--transition-base);
+}
+
+body.home .primary-cta:hover {
+    background-color: var(--brand-solid);
+    color: #ffffff;
+}
+
+/* 4. 强化可点击链接的"系统交互感" */
+body.home a {
+    transition: color var(--transition-base), border-color var(--transition-base);
+}
+
+/* 注意：链接 hover 效果已统一在 global-brand-system.css 中定义 */
+/* 首页特定链接 hover 保持品牌色 */
+body.home a:not(nav a):not(.primary-cta):hover {
+    color: var(--brand-solid);
+}
+
+/* 5. 让 Logo 成为唯一"渐变签名"入口（如你已有对应 class） */
+body.home .logo-box {
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* === FIX | Highlights Spacing Correction === */
+
+/* 1. 压缩 highlights 与前一模块的断层 */
+/* (Already updated above: padding-top: 48px) */
+
+/* 2. 让 highlights 更像"延展模块"，而非新章节 */
+body.home .highlights {
+    border-top: none; /* 移除强化断章的视觉信号 */
+}
+
+/* 3. 控制 highlights 内部标题与内容的节奏 */
+body.home .highlights h2 {
+    margin-bottom: 16px;
+    text-transform: none;       /* 去掉"章节标签感" */
+    letter-spacing: 0;
+    font-size: 1.25rem;         /* 比普通 h2 稍小 */
+}
+
+body.home .highlights p {
+    margin-bottom: 32px;
+    color: var(--text-secondary);
+}
+
+/* === FINAL FIX | Highlights Visual Continuity Connector === */
+
+/* 1. 让 highlights 在视觉上"贴近"上一模块 */
+/* (Already updated above: margin-top: -32px, padding-top: 64px, background-color) */
+
+/* 2. 在 what-we-do 和 highlights 之间建立弱连接线 */
+body.home .what-we-do {
+    position: relative;
+    padding-bottom: 48px;
+}
+
+body.home .what-we-do::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: var(--border-subtle);
+}
+
+/* 3. 降低 highlights 标题的"章节感" */
+/* (Already updated above: text-transform: none, letter-spacing: 0, font-size: 1.25rem) */
+
+/* 4. 让 highlights 更像"内容延展区" */
+/* (Already updated above: color: var(--text-secondary)) */
+
+/* ======================================================
+   HOME PAGE — BRAND SIGNAL ACTIVATION
+   ====================================================== */
+
+/* 1. Hero 标题左侧系统标记（与课程页语言一致） */
+body.home .hero h1 {
+    position: relative;
+    padding-left: 20px;
+}
+
+/* 橙色竖线已禁用 */
+/*
+body.home .hero h1::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.35em;
+    width: 4px;
+    height: 1.15em;
+    background-color: var(--brand-solid);
+    opacity: 0.6;
+}
+*/
+
+/* 2. 主 CTA：进入课程（系统级动作按钮） */
+body.home .primary-cta {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: var(--radius-system);
+    border: 1px solid var(--brand-solid);
+    color: var(--brand-solid);
+    text-decoration: none;
+    transition: var(--transition-base);
+}
+
+body.home .primary-cta:hover {
+    background-color: var(--brand-solid);
+    color: #ffffff;
+}
+
+/* ======================================================
+   HOME PAGE — SECTION HIERARCHY & BRAND SIGNAL ENHANCEMENT
+   ====================================================== */
+
+/* 1. 内容精选：作为系统摘录模块点亮 */
+body.home .highlights h2 {
+    position: relative;
+    padding-left: 20px !important;
+}
+
+/* 内容精选标题橙色竖线 */
+body.home .highlights h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 3px;
+    height: 1em;
+    background-color: var(--brand-solid, #E65100);
+    opacity: 0.7;
+}
+
+/* 内容精选卡片：弱品牌态强调 */
+body.home .highlight-item {
+    border: 1px solid var(--border-subtle);
+    transition: var(--transition-base);
+}
+
+/* 注意：卡片 hover 效果已统一在 global-brand-system.css 中定义 */
+
+/* 2. 课程入口模块：系统核心层级点亮 */
+body.home .courses-entry > h2 {
+    position: relative;
+    padding-left: 20px !important;
+}
+
+/* 课程入口标题橙色竖线 */
+body.home .courses-entry > h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 3px;
+    height: 1em;
+    background-color: var(--brand-solid, #E65100);
+    opacity: 0.7;
+}
+
+/* 3. 课程系列标题链接：系统级可点击态 */
+body.home .exploration-node h3 a {
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: var(--transition-base);
+}
+
+body.home .exploration-node h3 a:hover {
+    border-bottom-color: var(--brand-solid);
+}
+
+/* 说明文字明确为"不可交互内容" */
+body.home .exploration-node p {
+    pointer-events: none;
+}
+
+/* ======================================================
+   HOME PAGE — HIGHLIGHTS GAP FIX
+   ====================================================== */
+
+/* 移除标题容器对滑动区域的多余底部影响 */
+body.home .highlights > .container {
+    padding-bottom: 24px;
+}
+
+/* 收紧滑动区域与标题的距离 */
+body.home .highlights-viewport {
+    margin-top: 0;
+}
+
+/* 防止 section 本身 padding 放大该模块 */
+body.home .highlights {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+/* ======================================================
+   HOME PAGE — HIGHLIGHTS TOP GAP COMPRESSION
+   ====================================================== */
+
+/* 压缩上一模块的底部空间 */
+body.home .what-we-do {
+    padding-bottom: 48px;
+}
+
+/* 压缩内容精选自身的顶部空间 */
+body.home .highlights {
+    padding-top: 56px;
+}
+
+/* 防止标题容器再次放大距离 */
+body.home .highlights > .container {
+    padding-top: 0;
+}
+
+/* === 首页网格仅作用于内容区（修复 header 污染） === */
+/* Removed: All grid background rules - grid system disabled */
+
+/* ==================================================
+   首页样式兜底：彻底关闭网格系统
+   ================================================== */
+
+body.home,
+body.home main,
+body.home section,
+/* Hero 背景色保持白色，但允许背景图片 */
+body.home .hero {
+    background-color: #ffffff;
+}
+
+
+/* ==================================================
+   Hero 与 what-we-do 视觉合并（补充说明模式）
+   ================================================== */
+
+/* 两个 section 使用同一背景色 */
+body.home .hero,
+body.home .what-we-do {
+    background-color: #ffffff;
+}
+
+/* 移除二者之间的间距 */
+body.home .hero + .what-we-do {
+    margin-top: 0;
+    padding-top: 24px;
+}
+
+/* .what-we-do 作为补充说明的样式 */
+body.home .what-we-do {
+    font-size: 0.9375rem; /* 降低一级（15px，相对于16px） */
+    color: var(--text-secondary, #666666);
+    padding-bottom: 0;
+}
+
+/* 移除 what-we-do 的 ::after 连接线（不再需要） */
+body.home .what-we-do::after {
+    display: none;
+}
+
+/* ==================================================
+   HOMEPAGE PHASE 2 — 感知层激活
+   ================================================== */
+
+/* ==================================================
+   一、Hero 与其下方说明模块的感知合并（完善）
+   ================================================== */
+
+/* 确保 Hero 没有底部间距 */
+body.home .hero {
+    margin-bottom: 0;
+}
+
+/* 确保 what-we-do 没有顶部间距 */
+body.home .what-we-do {
+    margin-top: 0;
+}
+
+/* ==================================================
+   二、Hero 区视觉锚点强化
+   ================================================== */
+
+/* Hero 区明显增加上下 padding，成为页面最"松"的区域 */
+body.home .hero {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hero 背景图片 */
+body.home .hero .hero-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.3; /* 提高透明度，更容易看到 */
+    z-index: 0;
+    display: block; /* 确保元素显示 */
+    min-height: 100%; /* 确保有高度 */
+}
+
+/* Hero 内容区域 */
+body.home .hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 680px;
+}
+
+/* Hero 内 h1：字号增大，行高收紧 */
+body.home .hero h1 {
+    font-size: 2.5rem;
+    line-height: 1.3;
+    margin-bottom: 0;
+}
+
+/* Hero 内首段 p：颜色弱化，与 h1 拉开明显间距 */
+body.home .hero-content > p:first-of-type {
+    color: var(--text-secondary, #666666);
+    margin-top: 32px;
+    margin-bottom: 0;
+}
+
+/* Hero 内 CTA：与正文拉开距离，增强 hover 反馈 */
+body.home .hero .primary-cta {
+    margin-top: 48px;
+    transition: all 0.25s ease;
+    align-self: flex-start;
+}
+
+/* 移动端：Hero 调整 */
+@media (max-width: 768px) {
+    body.home .hero {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    
+    body.home .hero .hero-bg-image {
+        opacity: 0.1; /* 移动端进一步降低透明度 */
+    }
+}
+
+body.home .hero .primary-cta:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* ==================================================
+   三、内容精选模块的事实重量感强化
+   ================================================== */
+
+/* 模块顶部增加清晰的进入边界（已被微调规则覆盖，保留注释） */
+body.home .highlights {
+    border-top: 1px solid var(--border-structural, #e0e0e0);
+    padding-top: 80px;
+    margin-top: 64px;
+}
+
+/* 内容精选标题：层级高于普通 section h2 */
+body.home .highlights h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 24px;
+}
+
+/* highlight-item：明确卡片形态 */
+body.home .highlight-item {
+    padding: 20px;
+    border: 1px solid var(--border-structural, #e0e0e0);
+    border-radius: 4px;
+    background-color: #ffffff;
+    transition: all 0.25s ease;
+}
+
+/* 注意：卡片 hover 效果已统一在 global-brand-system.css 中定义 */
+
+/* ==================================================
+   HOMEPAGE PHASE 2 微调｜去框线 · 文本合并 · 模块收紧
+   ================================================== */
+
+/* ==================================================
+   一、减少首页模块之间的"框线感"
+   ================================================== */
+
+/* 移除所有 section 默认的上边框 */
+body.home section {
+    border-top: none !important;
+}
+
+/* Hero 顶部不显示任何灰色分割线 */
+body.home .hero {
+    border-top: none !important;
+}
+
+/* Hero 下方紧接的模块不再出现新的框线 */
+body.home .hero + section {
+    border-top: none !important;
+}
+
+/* system-primary 仅保留"第一主模块"的强调效果，移除边框 */
+body.home section.system-primary {
+    border-top: none !important;
+}
+
+/* ==================================================
+   二、合并说明性文字为 Hero 的解释性延展
+   ================================================== */
+
+/* .what-we-do 整体：移除独立模块的视觉存在感 */
+body.home .what-we-do {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 16px;
+    padding-bottom: 0;
+    background-color: #ffffff;
+}
+
+/* 第一段说明文字：字号略小于 Hero 副文案，使用次级文本色 */
+body.home .what-we-do > p:first-of-type {
+    font-size: 0.9375rem; /* 15px，略小于 Hero 的 16px */
+    color: var(--text-secondary, #666666);
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+/* 第二段说明文字：再次弱化 */
+body.home .what-we-do > p:last-of-type {
+    font-size: 0.875rem; /* 14px，更小 */
+    color: var(--text-secondary, #666666);
+    opacity: 0.85;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* ==================================================
+   三、收紧「内容精选」标题说明与滑动模块的距离
+   ================================================== */
+
+/* 说明文字与下方滑动模块之间的 margin 明显缩小 */
+body.home .highlights p {
+    margin-bottom: 16px; /* 从默认值明显缩小 */
+}
+
+/* 保持标题与说明之间的层级关系 */
+body.home .highlights h2 {
+    margin-bottom: 12px; /* 标题与说明之间保持紧凑 */
+}
+
+/* 收紧 highlights 整体间距 */
+body.home .highlights {
+    padding-top: 64px; /* 从 80px 缩小 */
+    margin-top: 48px; /* 从 64px 缩小 */
+    border-top: 1px solid var(--border-structural, #e0e0e0) !important; /* 保留进入边界 */
+}
+
+/* ====================================================
+   首页特殊间距修复：内容精选 → 课程模块
+   ==================================================== */
+
+/* 压缩 内容精选 模块自身的下边距 */
+body.home section.highlights {
+    margin-bottom: 60px; /* 原本等同于 section-gap（过大） */
+}
+
+/* 压缩 紧跟其后的课程入口模块的上边距 */
+body.home section.courses-entry {
+    margin-top: 0;
+    background-color: #ffffff !important; /* 强制白色背景 */
+}
+
+/* 课程入口内的 exploration-node 也保持白色 */
+body.home .courses-entry .exploration-node {
+    background-color: #ffffff !important;
+}
+
+/* 如果 courses-entry 被包在 container 内，进一步兜底 */
+body.home .highlights + .container {
+    margin-top: 0;
+}
+
+/* ====================================================
+   首页 Hero 文案层级强化
+   ==================================================== */
+
+/* Hero 区域整体控制 */
+body.home .hero p {
+    margin-bottom: 12px;
+}
+
+/* Hero 中第一段说明：主解释（层级更高） */
+body.home .hero p:first-of-type {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary, #1a1a1a);
+    margin-bottom: 20px;
+}
+
+/* Hero 中后续说明：补充解释（层级更低） */
+body.home .hero p:not(:first-of-type) {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary, #666666);
+}
+
+/* ====================================================
+   首页 Hero CTA 分割线清除
+   ==================================================== */
+
+/* 移除 Hero 区块内所有不必要的顶部/底部分割线 */
+body.home .hero {
+    border-bottom: none !important;
+}
+
+/* 如果 CTA 下方是通过 section / a / hr 产生的线，强制清除 */
+body.home .hero a.primary-cta {
+    border-bottom: none !important;
+}
+
+/* ====================================================
+   内容精选 ↔ 课程模块 间距收紧
+   ==================================================== */
+
+/* 减少内容精选模块底部留白 */
+body.home .highlights {
+    margin-bottom: 60px; /* 原本通常是 120px+ */
+}
+
+/* 同时减少课程模块顶部留白 */
+body.home .courses-entry {
+    margin-top: 0;
+}
+
+/* 如果 courses-entry 内部有 section 默认 margin，再次压缩 */
+body.home .courses-entry > section:first-of-type {
+    margin-top: 40px;
+}
+
+/* ====================================================
+   首页 Hero 分割线 & CTA 修复（精准命中）
+   ==================================================== */
+
+/* 1. Hero 本体：彻底禁止任何分割线 */
+body.home section.hero {
+    border: none !important;
+    margin-top: 0 !important;
+}
+
+/* 2. Hero 内部如果继承了 section 的通用 border-top，也一并清除 */
+body.home section.hero::before,
+body.home section.hero::after {
+    content: none !important;
+}
+
+/* 3. 进入课程 CTA：彻底去掉链接下边线 */
+body.home .hero a.primary-cta {
+    text-decoration: none !important;
+    border: none !important;
+}
+
+/* ====================================================
+   内容精选 ↔ 课程模块 断层消除
+   ==================================================== */
+
+/* 4. 压缩内容精选底部空间 */
+body.home section.highlights {
+    margin-bottom: 40px !important;
+    border-bottom: none !important;
+}
+
+/* 5. 压缩课程模块顶部空间 */
+body.home section.courses-entry {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+}
+
+/* 6. 防止 section 通用规则在此处叠加 */
+body.home section.highlights + .container section {
+    margin-top: 0 !important;
+}
+
+/* ====================================================
+   Hero CTA 描边恢复（精准）
+   ==================================================== */
+
+/* 明确恢复 CTA 的橙色描边 */
+body.home .hero a.primary-cta {
+    border: 1px solid var(--brand-solid, #E65100) !important;
+    padding: 12px 28px;
+    display: inline-block;
+}
+
+/* Hover 状态保持专业工具感 */
+body.home .hero a.primary-cta:hover {
+    background-color: var(--brand-solid, #E65100);
+    color: #ffffff;
+}
+
+/* ====================================================
+   洞察入口模块：从"备注"提升为"次级入口"
+   ==================================================== */
+
+body.home section.insights-entry {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-structural, #e0e0e0);
+}
+
+/* 第一段说明文字：作为模块引导 */
+body.home section.insights-entry p:first-of-type {
+    font-size: 16px;
+    color: var(--text-primary, #1a1a1a);
+    max-width: 680px;
+}
+
+/* 链接区域：明确是"行动入口" */
+body.home section.insights-entry p:last-of-type {
+    margin-top: 16px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+/* 主入口：进入洞察 */
+body.home section.insights-entry a:first-child {
+    color: var(--brand-solid, #E65100);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+/* 次级入口 */
+body.home section.insights-entry .link-secondary {
+    color: var(--text-secondary, #666666);
+}
+
+/* ====================================================
+   洞察入口 · 双主入口强化
+   ==================================================== */
+
+body.home section.insights-entry p:last-of-type {
+    margin-top: 20px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+/* 两个入口统一为"可点击动作" */
+body.home section.insights-entry p:last-of-type a {
+    position: relative;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--brand-solid, #E65100);
+    text-decoration: none;
+    padding-bottom: 4px;
+}
+
+/* Hover：明确可点击反馈 */
+body.home section.insights-entry p:last-of-type a:hover {
+    opacity: 0.85;
+}
+
+/* 统一底部强调线，而不是箭头制造误导 */
+body.home section.insights-entry p:last-of-type a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--brand-solid, #E65100);
+    opacity: 0.4;
+}
+
+/* 移除"查看历史观察记录"箭头的视觉主导性 */
+body.home section.insights-entry .link-secondary {
+    color: var(--brand-solid, #E65100);
+}
+
+/* =====================================================
+   结构安全版强调样式（仅作用于标题内部）
+   ===================================================== */
+
+.accent-title {
+    position: relative;
+    padding-left: 20px !important;   /* 使用 !important 确保不被覆盖 */
+}
+
+.accent-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    width: 3px;
+    height: 1.2em;
+    background-color: var(--brand-solid, #E65100);
+    opacity: 0.8; /* 与其他页面保持一致 */
+}

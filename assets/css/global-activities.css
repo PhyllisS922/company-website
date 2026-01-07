@@ -1,0 +1,172 @@
+/*
+====================================================
+ACTIVITIES PAGE — ACTIVE WORKING FILE
+File: global-activities.css
+
+Status:
+✅ This is the ONLY file allowed to modify Activities page layout
+✅ Section spacing, hierarchy, rhythm belong here
+
+Restrictions:
+❌ Do NOT override global h1/h2 font-size (unless necessary)
+❌ Do NOT use nth-of-type selectors (use class-based selectors instead)
+❌ Do NOT affect other pages
+
+Goal:
+Maintain Activities page structure with clear, maintainable rules.
+====================================================
+*/
+
+/* ======================================================
+   1. CSS VARIABLES
+   ====================================================== */
+
+:root {
+    /* 品牌色已在 global-brand-system.css 中定义，这里只定义页面特定变量 */
+    --border-subtle: var(--border-structural, #e0e0e0);
+}
+
+/* ======================================================
+   2. LAYOUT & STRUCTURE
+   ====================================================== */
+
+/* 限制活动页横向滚动卡片的整体高度 */
+body.activities .course-scroll-item {
+    padding: 16px 16px 20px;
+}
+
+/* 防止横向滚动区域过高 */
+body.activities .course-scroll-track {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    position: relative;
+    /* 滚动条样式：更明显 */
+    scrollbar-width: thin;
+    scrollbar-color: var(--brand-solid, #E65100) var(--border-structural, #e0e0e0);
+}
+
+/* Webkit 滚动条样式 */
+body.activities .course-scroll-track::-webkit-scrollbar {
+    height: 6px;
+}
+
+body.activities .course-scroll-track::-webkit-scrollbar-track {
+    background: var(--border-structural, #e0e0e0);
+    border-radius: 3px;
+}
+
+body.activities .course-scroll-track::-webkit-scrollbar-thumb {
+    background-color: var(--brand-solid, #E65100);
+    border-radius: 3px;
+    opacity: 0.6;
+}
+
+body.activities .course-scroll-track::-webkit-scrollbar-thumb:hover {
+    opacity: 0.8;
+}
+
+/* 滑动提示：在包含滚动区域的 section 右侧添加箭头提示 */
+body.activities section:has(.course-scroll-track) {
+    position: relative;
+}
+
+/* 右侧箭头提示：提示可滑动 */
+body.activities section:has(.course-scroll-track)::after {
+    content: "→";
+    position: absolute;
+    right: 20px;
+    top: calc(16px + 50%); /* 与滚动区域垂直居中 */
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--brand-solid, #E65100);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 2;
+    font-weight: 300;
+}
+
+/* ======================================================
+   3. IMAGES
+   ====================================================== */
+
+/* 活动图片容器：与卡片容器宽度匹配 */
+body.activities .event-thumb {
+    width: 100%; /* 与容器宽度匹配 */
+    aspect-ratio: 4 / 1.5; /* 高度减半：从 4:3 改为 4:1.5 (即 8:3) */
+    margin-bottom: 12px;
+    overflow: hidden;
+    background-color: var(--surface-secondary, #f5f5f5);
+}
+
+/* 活动图片本身：降存在感，不抢夺文字焦点 */
+body.activities .event-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 保持比例，裁剪填充 */
+    display: block;
+    opacity: 0.85;
+    filter: grayscale(20%);
+    transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* Hover 时稍微增强，但保持克制 */
+body.activities .course-scroll-item:hover .event-thumb img {
+    opacity: 0.95;
+    filter: grayscale(10%);
+}
+
+/* ======================================================
+   4. TYPOGRAPHY
+   ====================================================== */
+
+/* H1: 页面主标题 */
+body.activities h1.accent-title {
+    position: relative;
+    padding-left: 20px !important; /* 使用 !important 确保不被覆盖 */
+}
+
+/* H1 橙色竖线：页面主标题的结构提示 */
+body.activities h1.accent-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    width: 3px;
+    height: 1.2em;
+    background-color: var(--brand-solid);
+    opacity: 0.8;
+}
+
+/* H2.section-title: 一级模块标题 */
+body.activities h2.section-title {
+    position: relative;
+    padding-left: 20px !important; /* 使用 !important 确保不被覆盖 */
+}
+
+/* H2.section-title 橙色竖线：一级模块的结构提示 */
+body.activities h2.section-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 3px;
+    height: 1em;
+    background-color: var(--brand-solid);
+    opacity: 0.7;
+}
+
+/* 防止活动卡片看起来像课程卡 */
+body.activities .course-scroll-item h3 {
+    margin-top: 8px;
+}
+
+/* 活动类型标签（【论坛】【圆桌】）降权 */
+body.activities .course-scroll-item p strong {
+    font-weight: 500;
+    opacity: 0.7;
+}
+
+/* ======================================================
+   END — Activities page structure is now clean
+   ====================================================== */
+
