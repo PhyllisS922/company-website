@@ -97,10 +97,11 @@
                                 a.textContent = item.text;
                                 li.appendChild(a);
                                 malaysia.appendChild(li);
-                                // 触发动画：延迟添加 visible 类（模拟 motion.js 的行为）
-                                setTimeout(() => {
+                                // 立即添加 visible 类，确保元素可见
+                                // 使用 requestAnimationFrame 确保 DOM 更新后再添加类
+                                requestAnimationFrame(() => {
                                     li.classList.add('visible');
-                                }, 120 + (index * 80));
+                                });
                             });
                             console.log('✓ 马来西亚已渲染:', data.recent_observations['马来西亚'].length, '条');
                         } else {
@@ -130,10 +131,10 @@
                                 a.textContent = item.text;
                                 li.appendChild(a);
                                 singapore.appendChild(li);
-                                // 触发动画：延迟添加 visible 类（模拟 motion.js 的行为）
-                                setTimeout(() => {
+                                // 立即添加 visible 类，确保元素可见
+                                requestAnimationFrame(() => {
                                     li.classList.add('visible');
-                                }, 120 + (index * 80));
+                                });
                             });
                             console.log('✓ 新加坡已渲染:', data.recent_observations['新加坡'].length, '条');
                         } else {
@@ -166,10 +167,10 @@
                             a.textContent = item.text;
                             li.appendChild(a);
                             industry.appendChild(li);
-                            // 触发动画：延迟添加 visible 类（模拟 motion.js 的行为）
-                            setTimeout(() => {
+                            // 立即添加 visible 类，确保元素可见
+                            requestAnimationFrame(() => {
                                 li.classList.add('visible');
-                            }, 120 + (index * 80));
+                            });
                         });
                         console.log('✓ 行业观察已渲染:', data.industry_observations.length, '条');
                     } else {
