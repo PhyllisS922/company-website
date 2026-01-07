@@ -1,12 +1,79 @@
 /**
  * 洞察页面新闻动态加载器
  * 从 JSON 文件读取新闻数据并动态渲染到页面
+ * 支持双语显示和摘要tooltip
  */
 
 (function() {
     'use strict';
 
     const DATA_URL = 'assets/data/insights-data.json';
+    
+    /**
+     * 获取当前语言
+     */
+    function getCurrentLanguage() {
+        return window.LanguageManager ? window.LanguageManager.getCurrentLanguage() : 'zh';
+    }
+    
+    /**
+     * 根据语言获取文本
+     */
+    function getTextByLanguage(item) {
+        const lang = getCurrentLanguage();
+        console.log('获取文本，语言:', lang, '数据:', item);
+        
+        // 如果有翻译字段，优先使用
+        if (lang === 'zh' && item.text_zh) {
+            return item.text_zh;
+        }
+        if (lang === 'en' && item.text) {
+            return item.text;
+        }
+        
+        // 如果没有翻译字段，返回原文
+        return item.text || item.text_zh || '';
+    }
+    
+    /**
+     * 根据语言获取摘要
+     */
+    function getSummaryByLanguage(item) {
+        const lang = getCurrentLanguage();
+        
+        // 如果有翻译字段，优先使用
+        if (lang === 'zh' && item.summary_zh) {
+            return item.summary_zh;
+        }
+        if (lang === 'en' && item.summary) {
+            return item.summary;
+        }
+        
+        // 如果没有翻译字段，返回原文
+        return item.summary || item.summary_zh || '';
+    }
+    
+    /**
+     * 更新已渲染新闻的语言
+     */
+    function updateNewsLanguage() {
+        console.log('更新新闻语言，当前语言:', getCurrentLanguage());
+        
+        // 重新加载数据并渲染
+        loadInsightsData();
+    }
+    
+    /**
+     * 创建tooltip元素
+     */
+    function createTooltip(text) {
+        if (!text) return null;
+        
+        const tooltip = document.createElement('span');
+        tooltip.className = 'news-tooltip';
+        tooltip.textContent = text;
+        return tooltip;
+    }
 
     /**
      * 渲染新闻列表
@@ -94,11 +161,18 @@
                                 a.href = item.link || '#';
                                 a.target = '_blank';
                                 a.rel = 'noopener noreferrer';
-                                a.textContent = item.text;
+                                a.textContent = getTextByLanguage(item);
+                                
+                                // 添加摘要tooltip
+                                const summary = getSummaryByLanguage(item);
+                                if (summary) {
+                                    a.setAttribute('data-tooltip', summary);
+                                    a.classList.add('has-tooltip');
+                                }
+                                
                                 li.appendChild(a);
                                 malaysia.appendChild(li);
                                 // 立即添加 visible 类，确保元素可见
-                                // 使用 requestAnimationFrame 确保 DOM 更新后再添加类
                                 requestAnimationFrame(() => {
                                     li.classList.add('visible');
                                 });
@@ -128,7 +202,15 @@
                                 a.href = item.link || '#';
                                 a.target = '_blank';
                                 a.rel = 'noopener noreferrer';
-                                a.textContent = item.text;
+                                a.textContent = getTextByLanguage(item);
+                                
+                                // 添加摘要tooltip
+                                const summary = getSummaryByLanguage(item);
+                                if (summary) {
+                                    a.setAttribute('data-tooltip', summary);
+                                    a.classList.add('has-tooltip');
+                                }
+                                
                                 li.appendChild(a);
                                 singapore.appendChild(li);
                                 // 立即添加 visible 类，确保元素可见
@@ -164,7 +246,15 @@
                             a.href = item.link || '#';
                             a.target = '_blank';
                             a.rel = 'noopener noreferrer';
-                            a.textContent = item.text;
+                            a.textContent = getTextByLanguage(item);
+                            
+                            // 添加摘要tooltip
+                            const summary = getSummaryByLanguage(item);
+                            if (summary) {
+                                a.setAttribute('data-tooltip', summary);
+                                a.classList.add('has-tooltip');
+                            }
+                            
                             li.appendChild(a);
                             industry.appendChild(li);
                             // 立即添加 visible 类，确保元素可见
@@ -237,5 +327,23 @@
     
     // 立即初始化
     init();
+    
+    // 监听语言切换事件，重新渲染新闻
+    document.addEventListener('languageChanged', (e) => {
+        console.log('✓ 语言切换事件触发，新语言:', e.detail?.lang);
+        console.log('当前语言管理器状态:', window.LanguageManager?.getCurrentLanguage());
+        updateNewsLanguage();
+    });
+    
+    // 确保语言管理器已加载后再初始化
+    if (!window.LanguageManager) {
+        console.warn('语言管理器未加载，等待加载...');
+        const checkInterval = setInterval(() => {
+            if (window.LanguageManager) {
+                clearInterval(checkInterval);
+                console.log('✓ 语言管理器已加载');
+            }
+        }, 100);
+    }
 })();
 
