@@ -14,7 +14,7 @@ ENV/
 .env.local
 
 # Generated data
-assets/data/insights-data.json
+# assets/data/insights-data.json  # 注释掉，因为GitHub Actions需要提交这个文件
 
 # IDE
 .vscode/
