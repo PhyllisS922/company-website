@@ -118,12 +118,21 @@
     };
 
     // 页面加载完成后初始化
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
+    console.log('✓ 语言管理器模块已加载，准备初始化...');
+    console.log('当前页面状态:', document.readyState);
     
-    console.log('✓ 语言管理器模块已加载');
+    if (document.readyState === 'loading') {
+        console.log('等待DOMContentLoaded事件...');
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOMContentLoaded事件触发，开始初始化');
+            init();
+        });
+    } else {
+        console.log('DOM已加载，立即初始化');
+        // 即使DOM已加载，也延迟一点确保所有元素都已渲染
+        setTimeout(() => {
+            init();
+        }, 50);
+    }
 })();
 
