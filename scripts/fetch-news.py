@@ -108,7 +108,10 @@ def ai_check_relevance(title: str, summary: str, prompt: str) -> bool:
             max_tokens=10
         )
         result = response.choices[0].message.content.strip().lower()
-        return "relevant" in result
+        is_relevant = "relevant" in result and "not relevant" not in result
+        if not is_relevant:
+            print(f"  ✗ AI筛选排除: {title[:60]}...")
+        return is_relevant
     except Exception as e:
         print(f"⚠ AI筛选出错: {e}，使用关键词筛选")
         return True
