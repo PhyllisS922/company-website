@@ -57,11 +57,24 @@
         
         langSwitches.forEach((switchBtn, index) => {
             console.log(`绑定按钮 ${index + 1}:`, switchBtn);
+            
+            // 使用多种方式绑定，确保能捕获点击
             switchBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log('✓ 按钮被点击！');
+                e.stopPropagation();
+                console.log('✓ 按钮被点击！(click事件)');
                 toggleLanguage();
+            }, true); // 使用捕获阶段
+            
+            // 也绑定mousedown事件作为备用
+            switchBtn.addEventListener('mousedown', (e) => {
+                console.log('✓ 按钮被按下！(mousedown事件)');
             });
+            
+            // 检查按钮是否可点击
+            console.log(`按钮 ${index + 1} 样式:`, window.getComputedStyle(switchBtn));
+            console.log(`按钮 ${index + 1} 是否可见:`, switchBtn.offsetParent !== null);
+            
             console.log(`✓ 按钮 ${index + 1} 事件已绑定`);
         });
     }
