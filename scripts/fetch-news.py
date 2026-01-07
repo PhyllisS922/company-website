@@ -4,8 +4,13 @@
 功能：
 1. 从配置的RSS源抓取新闻
 2. 使用关键词和AI筛选相关内容
-3. 自动分类（地区/行业）
+3. 自动分类（政策类/行业类，地区/行业）
 4. 生成JSON数据文件
+
+设计目标：
+- 政策/制度观察：每天6-10条（新马为主）
+- 行业/市场动态：每天12-20条（行业广泛）
+- 强调连续性>爆点，环境感知>结论输出
 """
 
 import json
@@ -33,17 +38,21 @@ API_KEY_FILE = BASE_DIR / ".env"
 
 # 初始化OpenAI客户端（如果配置了API密钥）
 openai_client = None
-if API_KEY_FILE.exists():
+# 优先从环境变量读取（GitHub Actions使用）
+api_key = os.getenv("OPENAI_API_KEY")
+
+# 如果环境变量没有，尝试从.env文件读取
+if not api_key and API_KEY_FILE.exists():
     from dotenv import load_dotenv
     load_dotenv(API_KEY_FILE)
     api_key = os.getenv("OPENAI_API_KEY")
-    if api_key:
-        openai_client = OpenAI(api_key=api_key)
-        print("✓ AI筛选已启用")
-    else:
-        print("⚠ 未找到OPENAI_API_KEY，将仅使用关键词筛选")
+
+# 如果找到API密钥，初始化客户端
+if api_key:
+    openai_client = OpenAI(api_key=api_key)
+    print("✓ AI筛选已启用")
 else:
-    print("⚠ 未找到.env文件，将仅使用关键词筛选")
+    print("⚠ 未找到OPENAI_API_KEY，将仅使用关键词筛选")
 
 
 def load_config() -> Dict:
@@ -88,7 +97,7 @@ def ai_check_relevance(title: str, summary: str, prompt: str) -> bool:
         return True  # 如果没有AI，默认通过
     
     try:
-        full_text = f"标题：{title}\n摘要：{summary[:200]}"
+        full_text = f"标题：{title}\n摘要：{summary[:300]}"
         response = openai_client.chat.completions.create(
             model="gpt-4o-mini",  # 使用更便宜的模型
             messages=[
@@ -115,7 +124,7 @@ def classify_industry(title: str, summary: str, industry_keywords: Dict) -> Opti
 
 
 def fetch_and_filter_news(config: Dict) -> Dict:
-    """抓取并筛选新闻"""
+    """抓取并筛选新闻，区分政策类和行业类"""
     all_news = {
         "recent_observations": {
             "马来西亚": [],
@@ -124,14 +133,33 @@ def fetch_and_filter_news(config: Dict) -> Dict:
         "industry_observations": []
     }
     
+    # 获取配置
     sources = [s for s in config['sources'] if s.get('enabled', True)]
+    # 按优先级排序（priority越小越优先）
+    sources.sort(key=lambda x: x.get('priority', 999))
+    
     ai_config = config.get('ai_filtering', {})
     ai_enabled = ai_config.get('enabled', False) and openai_client is not None
+    target_counts = config.get('target_daily_count', {})
+    
+    policy_target = target_counts.get('policy', {'min': 6, 'max': 10})
+    industry_target = target_counts.get('industry', {'min': 12, 'max': 20})
+    
+    policy_prompt = ai_config.get('prompt_policy', '')
+    industry_prompt = ai_config.get('prompt_industry', '')
     
     print(f"\n开始抓取 {len(sources)} 个数据源...")
+    print(f"目标：政策类 {policy_target['min']}-{policy_target['max']} 条，行业类 {industry_target['min']}-{industry_target['max']} 条")
+    
+    # 分别收集政策类和行业类新闻
+    policy_news = []  # 政策类新闻（按地区分类）
+    industry_news = []  # 行业类新闻（按行业分类）
     
     for source in sources:
-        print(f"\n处理: {source['name']} ({source['region']})")
+        source_type = source.get('type', 'media')  # 'policy' 或 'media'
+        region = source.get('region', '')
+        
+        print(f"\n处理: {source['name']} ({region}, {source_type})")
         try:
             feed = feedparser.parse(source['url'])
             print(f"  找到 {len(feed.entries)} 条新闻")
@@ -143,44 +171,72 @@ def fetch_and_filter_news(config: Dict) -> Dict:
                 date = format_date(entry.get('published', ''))
                 
                 # 关键词筛选
-                if not check_keywords(f"{title} {summary}", source['keywords']):
+                if not check_keywords(f"{title} {summary}", source.get('keywords', [])):
                     continue
                 
-                # AI筛选（如果启用）
-                if ai_enabled:
-                    if not ai_check_relevance(title, summary, ai_config.get('prompt', '')):
-                        continue
-                
-                # 分类到地区
-                region = source['region']
                 news_item = {
                     "date": date,
                     "title": title,
                     "link": link,
-                    "summary": summary[:100] if summary else ""
+                    "summary": summary[:200] if summary else "",
+                    "source": source['name'],
+                    "region": region
                 }
                 
-                # 限制每个类别的数量
-                max_items = ai_config.get('max_items_per_category', 5)
-                if len(all_news['recent_observations'][region]) < max_items:
-                    all_news['recent_observations'][region].append(news_item)
+                # 根据数据源类型和AI筛选进行分类
+                if source_type == 'policy':
+                    # 政策类：使用政策提示词筛选
+                    if ai_enabled and policy_prompt:
+                        if not ai_check_relevance(title, summary, policy_prompt):
+                            continue
+                    
+                    # 政策类新闻进入recent_observations
+                    if region in ['新加坡', '马来西亚']:
+                        policy_news.append(news_item)
                 
-                # 行业分类
-                industry = classify_industry(title, summary, config['industry_keywords'])
-                if industry:
-                    if len(all_news['industry_observations']) < max_items * 2:
+                else:
+                    # 行业类：使用行业提示词筛选
+                    if ai_enabled and industry_prompt:
+                        if not ai_check_relevance(title, summary, industry_prompt):
+                            continue
+                    
+                    # 行业分类
+                    industry = classify_industry(title, summary, config.get('industry_keywords', {}))
+                    if industry:
                         industry_item = news_item.copy()
                         industry_item['industry'] = industry
-                        all_news['industry_observations'].append(industry_item)
+                        industry_news.append(industry_item)
         
         except Exception as e:
             print(f"  ✗ 错误: {e}")
             continue
     
     # 按日期排序（最新的在前）
-    for region in all_news['recent_observations']:
-        all_news['recent_observations'][region].sort(key=lambda x: x['date'], reverse=True)
-    all_news['industry_observations'].sort(key=lambda x: x['date'], reverse=True)
+    policy_news.sort(key=lambda x: x['date'], reverse=True)
+    industry_news.sort(key=lambda x: x['date'], reverse=True)
+    
+    # 分配政策类新闻到各地区（控制数量）
+    for item in policy_news:
+        region = item['region']
+        if region in all_news['recent_observations']:
+            current_count = len(all_news['recent_observations'][region])
+            # 每个地区最多 policy_target['max'] / 2 条（假设新马各一半）
+            max_per_region = policy_target['max'] // 2
+            if current_count < max_per_region:
+                all_news['recent_observations'][region].append(item)
+    
+    # 分配行业类新闻（控制数量）
+    for item in industry_news:
+        if len(all_news['industry_observations']) < industry_target['max']:
+            all_news['industry_observations'].append(item)
+    
+    # 最终统计
+    total_policy = sum(len(items) for items in all_news['recent_observations'].values())
+    total_industry = len(all_news['industry_observations'])
+    
+    print(f"\n筛选结果：")
+    print(f"  政策类: {total_policy} 条（目标: {policy_target['min']}-{policy_target['max']}）")
+    print(f"  行业类: {total_industry} 条（目标: {industry_target['min']}-{industry_target['max']}）")
     
     return all_news
 
@@ -196,7 +252,7 @@ def generate_display_format(news_data: Dict) -> Dict:
         "industry_observations": []
     }
     
-    # 格式化近期观察
+    # 格式化近期观察（政策类）
     for region, items in news_data['recent_observations'].items():
         for item in items:
             formatted['recent_observations'][region].append({
@@ -245,4 +301,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
