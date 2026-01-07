@@ -87,7 +87,7 @@
                         console.log('马来西亚数据存在，数量:', data.recent_observations['马来西亚'].length);
                         if (data.recent_observations['马来西亚'].length > 0) {
                             malaysia.innerHTML = '';
-                            data.recent_observations['马来西亚'].forEach(item => {
+                            data.recent_observations['马来西亚'].forEach((item, index) => {
                                 const li = document.createElement('li');
                                 li.className = 'motion-group-item';
                                 const a = document.createElement('a');
@@ -97,6 +97,10 @@
                                 a.textContent = item.text;
                                 li.appendChild(a);
                                 malaysia.appendChild(li);
+                                // 触发动画：延迟添加 visible 类（模拟 motion.js 的行为）
+                                setTimeout(() => {
+                                    li.classList.add('visible');
+                                }, 120 + (index * 80));
                             });
                             console.log('✓ 马来西亚已渲染:', data.recent_observations['马来西亚'].length, '条');
                         } else {
@@ -116,7 +120,7 @@
                         console.log('新加坡数据存在，数量:', data.recent_observations['新加坡'].length);
                         if (data.recent_observations['新加坡'].length > 0) {
                             singapore.innerHTML = '';
-                            data.recent_observations['新加坡'].forEach(item => {
+                            data.recent_observations['新加坡'].forEach((item, index) => {
                                 const li = document.createElement('li');
                                 li.className = 'motion-group-item';
                                 const a = document.createElement('a');
@@ -126,6 +130,10 @@
                                 a.textContent = item.text;
                                 li.appendChild(a);
                                 singapore.appendChild(li);
+                                // 触发动画：延迟添加 visible 类（模拟 motion.js 的行为）
+                                setTimeout(() => {
+                                    li.classList.add('visible');
+                                }, 120 + (index * 80));
                             });
                             console.log('✓ 新加坡已渲染:', data.recent_observations['新加坡'].length, '条');
                         } else {
@@ -148,7 +156,7 @@
                     console.log('行业观察数据存在，数量:', data.industry_observations.length);
                     if (data.industry_observations.length > 0) {
                         industry.innerHTML = '';
-                        data.industry_observations.forEach(item => {
+                        data.industry_observations.forEach((item, index) => {
                             const li = document.createElement('li');
                             li.className = 'motion-group-item';
                             const a = document.createElement('a');
@@ -158,6 +166,10 @@
                             a.textContent = item.text;
                             li.appendChild(a);
                             industry.appendChild(li);
+                            // 触发动画：延迟添加 visible 类（模拟 motion.js 的行为）
+                            setTimeout(() => {
+                                li.classList.add('visible');
+                            }, 120 + (index * 80));
                         });
                         console.log('✓ 行业观察已渲染:', data.industry_observations.length, '条');
                     } else {
