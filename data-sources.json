@@ -1,67 +1,84 @@
 {
   "sources": [
     {
-      "name": "新加坡政府新闻",
-      "url": "https://www.gov.sg/rss",
-      "region": "新加坡",
-      "type": "policy",
-      "keywords": ["政策", "经济", "跨境", "特区", "柔新", "JS-SEZ", "经济特区", "政策框架", "制度", "市场", "营商", "监管", "区域合作", "投资", "产业"],
-      "enabled": true,
-      "priority": 1
-    },
-    {
-      "name": "Channel NewsAsia",
-      "url": "https://www.channelnewsasia.com/rssfeeds/8395986",
-      "region": "新加坡",
-      "type": "media",
-      "keywords": ["政策", "经济", "跨境", "特区", "柔新", "JS-SEZ", "经济特区", "政策框架", "制度", "市场", "营商", "监管", "区域合作", "投资", "产业", "企业", "资本"],
-      "enabled": true,
-      "priority": 2
-    },
-    {
-      "name": "The Straits Times",
-      "url": "https://www.straitstimes.com/rss",
-      "region": "新加坡",
-      "type": "media",
-      "keywords": ["政策", "经济", "跨境", "特区", "柔新", "JS-SEZ", "经济特区", "政策框架", "制度", "市场", "营商", "监管", "区域合作", "投资", "产业", "企业", "资本"],
-      "enabled": true,
-      "priority": 2
-    },
-    {
       "name": "马来西亚政府投资发展局",
       "url": "https://www.mida.gov.my/rss",
       "region": "马来西亚",
       "type": "policy",
-      "keywords": ["政策", "经济", "跨境", "特区", "柔新", "JS-SEZ", "经济特区", "政策框架", "制度", "市场", "营商", "监管", "区域合作", "投资", "产业"],
+      "keywords": [],
       "enabled": true,
-      "priority": 1
+      "priority": 1,
+      "note": "政策类，主要依赖AI筛选"
     },
     {
-      "name": "The Edge Malaysia",
-      "url": "https://www.theedgemarkets.com/rss.xml",
-      "region": "马来西亚",
+      "name": "东盟组织 (ASEAN)",
+      "url": "https://asean.org/feed/",
+      "region": "东盟",
+      "type": "policy",
+      "keywords": [],
+      "enabled": true,
+      "priority": 1,
+      "note": "政策类，区域合作相关"
+    },
+    {
+      "name": "亚洲开发银行 (ADB)",
+      "url": "https://www.adb.org/rss.xml",
+      "region": "东盟",
+      "type": "policy",
+      "keywords": [],
+      "enabled": false,
+      "priority": 1,
+      "note": "暂时禁用：RSS源可访问但无新闻条目"
+    },
+    {
+      "name": "海峡时报 - 新加坡新闻",
+      "url": "https://www.straitstimes.com/news/singapore/rss.xml",
+      "region": "新加坡",
       "type": "media",
-      "keywords": ["政策", "经济", "跨境", "特区", "柔新", "JS-SEZ", "经济特区", "政策框架", "制度", "市场", "营商", "监管", "区域合作", "投资", "产业", "企业", "资本"],
+      "keywords": [],
       "enabled": true,
-      "priority": 2
+      "priority": 1,
+      "note": "新马权威主流媒体"
     },
     {
-      "name": "Malay Mail",
-      "url": "https://www.malaymail.com/rss",
-      "region": "马来西亚",
+      "name": "海峡时报 - 商业新闻",
+      "url": "https://www.straitstimes.com/news/business/rss.xml",
+      "region": "新加坡",
       "type": "media",
-      "keywords": ["政策", "经济", "跨境", "特区", "柔新", "JS-SEZ", "经济特区", "政策框架", "制度", "市场", "营商", "监管", "区域合作", "投资", "产业", "企业", "资本"],
+      "keywords": [],
       "enabled": true,
-      "priority": 2
+      "priority": 1,
+      "note": "商业和行业动态"
     },
     {
-      "name": "ASEAN Business News",
-      "url": "https://www.aseanbriefing.com/news/feed/",
+      "name": "Channel NewsAsia - Singapore",
+      "url": "https://www.channelnewsasia.com/rssfeeds/8395986",
+      "region": "新加坡",
+      "type": "media",
+      "keywords": [],
+      "enabled": true,
+      "priority": 1,
+      "note": "行业类，主要依赖AI筛选"
+    },
+    {
+      "name": "Channel NewsAsia - Feed 2",
+      "url": "https://www.channelnewsasia.com/rssfeeds/8396082",
+      "region": "新加坡",
+      "type": "media",
+      "keywords": [],
+      "enabled": true,
+      "priority": 2,
+      "note": "补充新闻源"
+    },
+    {
+      "name": "金融时报 - 亚洲",
+      "url": "https://www.ft.com/rss/asia",
       "region": "东盟",
       "type": "media",
-      "keywords": ["政策", "经济", "跨境", "特区", "柔新", "JS-SEZ", "经济特区", "政策框架", "制度", "市场", "营商", "监管", "区域合作", "投资", "产业", "企业", "资本"],
+      "keywords": [],
       "enabled": true,
-      "priority": 3
+      "priority": 1,
+      "note": "行业类，国际视角"
     }
   ],
   "industry_keywords": {
@@ -83,7 +100,7 @@
     "relevance_threshold": 0.7,
     "max_items_per_category": {
       "policy": 10,
-      "industry": 15
+      "industry": 20
     },
     "prompt_policy": "判断以下新闻标题和摘要是否与新加坡、马来西亚或东盟地区的政策变化、制度调整、监管方向、区域合作机制、经济特区、跨境合作、营商环境相关。重点关注：1) 官方政策表述变化 2) 制度与监管方向 3) 区域合作机制 4) 经济特区相关 5) 结构性或方向性信号。只返回 'relevant' 或 'not relevant'，不要其他内容。",
     "prompt_industry": "判断以下新闻标题和摘要是否反映新加坡、马来西亚或东盟地区的真实行业动态、市场变化、企业融资、资本市场变化、行业趋势或商业热点。包括但不限于：医疗、旅游、农业、养老、教育、能源、制造、科技、金融、物流、航空、交通等行业。只返回 'relevant' 或 'not relevant'，不要其他内容。"

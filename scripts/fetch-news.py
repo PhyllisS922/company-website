@@ -163,16 +163,28 @@ def fetch_and_filter_news(config: Dict) -> Dict:
         try:
             feed = feedparser.parse(source['url'])
             print(f"  找到 {len(feed.entries)} 条新闻")
+            if len(feed.entries) == 0:
+                print(f"  ⚠ 警告：该RSS源可能无效或无法访问")
+                if hasattr(feed, 'bozo') and feed.bozo:
+                    print(f"  ⚠ RSS解析错误：{str(feed.bozo_exception) if hasattr(feed, 'bozo_exception') else '未知错误'}")
+                continue
+            if hasattr(feed, 'bozo') and feed.bozo:
+                print(f"  ⚠ RSS解析警告：{str(feed.bozo_exception) if hasattr(feed, 'bozo_exception') else '未知错误'}")
             
+            matched_count = 0
             for entry in feed.entries:
                 title = entry.get('title', '')
                 summary = extract_summary(entry)
                 link = entry.get('link', '#')
                 date = format_date(entry.get('published', ''))
                 
-                # 关键词筛选
-                if not check_keywords(f"{title} {summary}", source.get('keywords', [])):
-                    continue
+                # 关键词筛选（如果关键词列表为空，则跳过筛选）
+                keywords = source.get('keywords', [])
+                if keywords and len(keywords) > 0:
+                    if not check_keywords(f"{title} {summary}", keywords):
+                        continue
+                
+                matched_count += 1
                 
                 news_item = {
                     "date": date,
@@ -191,8 +203,27 @@ def fetch_and_filter_news(config: Dict) -> Dict:
                             continue
                     
                     # 政策类新闻进入recent_observations
+                    # 如果region是"东盟"，根据内容判断是否与新马相关，或默认分配到两个地区
                     if region in ['新加坡', '马来西亚']:
                         policy_news.append(news_item)
+                    elif region == '东盟':
+                        # 东盟的政策类新闻，如果标题或摘要包含新马关键词，分配到相应地区
+                        # 否则同时添加到两个地区（因为东盟政策通常影响整个区域）
+                        title_lower = title.lower()
+                        summary_lower = summary.lower()
+                        if 'singapore' in title_lower or '新加坡' in title or 'malaysia' in title_lower or '马来西亚' in title:
+                            # 如果明确提到新马，根据内容分配到对应地区
+                            if 'singapore' in title_lower or '新加坡' in title:
+                                news_item['region'] = '新加坡'
+                                policy_news.append(news_item)
+                            elif 'malaysia' in title_lower or '马来西亚' in title:
+                                news_item['region'] = '马来西亚'
+                                policy_news.append(news_item)
+                        else:
+                            # 没有明确提到新马，但通过筛选，说明与区域相关，可以添加到两个地区
+                            # 为了避免重复，只添加到第一个地区（马来西亚），或者可以根据其他逻辑分配
+                            news_item['region'] = '马来西亚'  # 默认分配到马来西亚
+                            policy_news.append(news_item)
                 
                 else:
                     # 行业类：使用行业提示词筛选
@@ -206,6 +237,11 @@ def fetch_and_filter_news(config: Dict) -> Dict:
                         industry_item = news_item.copy()
                         industry_item['industry'] = industry
                         industry_news.append(industry_item)
+                    else:
+                        # 如果没有匹配到具体行业，但通过了筛选，也可以作为行业新闻
+                        industry_news.append(news_item)
+            
+            print(f"  通过筛选: {matched_count} 条")
         
         except Exception as e:
             print(f"  ✗ 错误: {e}")
@@ -262,8 +298,10 @@ def generate_display_format(news_data: Dict) -> Dict:
     
     # 格式化行业观察
     for item in news_data['industry_observations']:
+        # 处理可能没有industry字段的情况
+        industry = item.get('industry', '其他')
         formatted['industry_observations'].append({
-            "text": f"[{item['date']} · {item['industry']}] {item['title']}",
+            "text": f"[{item['date']} · {industry}] {item['title']}",
             "link": item['link']
         })
     
