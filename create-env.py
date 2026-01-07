@@ -8,8 +8,15 @@ from pathlib import Path
 base_dir = Path(__file__).parent
 env_file = base_dir / ".env"
 
-# API密钥
-api_key = "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"
+# API密钥（从用户输入获取，不硬编码）
+import sys
+
+if len(sys.argv) > 1:
+    api_key = sys.argv[1]
+else:
+    print("请提供API密钥作为参数：")
+    print("python3 create-env.py YOUR_API_KEY")
+    sys.exit(1)
 
 # 写入文件
 with open(env_file, 'w') as f:
