@@ -41,10 +41,11 @@ export default async function handler(req, res) {
     const sourceLang = targetLang === 'zh' ? 'English' : 'Chinese';
     const targetLangName = targetLang === 'zh' ? 'Chinese' : 'English';
     
-    // 将多个文本合并为一次API调用
-    const combinedText = texts.map((text, index) => `${index + 1}. ${text}`).join('\n---\n');
+    // 将多个文本合并为一次API调用（使用特殊分隔符，避免与内容冲突）
+    const SEPARATOR = '|||TRANSLATION_SEPARATOR|||';
+    const combinedText = texts.join(SEPARATOR);
     
-    const prompt = `Translate the following ${sourceLang} text to ${targetLangName}. Each item is separated by "---". Return only the translated text in the same format, without any additional commentary or formatting.`;
+    const prompt = `Translate the following ${sourceLang} text to ${targetLangName}. The text contains multiple items separated by "|||TRANSLATION_SEPARATOR|||". Return only the translated text, keeping the same separator format. Do not add any numbering, bullet points, or additional formatting. Each translated item should be separated by "|||TRANSLATION_SEPARATOR|||" exactly as in the original.`;
 
     // 调用OpenAI API
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -74,9 +75,12 @@ export default async function handler(req, res) {
     const translatedText = data.choices[0].message.content.trim();
 
     // 分割翻译结果
-    const translatedTexts = translatedText.split('---').map((text, index) => {
-      // 移除编号前缀（如 "1. "）
-      return text.replace(/^\d+\.\s*/, '').trim();
+    const translatedTexts = translatedText.split(SEPARATOR).map((text) => {
+      // 清理文本：移除编号、多余空格等
+      return text
+        .replace(/^\d+[\.\)]\s*/g, '') // 移除开头的编号（如 "1. " 或 "1) "）
+        .replace(/^[-•]\s*/g, '') // 移除开头的项目符号
+        .trim();
     });
 
     // 确保返回数量匹配
