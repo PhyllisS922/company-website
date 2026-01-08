@@ -117,7 +117,9 @@
         }
         
         // 调用翻译API
+        console.log('准备调用翻译API，文本数量:', textsToTranslate.length, '目标语言:', targetLang);
         const translations = await callTranslationAPI(textsToTranslate, targetLang);
+        console.log('翻译API返回结果:', translations);
         
         // 保存到缓存
         textsToTranslate.forEach((text, i) => {
