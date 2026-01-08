@@ -42,6 +42,28 @@
                 updateLanguageButton();
             }, 200);
         }
+        
+        // 使用MutationObserver监听按钮元素添加（如果按钮是动态添加的）
+        const observer = new MutationObserver(() => {
+            const langSwitches = document.querySelectorAll('.lang-switch');
+            if (langSwitches.length > 0) {
+                updateLanguageButton();
+            }
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        
+        // 也监听DOMContentLoaded，确保按钮已存在
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    updateLanguageButton();
+                }, 100);
+            });
+        }
     }
 
     /**
@@ -60,7 +82,15 @@
      */
     function updateLanguageButton() {
         const langSwitches = document.querySelectorAll('.lang-switch');
-        langSwitches.forEach(switchBtn => {
+        console.log('updateLanguageButton: 找到', langSwitches.length, '个按钮，当前语言:', currentLang);
+        
+        if (langSwitches.length === 0) {
+            console.warn('updateLanguageButton: 未找到按钮元素');
+            return;
+        }
+        
+        langSwitches.forEach((switchBtn, index) => {
+            const oldText = switchBtn.textContent;
             if (currentLang === 'zh') {
                 // 当前是中文，按钮显示 "EN"（点击切换到英文）
                 switchBtn.textContent = 'EN';
@@ -68,6 +98,7 @@
                 // 当前是英文，按钮显示 "中文"（点击切换到中文）
                 switchBtn.textContent = '中文';
             }
+            console.log(`按钮 ${index + 1}: "${oldText}" -> "${switchBtn.textContent}"`);
         });
     }
 
