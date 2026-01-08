@@ -162,18 +162,20 @@
                                 a.rel = 'noopener noreferrer';
                                 a.textContent = getTextByLanguage(item);
                                 
-                                // 添加摘要tooltip
+                                li.appendChild(a);
+                                
+                                // 添加摘要tooltip（必须在a之后添加，这样tooltip才能正确定位）
                                 const summary = getSummaryByLanguage(item);
                                 if (summary) {
                                     const tooltip = document.createElement('div');
                                     tooltip.className = 'news-item-tooltip';
                                     // 清理HTML标签，只显示纯文本
                                     const cleanSummary = summary.replace(/<[^>]*>/g, '').trim();
-                                    tooltip.textContent = cleanSummary;
-                                    li.appendChild(tooltip);
+                                    if (cleanSummary) {
+                                        tooltip.textContent = cleanSummary;
+                                        li.appendChild(tooltip);
+                                    }
                                 }
-                                
-                                li.appendChild(a);
                                 malaysia.appendChild(li);
                                 // 立即添加 visible 类，确保元素可见
                                 requestAnimationFrame(() => {
@@ -207,18 +209,20 @@
                                 a.rel = 'noopener noreferrer';
                                 a.textContent = getTextByLanguage(item);
                                 
-                                // 添加摘要tooltip
+                                li.appendChild(a);
+                                
+                                // 添加摘要tooltip（必须在a之后添加，这样tooltip才能正确定位）
                                 const summary = getSummaryByLanguage(item);
                                 if (summary) {
                                     const tooltip = document.createElement('div');
                                     tooltip.className = 'news-item-tooltip';
                                     // 清理HTML标签，只显示纯文本
                                     const cleanSummary = summary.replace(/<[^>]*>/g, '').trim();
-                                    tooltip.textContent = cleanSummary;
-                                    li.appendChild(tooltip);
+                                    if (cleanSummary) {
+                                        tooltip.textContent = cleanSummary;
+                                        li.appendChild(tooltip);
+                                    }
                                 }
-                                
-                                li.appendChild(a);
                                 singapore.appendChild(li);
                                 // 立即添加 visible 类，确保元素可见
                                 requestAnimationFrame(() => {

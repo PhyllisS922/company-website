@@ -35,6 +35,13 @@
             // 绑定后再次更新按钮文本，确保显示正确
             updateLanguageButton();
         }, 100);
+        
+        // 也立即更新一次（如果DOM已加载）
+        if (document.readyState !== 'loading') {
+            setTimeout(() => {
+                updateLanguageButton();
+            }, 200);
+        }
     }
 
     /**
