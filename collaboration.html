@@ -185,27 +185,3 @@
     </script>
 </body>
 </html>
-    <script src="assets/js/language-manager.js" defer></script>
-    <script>
-        (function() {
-            function updateButton() {
-                const btn = document.getElementById('lang-switch-btn') || document.querySelector('.lang-switch');
-                if (!btn) return;
-                const lang = localStorage.getItem('site_language') || 'zh';
-                btn.textContent = lang === 'zh' ? 'EN' : '中文';
-            }
-            if (document.readyState !== 'loading') {
-                updateButton();
-            } else {
-                document.addEventListener('DOMContentLoaded', updateButton);
-            }
-            document.addEventListener('languageChanged', function() {
-                setTimeout(updateButton, 50);
-            });
-            window.addEventListener('load', function() {
-                setTimeout(updateButton, 100);
-            });
-        })();
-    </script>
-</body>
-</html>
