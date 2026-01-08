@@ -141,20 +141,10 @@
                     const text = el.textContent.trim();
                     if (!shouldExclude && text && text.length > 0) {
                         // 对于链接元素，需要特殊处理
-                        // 如果链接直接包含文本（如 <a>首页</a>），应该翻译链接本身
-                        // 如果链接包含子元素（如 <a><p>文本</p></a>），子元素会被单独处理
+                        // 所有链接都应该被翻译（包括导航链接、内容链接等）
                         if (el.tagName === 'A') {
-                            // 检查链接是否直接包含文本节点（而不是只有子元素）
-                            const hasDirectText = Array.from(el.childNodes).some(node => 
-                                node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
-                            );
-                            // 如果链接有子元素且没有直接文本，跳过（子元素会被单独处理）
-                            // 但如果是导航链接或特定类型的链接，仍然需要翻译
-                            const isNavLink = el.closest('nav');
-                            const isTitleLink = el.classList.contains('title-link') || el.classList.contains('link-secondary');
-                            if (el.children.length > 0 && !hasDirectText && !isNavLink && !isTitleLink) {
-                                return; // 跳过，让子元素被处理
-                            }
+                            // 链接元素应该被翻译，不跳过
+                            // 继续处理
                         }
                         
                         // 对于有子元素的元素（如 <p><strong>文本</strong></p>），
@@ -261,11 +251,27 @@
                 
                 // 对于链接元素，确保不破坏链接功能
                 if (el.tagName === 'A') {
-                    const originalHref = el.getAttribute('href');
+                    // 保存所有原始属性
+                    const originalAttributes = {};
+                    Array.from(el.attributes).forEach(attr => {
+                        if (attr.name !== 'data-original-text' && attr.name !== 'data-translated-text' && attr.name !== 'data-translated') {
+                            originalAttributes[attr.name] = attr.value;
+                        }
+                    });
+                    
+                    // 只更新文本内容
                     el.textContent = existingTranslation;
-                    if (originalHref && !el.getAttribute('href')) {
-                        el.setAttribute('href', originalHref);
-                    }
+                    
+                    // 恢复所有原始属性
+                    Object.keys(originalAttributes).forEach(attrName => {
+                        if (!el.getAttribute(attrName) || el.getAttribute(attrName) !== originalAttributes[attrName]) {
+                            el.setAttribute(attrName, originalAttributes[attrName]);
+                        }
+                    });
+                    
+                    // 确保链接仍然可以点击
+                    el.style.pointerEvents = '';
+                    el.style.cursor = '';
                 } else {
                     el.textContent = existingTranslation;
                 }
@@ -285,10 +291,23 @@
                 // 对于链接元素，确保不破坏链接功能
                 if (el.tagName === 'A') {
                     const originalHref = el.getAttribute('href');
+                    // 保存所有原始属性
+                    const originalAttributes = {};
+                    Array.from(el.attributes).forEach(attr => {
+                        if (attr.name !== 'data-original-text' && attr.name !== 'data-translated-text' && attr.name !== 'data-translated') {
+                            originalAttributes[attr.name] = attr.value;
+                        }
+                    });
+                    
+                    // 只更新文本内容
                     el.textContent = cachedTranslation;
-                    if (originalHref && !el.getAttribute('href')) {
-                        el.setAttribute('href', originalHref);
-                    }
+                    
+                    // 恢复所有原始属性（确保href、class等不被破坏）
+                    Object.keys(originalAttributes).forEach(attrName => {
+                        if (!el.getAttribute(attrName) || el.getAttribute(attrName) !== originalAttributes[attrName]) {
+                            el.setAttribute(attrName, originalAttributes[attrName]);
+                        }
+                    });
                 } else {
                     el.textContent = cachedTranslation;
                 }
@@ -323,16 +342,27 @@
                         
                         // 对于链接元素，需要特殊处理，确保不破坏链接功能
                         if (el.tagName === 'A') {
-                            // 保存原始href（以防万一）
-                            const originalHref = el.getAttribute('href');
+                            // 保存所有原始属性（href、class、id等）
+                            const originalAttributes = {};
+                            Array.from(el.attributes).forEach(attr => {
+                                if (attr.name !== 'data-original-text' && attr.name !== 'data-translated-text' && attr.name !== 'data-translated') {
+                                    originalAttributes[attr.name] = attr.value;
+                                }
+                            });
                             
-                            // 只更新文本内容，不修改href或其他属性
+                            // 只更新文本内容，不修改任何属性
                             el.textContent = translatedText;
                             
-                            // 确保href仍然存在
-                            if (originalHref && !el.getAttribute('href')) {
-                                el.setAttribute('href', originalHref);
-                            }
+                            // 恢复所有原始属性（确保href、class等不被破坏）
+                            Object.keys(originalAttributes).forEach(attrName => {
+                                if (!el.getAttribute(attrName) || el.getAttribute(attrName) !== originalAttributes[attrName]) {
+                                    el.setAttribute(attrName, originalAttributes[attrName]);
+                                }
+                            });
+                            
+                            // 确保链接仍然可以点击（检查pointer-events等样式）
+                            el.style.pointerEvents = '';
+                            el.style.cursor = '';
                         } else {
                             // 非链接元素，直接更新文本
                             el.textContent = translatedText;
