@@ -140,17 +140,29 @@
                     
                     const text = el.textContent.trim();
                     if (!shouldExclude && text && text.length > 0) {
+                        // 特殊处理：如果元素是 <p> 且只包含链接，跳过父元素，让链接被单独处理
+                        if (el.tagName === 'P') {
+                            const links = el.querySelectorAll('a');
+                            // 如果 <p> 只包含链接（没有其他文本节点），跳过父元素
+                            if (links.length > 0) {
+                                const hasOtherText = Array.from(el.childNodes).some(node => 
+                                    node.nodeType === Node.TEXT_NODE && 
+                                    node.textContent.trim().length > 0 &&
+                                    !node.textContent.trim().match(/^[\s\n\r]*$/)
+                                );
+                                if (!hasOtherText && links.length === el.children.length) {
+                                    // <p> 只包含链接，跳过父元素，让链接被单独处理
+                                    return;
+                                }
+                            }
+                        }
+                        
                         // 对于链接元素，需要特殊处理
                         // 所有链接都应该被翻译（包括导航链接、内容链接等）
                         if (el.tagName === 'A') {
                             // 链接元素应该被翻译，不跳过
                             // 继续处理
                         }
-                        
-                        // 对于有子元素的元素（如 <p><strong>文本</strong></p>），
-                        // 如果子元素也会被单独处理，可能需要跳过父元素
-                        // 但为了确保所有内容都被翻译，我们同时处理父元素和子元素
-                        // 这里不跳过，让所有元素都被处理
                         
                         // 检查是否已经有翻译数据
                         if (!el.hasAttribute('data-original-text')) {
@@ -259,19 +271,30 @@
                         }
                     });
                     
+                    // 保存原始href（关键）
+                    const originalHref = el.getAttribute('href');
+                    
                     // 只更新文本内容
                     el.textContent = existingTranslation;
                     
+                    // 立即恢复href（确保链接功能）
+                    if (originalHref) {
+                        el.setAttribute('href', originalHref);
+                    }
+                    
                     // 恢复所有原始属性
                     Object.keys(originalAttributes).forEach(attrName => {
-                        if (!el.getAttribute(attrName) || el.getAttribute(attrName) !== originalAttributes[attrName]) {
-                            el.setAttribute(attrName, originalAttributes[attrName]);
-                        }
+                        el.setAttribute(attrName, originalAttributes[attrName]);
                     });
                     
-                    // 确保链接仍然可以点击
-                    el.style.pointerEvents = '';
-                    el.style.cursor = '';
+                    // 确保链接仍然可以点击（强制设置样式）
+                    el.style.pointerEvents = 'auto';
+                    el.style.cursor = 'pointer';
+                    el.style.textDecoration = '';
+                    
+                    // 确保链接不是disabled状态
+                    el.removeAttribute('disabled');
+                    el.removeAttribute('aria-disabled');
                 } else {
                     el.textContent = existingTranslation;
                 }
@@ -350,19 +373,31 @@
                                 }
                             });
                             
+                            // 保存原始href（关键）
+                            const originalHref = el.getAttribute('href');
+                            
                             // 只更新文本内容，不修改任何属性
+                            // 使用 innerHTML 或 textContent 都可以，但确保href不被破坏
                             el.textContent = translatedText;
+                            
+                            // 立即恢复href（确保链接功能）
+                            if (originalHref) {
+                                el.setAttribute('href', originalHref);
+                            }
                             
                             // 恢复所有原始属性（确保href、class等不被破坏）
                             Object.keys(originalAttributes).forEach(attrName => {
-                                if (!el.getAttribute(attrName) || el.getAttribute(attrName) !== originalAttributes[attrName]) {
-                                    el.setAttribute(attrName, originalAttributes[attrName]);
-                                }
+                                el.setAttribute(attrName, originalAttributes[attrName]);
                             });
                             
-                            // 确保链接仍然可以点击（检查pointer-events等样式）
-                            el.style.pointerEvents = '';
-                            el.style.cursor = '';
+                            // 确保链接仍然可以点击（强制设置样式）
+                            el.style.pointerEvents = 'auto';
+                            el.style.cursor = 'pointer';
+                            el.style.textDecoration = '';
+                            
+                            // 确保链接不是disabled状态
+                            el.removeAttribute('disabled');
+                            el.removeAttribute('aria-disabled');
                         } else {
                             // 非链接元素，直接更新文本
                             el.textContent = translatedText;
