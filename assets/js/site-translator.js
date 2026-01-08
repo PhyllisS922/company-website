@@ -170,7 +170,16 @@
      * 翻译所有内容（一次性翻译+缓存机制）
      */
     async function translateAll() {
-        const lang = window.LanguageManager?.getCurrentLanguage();
+        // 确保LanguageManager已加载
+        if (!window.LanguageManager) {
+            console.warn('LanguageManager未加载，等待...');
+            setTimeout(() => translateAll(), 200);
+            return;
+        }
+        
+        const lang = window.LanguageManager.getCurrentLanguage();
+        console.log('translateAll: 当前语言', lang);
+        
         if (lang === 'zh') {
             // 中文模式，显示原文（中文）
             restoreOriginalText();
@@ -281,10 +290,17 @@
             }, 100);
         });
         
-        // 不自动翻译，等待用户点击切换按钮
-        // 默认是中文，不需要翻译
+        // 检查当前语言状态（从localStorage读取，确保全站一致）
         const currentLang = window.LanguageManager?.getCurrentLanguage();
-        console.log('全站翻译：当前语言', currentLang, '（默认中文，不自动翻译）');
+        console.log('全站翻译：当前语言', currentLang);
+        
+        // 如果当前是英文，立即翻译（确保页面切换后也能正确显示）
+        if (currentLang === 'en') {
+            console.log('当前是英文，立即翻译页面内容...');
+            setTimeout(() => {
+                translateAll();
+            }, 200); // 延迟一点确保DOM完全加载
+        }
     }
 
     // 等待语言管理器和DOM加载
@@ -298,20 +314,34 @@
                         if (window.LanguageManager) {
                             init();
                         } else {
-                            // 如果LanguageManager还没加载，再等一会
-                            setTimeout(startInit, 200);
+                            // 如果LanguageManager还没加载，再等一会（最多等待2秒）
+                            let waitCount = 0;
+                            const checkInterval = setInterval(() => {
+                                waitCount++;
+                                if (window.LanguageManager) {
+                                    clearInterval(checkInterval);
+                                    init();
+                                } else if (waitCount >= 10) {
+                                    clearInterval(checkInterval);
+                                    console.error('LanguageManager加载超时');
+                                }
+                            }, 200);
                         }
                     }, 100);
                 });
             } else {
                 // DOM已加载，但LanguageManager可能还没加载
-                setTimeout(() => {
+                let waitCount = 0;
+                const checkInterval = setInterval(() => {
+                    waitCount++;
                     if (window.LanguageManager) {
+                        clearInterval(checkInterval);
                         init();
-                    } else {
-                        setTimeout(startInit, 200);
+                    } else if (waitCount >= 10) {
+                        clearInterval(checkInterval);
+                        console.error('LanguageManager加载超时');
                     }
-                }, 100);
+                }, 200);
             }
         }
     }

@@ -17,12 +17,15 @@
     function init() {
         console.log('初始化语言管理器...');
         
-        // 从localStorage读取语言设置
+        // 从localStorage读取语言设置（全站共享）
         const savedLang = localStorage.getItem(STORAGE_KEY);
         if (savedLang && (savedLang === 'zh' || savedLang === 'en')) {
             currentLang = savedLang;
-            console.log('从localStorage读取语言:', currentLang);
+            console.log('从localStorage读取语言:', currentLang, '(全站有效)');
         } else {
+            // 如果没有保存的语言，使用默认中文
+            currentLang = DEFAULT_LANG;
+            localStorage.setItem(STORAGE_KEY, currentLang);
             console.log('使用默认语言:', currentLang);
         }
         
@@ -51,6 +54,13 @@
                 }, 100);
             });
         }
+        
+        // 使用window.onload作为最后保障
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                updateLanguageButton();
+            }, 100);
+        });
     }
 
     /**
