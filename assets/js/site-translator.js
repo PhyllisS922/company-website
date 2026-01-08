@@ -13,32 +13,45 @@
         'main h2',
         'main h3',
         'main h4',
+        'main h5',
+        'main h6',
         'main p',
         'main li',
+        'main strong', // 加粗文本（如【论坛】）
         'main .section-title',
         'main .accent-title',
         'main .motion-entrance h1',
         'main .motion-entrance h2',
         'main .motion-entrance h3',
+        'main .motion-entrance h4',
         'main .motion-entrance p',
         'main .motion-entrance li',
         'main section h1',
         'main section h2',
         'main section h3',
+        'main section h4',
         'main section p',
         'main section li',
         'main .container h1',
         'main .container h2',
         'main .container h3',
+        'main .container h4',
         'main .container p',
         'main .container li',
         'main .course-scroll-item h3',
         'main .course-scroll-item p',
+        'main .course-scroll-item strong', // 课程项内的加粗文本
         'main .cooperation-group h3',
         'main .cooperation-group p',
         'main .cooperation-group li', // 合作页面的列表项
         'main .motion-group-item', // 活动页面的列表项（但排除新闻）
         'main .highlight-item p', // 首页内容精选的段落
+        'main .title-link', // 课程页面的标题链接
+        'main .link-secondary', // 次要链接（如"查看完整课程目录"）
+        'main .section-header h2', // 课程页面的section-header内的h2
+        'main .section-header a', // 课程页面的section-header内的链接
+        'main .usage-grid h3', // 使用方式网格的标题
+        'main .usage-grid li', // 使用方式网格的列表项
         'main .media-title',
         'main .media-source',
         'nav a' // 导航链接（需要翻译链接文本）
@@ -136,10 +149,18 @@
                                 node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
                             );
                             // 如果链接有子元素且没有直接文本，跳过（子元素会被单独处理）
-                            if (el.children.length > 0 && !hasDirectText) {
+                            // 但如果是导航链接或特定类型的链接，仍然需要翻译
+                            const isNavLink = el.closest('nav');
+                            const isTitleLink = el.classList.contains('title-link') || el.classList.contains('link-secondary');
+                            if (el.children.length > 0 && !hasDirectText && !isNavLink && !isTitleLink) {
                                 return; // 跳过，让子元素被处理
                             }
                         }
+                        
+                        // 对于有子元素的元素（如 <p><strong>文本</strong></p>），
+                        // 如果子元素也会被单独处理，可能需要跳过父元素
+                        // 但为了确保所有内容都被翻译，我们同时处理父元素和子元素
+                        // 这里不跳过，让所有元素都被处理
                         
                         // 检查是否已经有翻译数据
                         if (!el.hasAttribute('data-original-text')) {
