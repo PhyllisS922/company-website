@@ -137,11 +137,13 @@
         
         elements.forEach((el, index) => {
             const text = el.textContent.trim();
-            if (text && !el.hasAttribute('data-original-text')) {
+            // 过滤掉太短的文本（可能是装饰性文本）
+            if (text && text.length > 1 && !el.hasAttribute('data-original-text')) {
                 // 保存原文
                 el.setAttribute('data-original-text', text);
                 textsToTranslate.push(text);
                 elementMap.set(index, el);
+                console.log(`准备翻译元素 ${index}: "${text.substring(0, 50)}..."`);
             }
         });
         
