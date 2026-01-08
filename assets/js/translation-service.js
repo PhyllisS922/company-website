@@ -116,13 +116,7 @@
             return cachedResults;
         }
         
-        // 这里需要调用翻译API
-        // 由于安全考虑，建议通过后端代理调用OpenAI API
-        // 或者使用其他翻译服务（如Google Translate API等）
-        console.warn('前端翻译功能需要后端API支持');
-        console.warn('待翻译文本:', textsToTranslate);
-        
-        // 临时返回原文（实际应该调用API）
+        // 调用翻译API
         const translations = await callTranslationAPI(textsToTranslate, targetLang);
         
         // 保存到缓存
