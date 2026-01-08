@@ -3,8 +3,15 @@ name: 自动更新洞察新闻
 on:
   schedule:
     # 每天 UTC 时间 02:00 运行（北京时间 10:00）
+    # 注意：GitHub Actions使用UTC时间
     - cron: '0 2 * * *'
   workflow_dispatch:  # 允许手动触发
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/fetch-news.py'
+      - 'data-sources.json'
 
 jobs:
   update-news:
@@ -38,6 +45,8 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -f assets/data/insights-data.json
+          # 也添加归档文件
+          git add assets/data/archive/*.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "没有更改需要提交"
           else

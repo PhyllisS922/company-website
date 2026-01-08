@@ -32,6 +32,8 @@
         // 延迟绑定按钮，确保DOM已完全加载
         setTimeout(() => {
             bindLanguageSwitch();
+            // 绑定后再次更新按钮文本，确保显示正确
+            updateLanguageButton();
         }, 100);
     }
 
