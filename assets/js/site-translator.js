@@ -75,16 +75,26 @@
         element.setAttribute('data-original-text', originalText);
         
         // 检查缓存
-        const cached = window.TranslationService?.getFromCache(originalText, 'en');
-        if (cached) {
-            element.textContent = cached;
-            element.setAttribute('data-translated', 'true');
-            return;
+        if (window.TranslationService) {
+            const cached = window.TranslationService.getFromCache(originalText, 'en');
+            if (cached) {
+                element.textContent = cached;
+                element.setAttribute('data-translated', 'true');
+                return;
+            }
+            
+            // 调用翻译服务
+            try {
+                const translated = await window.TranslationService.translate(originalText, 'en');
+                element.textContent = translated;
+                element.setAttribute('data-translated', 'true');
+            } catch (error) {
+                console.error('翻译失败:', error);
+                // 失败时保持原文
+            }
+        } else {
+            console.warn('TranslationService未加载');
         }
-        
-        // 如果没有翻译服务，暂时不翻译
-        // 实际实现需要后端API支持
-        console.log('需要翻译:', originalText.substring(0, 50) + '...');
     }
 
     /**

@@ -139,16 +139,37 @@
     }
 
     /**
-     * 调用翻译API（需要后端支持）
-     * 这里提供一个占位实现
+     * 调用翻译API（后端代理）
+     * 需要先部署后端API，然后更新API_ENDPOINT
      */
     async function callTranslationAPI(texts, targetLang) {
-        // TODO: 实现实际的API调用
-        // 建议通过后端代理调用OpenAI API
-        // 或者使用其他翻译服务
+        // TODO: 部署后端API后，更新这个URL
+        const API_ENDPOINT = 'https://your-project.vercel.app/api/translate';
         
-        // 临时返回原文
-        return texts;
+        try {
+            const response = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    texts: texts,
+                    targetLang: targetLang
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            return data.translations || texts;
+            
+        } catch (error) {
+            console.error('翻译API调用失败:', error);
+            // 失败时返回原文
+            return texts;
+        }
     }
 
     /**
