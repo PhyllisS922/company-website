@@ -21,7 +21,6 @@
      */
     function getTextByLanguage(item) {
         const lang = getCurrentLanguage();
-        console.log('获取文本，语言:', lang, '数据:', item);
         
         // 如果有翻译字段，优先使用
         if (lang === 'zh' && item.text_zh) {
@@ -166,8 +165,12 @@
                                 // 添加摘要tooltip
                                 const summary = getSummaryByLanguage(item);
                                 if (summary) {
-                                    a.setAttribute('data-tooltip', summary);
-                                    a.classList.add('has-tooltip');
+                                    const tooltip = document.createElement('div');
+                                    tooltip.className = 'news-item-tooltip';
+                                    // 清理HTML标签，只显示纯文本
+                                    const cleanSummary = summary.replace(/<[^>]*>/g, '').trim();
+                                    tooltip.textContent = cleanSummary;
+                                    li.appendChild(tooltip);
                                 }
                                 
                                 li.appendChild(a);
@@ -207,8 +210,12 @@
                                 // 添加摘要tooltip
                                 const summary = getSummaryByLanguage(item);
                                 if (summary) {
-                                    a.setAttribute('data-tooltip', summary);
-                                    a.classList.add('has-tooltip');
+                                    const tooltip = document.createElement('div');
+                                    tooltip.className = 'news-item-tooltip';
+                                    // 清理HTML标签，只显示纯文本
+                                    const cleanSummary = summary.replace(/<[^>]*>/g, '').trim();
+                                    tooltip.textContent = cleanSummary;
+                                    li.appendChild(tooltip);
                                 }
                                 
                                 li.appendChild(a);
@@ -251,8 +258,12 @@
                             // 添加摘要tooltip
                             const summary = getSummaryByLanguage(item);
                             if (summary) {
-                                a.setAttribute('data-tooltip', summary);
-                                a.classList.add('has-tooltip');
+                                const tooltip = document.createElement('div');
+                                tooltip.className = 'news-item-tooltip';
+                                // 清理HTML标签，只显示纯文本
+                                const cleanSummary = summary.replace(/<[^>]*>/g, '').trim();
+                                tooltip.textContent = cleanSummary;
+                                li.appendChild(tooltip);
                             }
                             
                             li.appendChild(a);

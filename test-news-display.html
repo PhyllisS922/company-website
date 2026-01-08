@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>测试新闻显示</title>
+</head>
+<body>
+    <h1>测试新闻显示</h1>
+    <div>
+        <h2>马来西亚</h2>
+        <ul id="malaysia-news"></ul>
+    </div>
+    <div>
+        <h2>新加坡</h2>
+        <ul id="singapore-news"></ul>
+    </div>
+    <div>
+        <h2>行业观察</h2>
+        <ul id="industry-news"></ul>
+    </div>
+    
+    <script>
+        // 直接测试代码
+        async function testLoad() {
+            try {
+                const response = await fetch('assets/data/insights-data.json');
+                const data = await response.json();
+                console.log('数据:', data);
+                
+                // 渲染马来西亚
+                const malaysiaContainer = document.getElementById('malaysia-news');
+                if (data.recent_observations['马来西亚']) {
+                    data.recent_observations['马来西亚'].forEach(item => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = item.link;
+                        a.target = '_blank';
+                        a.textContent = item.text;
+                        li.appendChild(a);
+                        malaysiaContainer.appendChild(li);
+                    });
+                }
+                
+                // 渲染新加坡
+                const singaporeContainer = document.getElementById('singapore-news');
+                if (data.recent_observations['新加坡']) {
+                    data.recent_observations['新加坡'].forEach(item => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = item.link;
+                        a.target = '_blank';
+                        a.textContent = item.text;
+                        li.appendChild(a);
+                        singaporeContainer.appendChild(li);
+                    });
+                }
+                
+                // 渲染行业观察
+                const industryContainer = document.getElementById('industry-news');
+                if (data.industry_observations) {
+                    data.industry_observations.forEach(item => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = item.link;
+                        a.target = '_blank';
+                        a.textContent = item.text;
+                        li.appendChild(a);
+                        industryContainer.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error('错误:', error);
+            }
+        }
+        
+        testLoad();
+    </script>
+</body>
+</html>
+
+
