@@ -282,12 +282,11 @@
     function init() {
         console.log('全站翻译模块初始化...');
         
-        // 监听语言切换事件
+        // 监听语言切换事件（立即响应，无延迟）
         document.addEventListener('languageChanged', (e) => {
             console.log('全站翻译：语言切换为', e.detail?.lang);
-            setTimeout(() => {
-                translateAll();
-            }, 100);
+            // 立即执行，不延迟
+            translateAll();
         });
         
         // 检查当前语言状态（从localStorage读取，确保全站一致）
@@ -297,9 +296,10 @@
         // 如果当前是英文，立即翻译（确保页面切换后也能正确显示）
         if (currentLang === 'en') {
             console.log('当前是英文，立即翻译页面内容...');
-            setTimeout(() => {
+            // 使用requestAnimationFrame确保DOM已渲染，但尽量快
+            requestAnimationFrame(() => {
                 translateAll();
-            }, 200); // 延迟一点确保DOM完全加载
+            });
         }
     }
 
