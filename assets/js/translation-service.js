@@ -143,8 +143,8 @@
      * 需要先部署后端API，然后更新API_ENDPOINT
      */
     async function callTranslationAPI(texts, targetLang) {
-        // TODO: 部署后端API后，更新这个URL
-        const API_ENDPOINT = 'https://your-project.vercel.app/api/translate';
+        // 翻译API端点
+        const API_ENDPOINT = 'https://backend-translation-api.vercel.app/api/translate';
         
         try {
             const response = await fetch(API_ENDPOINT, {
