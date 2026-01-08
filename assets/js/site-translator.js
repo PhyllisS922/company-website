@@ -313,7 +313,6 @@
                 
                 // 对于链接元素，确保不破坏链接功能
                 if (el.tagName === 'A') {
-                    const originalHref = el.getAttribute('href');
                     // 保存所有原始属性
                     const originalAttributes = {};
                     Array.from(el.attributes).forEach(attr => {
@@ -322,15 +321,30 @@
                         }
                     });
                     
+                    // 保存原始href（关键）
+                    const originalHref = el.getAttribute('href');
+                    
                     // 只更新文本内容
                     el.textContent = cachedTranslation;
                     
-                    // 恢复所有原始属性（确保href、class等不被破坏）
+                    // 立即恢复href（确保链接功能）
+                    if (originalHref) {
+                        el.setAttribute('href', originalHref);
+                    }
+                    
+                    // 恢复所有原始属性
                     Object.keys(originalAttributes).forEach(attrName => {
-                        if (!el.getAttribute(attrName) || el.getAttribute(attrName) !== originalAttributes[attrName]) {
-                            el.setAttribute(attrName, originalAttributes[attrName]);
-                        }
+                        el.setAttribute(attrName, originalAttributes[attrName]);
                     });
+                    
+                    // 确保链接仍然可以点击（强制设置样式）
+                    el.style.pointerEvents = 'auto';
+                    el.style.cursor = 'pointer';
+                    el.style.textDecoration = '';
+                    
+                    // 确保链接不是disabled状态
+                    el.removeAttribute('disabled');
+                    el.removeAttribute('aria-disabled');
                 } else {
                     el.textContent = cachedTranslation;
                 }
