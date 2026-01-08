@@ -193,6 +193,14 @@
     console.log('✓ 语言管理器模块已加载，准备初始化...');
     console.log('当前页面状态:', document.readyState);
     
+    // 立即尝试更新按钮（如果DOM已加载）
+    if (document.readyState !== 'loading') {
+        // DOM已加载，立即更新一次按钮
+        const savedLang = localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG;
+        currentLang = (savedLang === 'zh' || savedLang === 'en') ? savedLang : DEFAULT_LANG;
+        updateLanguageButton();
+    }
+    
     if (document.readyState === 'loading') {
         console.log('等待DOMContentLoaded事件...');
         document.addEventListener('DOMContentLoaded', () => {
@@ -206,5 +214,13 @@
             init();
         }, 50);
     }
+    
+    // 使用window.onload作为最后的保障
+    window.addEventListener('load', () => {
+        console.log('window.onload触发，再次更新按钮');
+        setTimeout(() => {
+            updateLanguageButton();
+        }, 100);
+    });
 })();
 
