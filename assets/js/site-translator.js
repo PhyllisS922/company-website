@@ -11,10 +11,16 @@
         'main h1',
         'main h2',
         'main h3',
+        'main h4',
         'main p',
         'main li',
         'main .section-title',
-        'main .accent-title'
+        'main .accent-title',
+        'main .motion-entrance h1',
+        'main .motion-entrance h2',
+        'main .motion-entrance h3',
+        'main .motion-entrance p',
+        'main .motion-entrance li'
     ];
 
     // 排除的元素（不需要翻译）
