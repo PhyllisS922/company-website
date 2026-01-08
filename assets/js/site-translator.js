@@ -96,20 +96,18 @@
                         }
                     }
                     
-                    // 检查是否是链接或按钮
+                    // 检查是否是链接或按钮本身（但允许链接内的子元素被翻译）
                     if (el.tagName === 'A' || el.tagName === 'BUTTON') {
                         shouldExclude = true;
                     }
                     
-                    // 检查父元素是否是链接
-                    if (el.closest('a') || el.closest('button')) {
-                        shouldExclude = true;
-                    }
-                    
-                    // 检查是否在新闻容器内
+                    // 检查是否在新闻容器内（洞察页面的新闻列表）
                     if (el.closest('#malaysia-news') || el.closest('#singapore-news') || el.closest('#industry-news')) {
                         shouldExclude = true;
                     }
+                    
+                    // 注意：不再排除所有链接内的元素，因为首页的 .highlight-item p 需要被翻译
+                    // 链接内的文本节点（如 <a><p>文本</p></a>）应该被翻译
                     
                     const text = el.textContent.trim();
                     if (!shouldExclude && text && text.length > 0) {
