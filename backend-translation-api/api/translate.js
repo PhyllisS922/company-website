@@ -4,19 +4,20 @@
  */
 
 export default async function handler(req, res) {
-  // 只允许POST请求
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  // 设置CORS头
+  // 设置CORS头（必须在所有响应之前）
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS, GET');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Max-Age', '86400');
 
   // 处理OPTIONS请求（CORS预检）
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  // 只允许POST请求
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
