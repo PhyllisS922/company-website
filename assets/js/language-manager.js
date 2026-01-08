@@ -80,9 +80,11 @@
         const targetText = currentLang === 'zh' ? 'EN' : '中文';
         
         langSwitches.forEach((switchBtn) => {
-            // 只在文本不同时才更新，避免不必要的DOM变化
-            if (switchBtn.textContent.trim() !== targetText) {
+            // 清理可能的旧文本（如 "EN / 中文"），然后设置新文本
+            const currentText = switchBtn.textContent.trim();
+            if (currentText !== targetText) {
                 switchBtn.textContent = targetText;
+                console.log(`按钮文本已更新: "${currentText}" -> "${targetText}"`);
             }
         });
     }
