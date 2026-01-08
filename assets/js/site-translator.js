@@ -6,7 +6,7 @@
 (function() {
     'use strict';
 
-    // 标记需要翻译的元素选择器
+    // 标记需要翻译的元素选择器（更全面的选择器）
     const TRANSLATABLE_SELECTORS = [
         'main h1',
         'main h2',
@@ -20,7 +20,23 @@
         'main .motion-entrance h2',
         'main .motion-entrance h3',
         'main .motion-entrance p',
-        'main .motion-entrance li'
+        'main .motion-entrance li',
+        'main section h1',
+        'main section h2',
+        'main section h3',
+        'main section p',
+        'main section li',
+        'main .container h1',
+        'main .container h2',
+        'main .container h3',
+        'main .container p',
+        'main .container li',
+        'main .course-scroll-item h3',
+        'main .course-scroll-item p',
+        'main .cooperation-group h3',
+        'main .cooperation-group p',
+        'main .media-title',
+        'main .media-source'
     ];
 
     // 排除的元素（不需要翻译）
@@ -38,35 +54,62 @@
     function getTranslatableElements() {
         const elements = [];
         const excludeElements = new Set();
+        const processedElements = new Set(); // 避免重复处理
         
         // 收集排除的元素
         EXCLUDE_SELECTORS.forEach(selector => {
-            document.querySelectorAll(selector).forEach(el => {
-                excludeElements.add(el);
-            });
+            try {
+                document.querySelectorAll(selector).forEach(el => {
+                    excludeElements.add(el);
+                });
+            } catch (e) {
+                console.warn('选择器错误:', selector, e);
+            }
         });
         
         // 收集需要翻译的元素
         TRANSLATABLE_SELECTORS.forEach(selector => {
-            document.querySelectorAll(selector).forEach(el => {
-                // 检查是否在排除列表中
-                let shouldExclude = false;
-                for (const excludeEl of excludeElements) {
-                    if (excludeEl.contains(el) || excludeEl === el) {
+            try {
+                document.querySelectorAll(selector).forEach(el => {
+                    // 跳过已处理的元素
+                    if (processedElements.has(el)) {
+                        return;
+                    }
+                    
+                    // 检查是否在排除列表中
+                    let shouldExclude = false;
+                    for (const excludeEl of excludeElements) {
+                        if (excludeEl.contains(el) || excludeEl === el) {
+                            shouldExclude = true;
+                            break;
+                        }
+                    }
+                    
+                    // 检查是否是链接或按钮
+                    if (el.tagName === 'A' || el.tagName === 'BUTTON') {
                         shouldExclude = true;
-                        break;
                     }
-                }
-                
-                if (!shouldExclude && el.textContent.trim()) {
-                    // 检查是否已经有翻译数据
-                    if (!el.hasAttribute('data-original-text')) {
-                        elements.push(el);
+                    
+                    // 检查父元素是否是链接
+                    if (el.closest('a') || el.closest('button')) {
+                        shouldExclude = true;
                     }
-                }
-            });
+                    
+                    const text = el.textContent.trim();
+                    if (!shouldExclude && text && text.length > 0) {
+                        // 检查是否已经有翻译数据
+                        if (!el.hasAttribute('data-original-text')) {
+                            elements.push(el);
+                            processedElements.add(el);
+                        }
+                    }
+                });
+            } catch (e) {
+                console.warn('选择器错误:', selector, e);
+            }
         });
         
+        console.log('找到可翻译元素:', elements.length, '个');
         return elements;
     }
 
