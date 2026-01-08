@@ -103,8 +103,10 @@
         
         texts.forEach((text, index) => {
             const cached = getFromCache(text, targetLang);
-            if (cached) {
+            if (cached && cached !== text) {
+                // 只有缓存的结果和原文不同时才使用缓存
                 cachedResults[index] = cached;
+                console.log(`使用缓存翻译 ${index}: "${text.substring(0, 30)}..." -> "${cached.substring(0, 30)}..."`);
             } else {
                 textsToTranslate.push(text);
                 indices.push(index);
@@ -113,13 +115,16 @@
         
         // 如果所有文本都已缓存，直接返回
         if (textsToTranslate.length === 0) {
+            console.log('所有文本都已缓存');
             return cachedResults;
         }
         
         // 调用翻译API
         console.log('准备调用翻译API，文本数量:', textsToTranslate.length, '目标语言:', targetLang);
+        console.log('待翻译文本示例:', textsToTranslate[0]?.substring(0, 50));
         const translations = await callTranslationAPI(textsToTranslate, targetLang);
-        console.log('翻译API返回结果:', translations);
+        console.log('翻译API返回结果数量:', translations.length);
+        console.log('翻译结果示例:', translations[0]?.substring(0, 50));
         
         // 保存到缓存
         textsToTranslate.forEach((text, i) => {
