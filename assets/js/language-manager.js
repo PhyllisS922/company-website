@@ -177,15 +177,34 @@
     console.log('当前页面状态:', document.readyState);
     
     // 页面加载完成后初始化
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            init();
-        });
-    } else {
-        // DOM已加载，延迟一点确保所有元素都已渲染
-        setTimeout(() => {
-            init();
-        }, 50);
+    function startInit() {
+        // 立即更新一次按钮（如果DOM已加载）
+        if (document.readyState !== 'loading') {
+            const savedLang = localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG;
+            currentLang = (savedLang === 'zh' || savedLang === 'en') ? savedLang : DEFAULT_LANG;
+            updateLanguageButton();
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                init();
+            });
+        } else {
+            // DOM已加载，延迟一点确保所有元素都已渲染
+            setTimeout(() => {
+                init();
+            }, 50);
+        }
     }
+    
+    // 立即执行（不等待）
+    startInit();
+    
+    // 也使用window.onload作为保障
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            updateLanguageButton();
+        }, 100);
+    });
 })();
 
