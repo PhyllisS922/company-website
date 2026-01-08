@@ -36,6 +36,9 @@
         'main .course-scroll-item p',
         'main .cooperation-group h3',
         'main .cooperation-group p',
+        'main .cooperation-group li', // 合作页面的列表项
+        'main .motion-group-item', // 活动页面的列表项（但排除新闻）
+        'main .highlight-item p', // 首页内容精选的段落
         'main .media-title',
         'main .media-source'
     ];
@@ -47,14 +50,13 @@
         '.motion-group-item a', // 新闻链接由insights-loader.js处理
         'footer',
         'header',
-        '#malaysia-news', // 近期观察 - 马来西亚
-        '#singapore-news', // 近期观察 - 新加坡
-        '#industry-news', // 行业观察
+        '#malaysia-news', // 近期观察 - 马来西亚（整个容器）
+        '#singapore-news', // 近期观察 - 新加坡（整个容器）
+        '#industry-news', // 行业观察（整个容器）
         '#malaysia-news *', // 排除所有子元素
         '#singapore-news *', // 排除所有子元素
-        '#industry-news *', // 排除所有子元素
-        '.motion-group-container', // 新闻容器
-        '.motion-group-container *' // 新闻容器内的所有元素
+        '#industry-news *' // 排除所有子元素
+        // 注意：不再排除所有 .motion-group-container，因为活动页面和合作页面也需要翻译
     ];
 
     /**
