@@ -1,6 +1,7 @@
 /**
  * 全站翻译模块
  * 自动翻译页面内容（需要后端API支持）
+ * 实现一次性翻译+localStorage缓存机制
  */
 
 (function() {
@@ -103,6 +104,11 @@
                         shouldExclude = true;
                     }
                     
+                    // 检查是否在新闻容器内
+                    if (el.closest('#malaysia-news') || el.closest('#singapore-news') || el.closest('#industry-news')) {
+                        shouldExclude = true;
+                    }
+                    
                     const text = el.textContent.trim();
                     if (!shouldExclude && text && text.length > 0) {
                         // 检查是否已经有翻译数据
@@ -121,9 +127,47 @@
         return elements;
     }
 
+    /**
+     * 从localStorage获取缓存的翻译
+     */
+    function getCachedTranslation(originalText) {
+        try {
+            const key = 'translation_cache_' + btoa(encodeURIComponent(originalText)) + '_en';
+            const cached = localStorage.getItem(key);
+            if (cached) {
+                const data = JSON.parse(cached);
+                // 检查是否过期（1年有效期）
+                if (data.expiry && data.expiry > Date.now()) {
+                    return data.translation;
+                } else {
+                    localStorage.removeItem(key);
+                }
+            }
+        } catch (e) {
+            console.warn('读取翻译缓存失败:', e);
+        }
+        return null;
+    }
 
     /**
-     * 翻译所有内容（批量优化）
+     * 保存翻译到localStorage缓存
+     */
+    function saveCachedTranslation(originalText, translatedText) {
+        try {
+            const key = 'translation_cache_' + btoa(encodeURIComponent(originalText)) + '_en';
+            const data = {
+                translation: translatedText,
+                expiry: Date.now() + (365 * 24 * 60 * 60 * 1000), // 1年有效期
+                timestamp: Date.now()
+            };
+            localStorage.setItem(key, JSON.stringify(data));
+        } catch (e) {
+            console.warn('保存翻译缓存失败:', e);
+        }
+    }
+
+    /**
+     * 翻译所有内容（一次性翻译+缓存机制）
      */
     async function translateAll() {
         const lang = window.LanguageManager?.getCurrentLanguage();
@@ -133,58 +177,79 @@
             return;
         }
         
-        // 英文模式，需要翻译
+        // 英文模式
         const elements = getTranslatableElements();
         console.log(`全站翻译：找到 ${elements.length} 个需要翻译的元素`);
         
         if (elements.length === 0) return;
         
-        // 批量收集文本
-        const textsToTranslate = [];
-        const elementMap = new Map();
+        // 分离需要翻译的元素和已有翻译的元素
+        const elementsToTranslate = [];
+        const elementsWithCache = [];
         
-        elements.forEach((el, index) => {
+        elements.forEach((el) => {
             const text = el.textContent.trim();
-            // 过滤掉太短的文本（可能是装饰性文本）
-            if (text && text.length > 1 && !el.hasAttribute('data-original-text')) {
-                // 保存原文
+            if (!text || text.length <= 1) return;
+            
+            // 检查元素是否已有翻译数据（从data属性）
+            const existingTranslation = el.getAttribute('data-translated-text');
+            if (existingTranslation) {
+                // 已有翻译数据，直接使用
+                if (!el.hasAttribute('data-original-text')) {
+                    el.setAttribute('data-original-text', text);
+                }
+                el.textContent = existingTranslation;
+                el.setAttribute('data-translated', 'true');
+                elementsWithCache.push(el);
+                return;
+            }
+            
+            // 检查localStorage缓存
+            const cachedTranslation = getCachedTranslation(text);
+            if (cachedTranslation) {
+                // 有缓存，直接使用
                 el.setAttribute('data-original-text', text);
-                textsToTranslate.push(text);
-                elementMap.set(index, el);
-                console.log(`准备翻译元素 ${index}: "${text.substring(0, 50)}..."`);
+                el.setAttribute('data-translated-text', cachedTranslation);
+                el.textContent = cachedTranslation;
+                el.setAttribute('data-translated', 'true');
+                elementsWithCache.push(el);
+            } else {
+                // 没有缓存，需要翻译
+                if (!el.hasAttribute('data-original-text')) {
+                    el.setAttribute('data-original-text', text);
+                }
+                elementsToTranslate.push({ el, text });
             }
         });
         
-        if (textsToTranslate.length === 0) return;
+        console.log(`有缓存: ${elementsWithCache.length} 个，需要翻译: ${elementsToTranslate.length} 个`);
         
-        // 批量翻译
-        if (window.TranslationService) {
+        // 如果有需要翻译的元素，批量翻译
+        if (elementsToTranslate.length > 0 && window.TranslationService) {
             try {
+                const textsToTranslate = elementsToTranslate.map(item => item.text);
                 console.log(`全站翻译：开始批量翻译 ${textsToTranslate.length} 个文本...`);
+                
                 const translations = await window.TranslationService.translateBatch(textsToTranslate, 'en');
                 
-                console.log('收到翻译结果:', translations);
-                console.log('元素映射数量:', elementMap.size);
-                
-                // 应用翻译结果
-                let translationIndex = 0;
-                elementMap.forEach((el, originalIndex) => {
-                    if (translationIndex < translations.length) {
-                        const translatedText = translations[translationIndex];
-                        console.log(`翻译元素 ${originalIndex}: "${el.textContent.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
-                        el.textContent = translatedText;
-                        el.setAttribute('data-translated', 'true');
-                        translationIndex++;
-                    } else {
-                        console.warn(`元素 ${originalIndex} 没有对应的翻译结果`);
+                // 应用翻译结果并缓存
+                elementsToTranslate.forEach((item, index) => {
+                    if (index < translations.length) {
+                        const translatedText = translations[index];
+                        item.el.setAttribute('data-translated-text', translatedText);
+                        item.el.textContent = translatedText;
+                        item.el.setAttribute('data-translated', 'true');
+                        
+                        // 保存到缓存
+                        saveCachedTranslation(item.text, translatedText);
                     }
                 });
                 
-                console.log('全站翻译：完成，已更新', translationIndex, '个元素');
+                console.log('全站翻译：完成，已更新', elementsToTranslate.length, '个元素');
             } catch (error) {
                 console.error('全站翻译失败:', error);
             }
-        } else {
+        } else if (elementsToTranslate.length > 0) {
             console.warn('TranslationService未加载，无法翻译');
         }
     }
@@ -216,14 +281,10 @@
             }, 100);
         });
         
-        // 初始翻译（如果当前是英文）
+        // 不自动翻译，等待用户点击切换按钮
+        // 默认是中文，不需要翻译
         const currentLang = window.LanguageManager?.getCurrentLanguage();
-        console.log('全站翻译：当前语言', currentLang);
-        if (currentLang === 'en') {
-            setTimeout(() => {
-                translateAll();
-            }, 500);
-        }
+        console.log('全站翻译：当前语言', currentLang, '（默认中文，不自动翻译）');
     }
 
     // 等待语言管理器和DOM加载
@@ -257,4 +318,3 @@
     
     startInit();
 })();
-
