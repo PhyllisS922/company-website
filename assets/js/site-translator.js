@@ -230,35 +230,58 @@
             const text = el.textContent.trim();
             if (!text || text.length <= 1) return;
             
-            // 检查元素是否已有翻译数据（从data属性）
+            // 检查元素是否已有翻译数据（从data属性，最高优先级）
             const existingTranslation = el.getAttribute('data-translated-text');
             if (existingTranslation) {
-                // 已有翻译数据，直接使用
+                // 已有翻译数据，直接使用（固定内容已翻译，不再调用API）
                 if (!el.hasAttribute('data-original-text')) {
                     el.setAttribute('data-original-text', text);
                 }
-                el.textContent = existingTranslation;
+                
+                // 对于链接元素，确保不破坏链接功能
+                if (el.tagName === 'A') {
+                    const originalHref = el.getAttribute('href');
+                    el.textContent = existingTranslation;
+                    if (originalHref && !el.getAttribute('href')) {
+                        el.setAttribute('href', originalHref);
+                    }
+                } else {
+                    el.textContent = existingTranslation;
+                }
+                
                 el.setAttribute('data-translated', 'true');
                 elementsWithCache.push(el);
-                return;
+                return; // 已有翻译，不再处理
             }
             
-            // 检查localStorage缓存
+            // 检查localStorage缓存（优先检查缓存，避免重复调用API）
             const cachedTranslation = getCachedTranslation(text);
             if (cachedTranslation) {
-                // 有缓存，直接使用
+                // 有缓存，直接使用（固定内容只翻译一次）
                 el.setAttribute('data-original-text', text);
                 el.setAttribute('data-translated-text', cachedTranslation);
-                el.textContent = cachedTranslation;
+                
+                // 对于链接元素，确保不破坏链接功能
+                if (el.tagName === 'A') {
+                    const originalHref = el.getAttribute('href');
+                    el.textContent = cachedTranslation;
+                    if (originalHref && !el.getAttribute('href')) {
+                        el.setAttribute('href', originalHref);
+                    }
+                } else {
+                    el.textContent = cachedTranslation;
+                }
+                
                 el.setAttribute('data-translated', 'true');
                 elementsWithCache.push(el);
-            } else {
-                // 没有缓存，需要翻译
-                if (!el.hasAttribute('data-original-text')) {
-                    el.setAttribute('data-original-text', text);
-                }
-                elementsToTranslate.push({ el, text });
+                return; // 有缓存，不再处理
             }
+            
+            // 没有缓存，需要翻译（只对固定内容第一次翻译时调用API）
+            if (!el.hasAttribute('data-original-text')) {
+                el.setAttribute('data-original-text', text);
+            }
+            elementsToTranslate.push({ el, text });
         });
         
         console.log(`有缓存: ${elementsWithCache.length} 个，需要翻译: ${elementsToTranslate.length} 个`);
@@ -275,9 +298,28 @@
                 elementsToTranslate.forEach((item, index) => {
                     if (index < translations.length) {
                         const translatedText = translations[index];
-                        item.el.setAttribute('data-translated-text', translatedText);
-                        item.el.textContent = translatedText;
-                        item.el.setAttribute('data-translated', 'true');
+                        const el = item.el;
+                        
+                        // 对于链接元素，需要特殊处理，确保不破坏链接功能
+                        if (el.tagName === 'A') {
+                            // 保存原始href（以防万一）
+                            const originalHref = el.getAttribute('href');
+                            
+                            // 只更新文本内容，不修改href或其他属性
+                            el.textContent = translatedText;
+                            
+                            // 确保href仍然存在
+                            if (originalHref && !el.getAttribute('href')) {
+                                el.setAttribute('href', originalHref);
+                            }
+                        } else {
+                            // 非链接元素，直接更新文本
+                            el.textContent = translatedText;
+                        }
+                        
+                        // 保存翻译数据
+                        el.setAttribute('data-translated-text', translatedText);
+                        el.setAttribute('data-translated', 'true');
                         
                         // 保存到缓存
                         saveCachedTranslation(item.text, translatedText);
