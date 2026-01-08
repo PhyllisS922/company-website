@@ -153,26 +153,55 @@
      * 初始化
      */
     function init() {
+        console.log('全站翻译模块初始化...');
+        
         // 监听语言切换事件
         document.addEventListener('languageChanged', (e) => {
             console.log('全站翻译：语言切换为', e.detail?.lang);
-            translateAll();
+            setTimeout(() => {
+                translateAll();
+            }, 100);
         });
         
         // 初始翻译（如果当前是英文）
         const currentLang = window.LanguageManager?.getCurrentLanguage();
+        console.log('全站翻译：当前语言', currentLang);
         if (currentLang === 'en') {
-            translateAll();
+            setTimeout(() => {
+                translateAll();
+            }, 500);
         }
     }
 
-    // 等待语言管理器加载
-    if (window.LanguageManager) {
-        init();
-    } else {
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(init, 500);
-        });
+    // 等待语言管理器和DOM加载
+    function startInit() {
+        if (window.LanguageManager && document.readyState !== 'loading') {
+            init();
+        } else {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => {
+                        if (window.LanguageManager) {
+                            init();
+                        } else {
+                            // 如果LanguageManager还没加载，再等一会
+                            setTimeout(startInit, 200);
+                        }
+                    }, 100);
+                });
+            } else {
+                // DOM已加载，但LanguageManager可能还没加载
+                setTimeout(() => {
+                    if (window.LanguageManager) {
+                        init();
+                    } else {
+                        setTimeout(startInit, 200);
+                    }
+                }, 100);
+            }
+        }
     }
+    
+    startInit();
 })();
 
