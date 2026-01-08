@@ -350,13 +350,18 @@
         updateNewsLanguage();
     });
     
-    // 确保语言管理器已加载后再初始化
+    // 确保语言管理器已加载后再初始化（最多等待2秒）
     if (!window.LanguageManager) {
-        console.warn('语言管理器未加载，等待加载...');
+        let checkCount = 0;
+        const maxChecks = 20; // 最多检查20次（2秒）
         const checkInterval = setInterval(() => {
+            checkCount++;
             if (window.LanguageManager) {
                 clearInterval(checkInterval);
                 console.log('✓ 语言管理器已加载');
+            } else if (checkCount >= maxChecks) {
+                clearInterval(checkInterval);
+                console.warn('语言管理器加载超时，继续执行');
             }
         }, 100);
     }
