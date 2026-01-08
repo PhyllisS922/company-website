@@ -74,12 +74,14 @@
             return;
         }
         
-        // 防止重复更新（避免触发MutationObserver循环）
+        // 按钮文本逻辑：
+        // 当前是中文 → 显示 "EN"（点击切换到英文）
+        // 当前是英文 → 显示 "中文"（点击切换到中文）
         const targetText = currentLang === 'zh' ? 'EN' : '中文';
         
         langSwitches.forEach((switchBtn) => {
             // 只在文本不同时才更新，避免不必要的DOM变化
-            if (switchBtn.textContent !== targetText) {
+            if (switchBtn.textContent.trim() !== targetText) {
                 switchBtn.textContent = targetText;
             }
         });
