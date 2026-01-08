@@ -43,20 +43,7 @@
             }, 200);
         }
         
-        // 使用MutationObserver监听按钮元素添加（如果按钮是动态添加的）
-        const observer = new MutationObserver(() => {
-            const langSwitches = document.querySelectorAll('.lang-switch');
-            if (langSwitches.length > 0) {
-                updateLanguageButton();
-            }
-        });
-        
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-        
-        // 也监听DOMContentLoaded，确保按钮已存在
+        // 监听DOMContentLoaded，确保按钮已存在
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
@@ -82,23 +69,19 @@
      */
     function updateLanguageButton() {
         const langSwitches = document.querySelectorAll('.lang-switch');
-        console.log('updateLanguageButton: 找到', langSwitches.length, '个按钮，当前语言:', currentLang);
         
         if (langSwitches.length === 0) {
-            console.warn('updateLanguageButton: 未找到按钮元素');
             return;
         }
         
-        langSwitches.forEach((switchBtn, index) => {
-            const oldText = switchBtn.textContent;
-            if (currentLang === 'zh') {
-                // 当前是中文，按钮显示 "EN"（点击切换到英文）
-                switchBtn.textContent = 'EN';
-            } else {
-                // 当前是英文，按钮显示 "中文"（点击切换到中文）
-                switchBtn.textContent = '中文';
+        // 防止重复更新（避免触发MutationObserver循环）
+        const targetText = currentLang === 'zh' ? 'EN' : '中文';
+        
+        langSwitches.forEach((switchBtn) => {
+            // 只在文本不同时才更新，避免不必要的DOM变化
+            if (switchBtn.textContent !== targetText) {
+                switchBtn.textContent = targetText;
             }
-            console.log(`按钮 ${index + 1}: "${oldText}" -> "${switchBtn.textContent}"`);
         });
     }
 
@@ -193,34 +176,16 @@
     console.log('✓ 语言管理器模块已加载，准备初始化...');
     console.log('当前页面状态:', document.readyState);
     
-    // 立即尝试更新按钮（如果DOM已加载）
-    if (document.readyState !== 'loading') {
-        // DOM已加载，立即更新一次按钮
-        const savedLang = localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG;
-        currentLang = (savedLang === 'zh' || savedLang === 'en') ? savedLang : DEFAULT_LANG;
-        updateLanguageButton();
-    }
-    
+    // 页面加载完成后初始化
     if (document.readyState === 'loading') {
-        console.log('等待DOMContentLoaded事件...');
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOMContentLoaded事件触发，开始初始化');
             init();
         });
     } else {
-        console.log('DOM已加载，立即初始化');
-        // 即使DOM已加载，也延迟一点确保所有元素都已渲染
+        // DOM已加载，延迟一点确保所有元素都已渲染
         setTimeout(() => {
             init();
         }, 50);
     }
-    
-    // 使用window.onload作为最后的保障
-    window.addEventListener('load', () => {
-        console.log('window.onload触发，再次更新按钮');
-        setTimeout(() => {
-            updateLanguageButton();
-        }, 100);
-    });
 })();
 
