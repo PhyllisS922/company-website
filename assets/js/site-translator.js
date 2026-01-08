@@ -40,22 +40,23 @@
         'main .motion-group-item', // 活动页面的列表项（但排除新闻）
         'main .highlight-item p', // 首页内容精选的段落
         'main .media-title',
-        'main .media-source'
+        'main .media-source',
+        'nav a' // 导航链接（需要翻译链接文本）
     ];
 
     // 排除的元素（不需要翻译）
     const EXCLUDE_SELECTORS = [
-        'nav a',
-        '.lang-switch',
+        '.lang-switch', // 语言切换按钮
         '.motion-group-item a', // 新闻链接由insights-loader.js处理
         'footer',
-        'header',
+        'header .company-name', // 公司名称（英文固定）
         '#malaysia-news', // 近期观察 - 马来西亚（整个容器）
         '#singapore-news', // 近期观察 - 新加坡（整个容器）
         '#industry-news', // 行业观察（整个容器）
         '#malaysia-news *', // 排除所有子元素
         '#singapore-news *', // 排除所有子元素
         '#industry-news *' // 排除所有子元素
+        // 注意：不再排除 nav a，因为导航链接需要被翻译
         // 注意：不再排除所有 .motion-group-container，因为活动页面和合作页面也需要翻译
     ];
 
@@ -96,9 +97,24 @@
                         }
                     }
                     
-                    // 检查是否是链接或按钮本身（但允许链接内的子元素被翻译）
-                    if (el.tagName === 'A' || el.tagName === 'BUTTON') {
+                    // 检查是否是按钮（按钮不需要翻译）
+                    if (el.tagName === 'BUTTON') {
                         shouldExclude = true;
+                    }
+                    
+                    // 检查是否是链接
+                    if (el.tagName === 'A') {
+                        // 导航链接需要被翻译（如 <nav><a>首页</a></nav>）
+                        const isNavLink = el.closest('nav');
+                        if (isNavLink) {
+                            // 导航链接，允许翻译
+                            // 继续处理，不排除
+                        } else {
+                            // 非导航链接，检查是否有子元素
+                            // 如果链接直接包含文本（如 <a>文本</a>），应该被翻译
+                            // 如果链接包含子元素（如 <a><p>文本</p></a>），子元素会被单独处理
+                            // 这里暂时不排除，让后续逻辑处理
+                        }
                     }
                     
                     // 检查是否在新闻容器内（洞察页面的新闻列表）
@@ -111,6 +127,20 @@
                     
                     const text = el.textContent.trim();
                     if (!shouldExclude && text && text.length > 0) {
+                        // 对于链接元素，需要特殊处理
+                        // 如果链接直接包含文本（如 <a>首页</a>），应该翻译链接本身
+                        // 如果链接包含子元素（如 <a><p>文本</p></a>），子元素会被单独处理
+                        if (el.tagName === 'A') {
+                            // 检查链接是否直接包含文本节点（而不是只有子元素）
+                            const hasDirectText = Array.from(el.childNodes).some(node => 
+                                node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
+                            );
+                            // 如果链接有子元素且没有直接文本，跳过（子元素会被单独处理）
+                            if (el.children.length > 0 && !hasDirectText) {
+                                return; // 跳过，让子元素被处理
+                            }
+                        }
+                        
                         // 检查是否已经有翻译数据
                         if (!el.hasAttribute('data-original-text')) {
                             elements.push(el);
