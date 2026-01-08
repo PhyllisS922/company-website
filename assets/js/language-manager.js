@@ -41,6 +41,25 @@
     function updatePageLanguage() {
         document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
         document.documentElement.setAttribute('data-lang', currentLang);
+        
+        // 更新按钮文本
+        updateLanguageButton();
+    }
+    
+    /**
+     * 更新语言切换按钮文本
+     */
+    function updateLanguageButton() {
+        const langSwitches = document.querySelectorAll('.lang-switch');
+        langSwitches.forEach(switchBtn => {
+            if (currentLang === 'zh') {
+                // 当前是中文，按钮显示 "EN"（点击切换到英文）
+                switchBtn.textContent = 'EN';
+            } else {
+                // 当前是英文，按钮显示 "中文"（点击切换到中文）
+                switchBtn.textContent = '中文';
+            }
+        });
     }
 
     /**
