@@ -11,9 +11,6 @@
       "src": "/api/translate",
       "dest": "/api/translate.js"
     }
-  ],
-  "env": {
-    "OPENAI_API_KEY": "@openai_api_key"
-  }
+  ]
 }
 
