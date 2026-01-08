@@ -64,56 +64,62 @@
         return elements;
     }
 
-    /**
-     * 翻译单个元素
-     */
-    async function translateElement(element) {
-        const originalText = element.textContent.trim();
-        if (!originalText) return;
-        
-        // 保存原文
-        element.setAttribute('data-original-text', originalText);
-        
-        // 检查缓存
-        if (window.TranslationService) {
-            const cached = window.TranslationService.getFromCache(originalText, 'en');
-            if (cached) {
-                element.textContent = cached;
-                element.setAttribute('data-translated', 'true');
-                return;
-            }
-            
-            // 调用翻译服务
-            try {
-                const translated = await window.TranslationService.translate(originalText, 'en');
-                element.textContent = translated;
-                element.setAttribute('data-translated', 'true');
-            } catch (error) {
-                console.error('翻译失败:', error);
-                // 失败时保持原文
-            }
-        } else {
-            console.warn('TranslationService未加载');
-        }
-    }
 
     /**
-     * 翻译所有内容
+     * 翻译所有内容（批量优化）
      */
     async function translateAll() {
         const lang = window.LanguageManager?.getCurrentLanguage();
         if (lang === 'zh') {
             // 中文模式，显示原文（中文）
             restoreOriginalText();
-        } else {
-            // 英文模式，需要翻译
-            const elements = getTranslatableElements();
-            console.log(`找到 ${elements.length} 个需要翻译的元素`);
-            
-            // 批量翻译
-            for (const element of elements) {
-                await translateElement(element);
+            return;
+        }
+        
+        // 英文模式，需要翻译
+        const elements = getTranslatableElements();
+        console.log(`全站翻译：找到 ${elements.length} 个需要翻译的元素`);
+        
+        if (elements.length === 0) return;
+        
+        // 批量收集文本
+        const textsToTranslate = [];
+        const elementMap = new Map();
+        
+        elements.forEach((el, index) => {
+            const text = el.textContent.trim();
+            if (text && !el.hasAttribute('data-original-text')) {
+                // 保存原文
+                el.setAttribute('data-original-text', text);
+                textsToTranslate.push(text);
+                elementMap.set(index, el);
             }
+        });
+        
+        if (textsToTranslate.length === 0) return;
+        
+        // 批量翻译
+        if (window.TranslationService) {
+            try {
+                console.log(`全站翻译：开始批量翻译 ${textsToTranslate.length} 个文本...`);
+                const translations = await window.TranslationService.translateBatch(textsToTranslate, 'en');
+                
+                // 应用翻译结果
+                let translationIndex = 0;
+                elementMap.forEach((el) => {
+                    if (translationIndex < translations.length) {
+                        el.textContent = translations[translationIndex];
+                        el.setAttribute('data-translated', 'true');
+                        translationIndex++;
+                    }
+                });
+                
+                console.log('全站翻译：完成');
+            } catch (error) {
+                console.error('全站翻译失败:', error);
+            }
+        } else {
+            console.warn('TranslationService未加载，无法翻译');
         }
     }
 
