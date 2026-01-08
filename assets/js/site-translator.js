@@ -45,7 +45,15 @@
         '.lang-switch',
         '.motion-group-item a', // 新闻链接由insights-loader.js处理
         'footer',
-        'header'
+        'header',
+        '#malaysia-news', // 近期观察 - 马来西亚
+        '#singapore-news', // 近期观察 - 新加坡
+        '#industry-news', // 行业观察
+        '#malaysia-news *', // 排除所有子元素
+        '#singapore-news *', // 排除所有子元素
+        '#industry-news *', // 排除所有子元素
+        '.motion-group-container', // 新闻容器
+        '.motion-group-container *' // 新闻容器内的所有元素
     ];
 
     /**
@@ -182,7 +190,7 @@
     }
 
     /**
-     * 恢复原文
+     * 恢复原文（中文模式）
      */
     function restoreOriginalText() {
         document.querySelectorAll('[data-original-text]').forEach(el => {

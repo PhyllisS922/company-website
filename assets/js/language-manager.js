@@ -6,8 +6,8 @@
 (function() {
     'use strict';
 
-    const STORAGE_KEY = 'site_language';
-    const DEFAULT_LANG = 'zh'; // 默认中文
+        const STORAGE_KEY = 'site_language';
+        const DEFAULT_LANG = 'zh'; // 默认中文（确认）
     
     let currentLang = DEFAULT_LANG;
 
