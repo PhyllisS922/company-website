@@ -104,17 +104,24 @@
                 console.log(`全站翻译：开始批量翻译 ${textsToTranslate.length} 个文本...`);
                 const translations = await window.TranslationService.translateBatch(textsToTranslate, 'en');
                 
+                console.log('收到翻译结果:', translations);
+                console.log('元素映射数量:', elementMap.size);
+                
                 // 应用翻译结果
                 let translationIndex = 0;
-                elementMap.forEach((el) => {
+                elementMap.forEach((el, originalIndex) => {
                     if (translationIndex < translations.length) {
-                        el.textContent = translations[translationIndex];
+                        const translatedText = translations[translationIndex];
+                        console.log(`翻译元素 ${originalIndex}: "${el.textContent.substring(0, 30)}..." -> "${translatedText.substring(0, 30)}..."`);
+                        el.textContent = translatedText;
                         el.setAttribute('data-translated', 'true');
                         translationIndex++;
+                    } else {
+                        console.warn(`元素 ${originalIndex} 没有对应的翻译结果`);
                     }
                 });
                 
-                console.log('全站翻译：完成');
+                console.log('全站翻译：完成，已更新', translationIndex, '个元素');
             } catch (error) {
                 console.error('全站翻译失败:', error);
             }

@@ -140,6 +140,8 @@
         // 翻译API端点
         const API_ENDPOINT = 'https://backend-translation-api.vercel.app/api/translate';
         
+        console.log('调用翻译API:', { textsCount: texts.length, targetLang });
+        
         try {
             const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
@@ -152,11 +154,18 @@
                 })
             });
             
+            console.log('API响应状态:', response.status, response.statusText);
+            
             if (!response.ok) {
-                throw new Error(`API error: ${response.status}`);
+                const errorText = await response.text();
+                console.error('API错误响应:', errorText);
+                throw new Error(`API error: ${response.status} - ${errorText}`);
             }
             
             const data = await response.json();
+            console.log('API返回数据:', data);
+            console.log('翻译结果数量:', data.translations?.length || 0);
+            
             return data.translations || texts;
             
         } catch (error) {
