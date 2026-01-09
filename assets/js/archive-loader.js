@@ -61,9 +61,12 @@
      * 渲染归档数据
      */
     function renderArchiveData(archiveData) {
-        // 查找容器
-        const policyContainer = document.querySelector('.archive-list:first-of-type');
-        const industryContainer = document.querySelector('.archive-list:last-of-type');
+        // 查找容器（使用更精确的选择器）
+        // 第一个.archive-list是"区域与政策观察"容器
+        // 第二个.archive-list是"行业观察"容器
+        const archiveLists = document.querySelectorAll('.archive-list');
+        const policyContainer = archiveLists[0]; // 第一个：区域与政策观察
+        const industryContainer = archiveLists[1]; // 第二个：行业观察
 
         if (!policyContainer || !industryContainer) {
             console.error('❌ 找不到归档容器！');
