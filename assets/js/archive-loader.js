@@ -73,21 +73,31 @@
         }
 
         console.log('清空容器并开始渲染...');
+        console.log('传入的归档数据:', {
+            has_recent_observations: !!archiveData.recent_observations,
+            has_industry_observations: !!archiveData.industry_observations,
+            malaysia_count: archiveData.recent_observations?.['马来西亚']?.length || 0,
+            singapore_count: archiveData.recent_observations?.['新加坡']?.length || 0,
+            industry_count: archiveData.industry_observations?.length || 0
+        });
+        
         // 清空容器
         policyContainer.innerHTML = '';
         industryContainer.innerHTML = '';
 
-        // 渲染政策类新闻
+        // 渲染政策类新闻（区域与政策观察）
         if (archiveData.recent_observations) {
             const allPolicy = [];
-            if (archiveData.recent_observations['马来西亚']) {
+            if (archiveData.recent_observations['马来西亚'] && Array.isArray(archiveData.recent_observations['马来西亚'])) {
                 allPolicy.push(...archiveData.recent_observations['马来西亚']);
             }
-            if (archiveData.recent_observations['新加坡']) {
+            if (archiveData.recent_observations['新加坡'] && Array.isArray(archiveData.recent_observations['新加坡'])) {
                 allPolicy.push(...archiveData.recent_observations['新加坡']);
             }
 
-            allPolicy.forEach(item => {
+            console.log(`准备渲染 ${allPolicy.length} 条政策类新闻到第一个容器（区域与政策观察）`);
+            
+            allPolicy.forEach((item, index) => {
                 const li = document.createElement('li');
                 li.className = 'motion-group-item';
                 const a = document.createElement('a');
@@ -104,14 +114,16 @@
                 });
             });
             
-            console.log(`✓ 已渲染 ${allPolicy.length} 条政策类新闻`);
+            console.log(`✓ 已渲染 ${allPolicy.length} 条政策类新闻到"区域与政策观察"容器`);
         } else {
-            console.log('没有政策类新闻');
+            console.log('没有政策类新闻数据');
         }
 
         // 渲染行业观察
-        if (archiveData.industry_observations && archiveData.industry_observations.length > 0) {
-            archiveData.industry_observations.forEach(item => {
+        if (archiveData.industry_observations && Array.isArray(archiveData.industry_observations) && archiveData.industry_observations.length > 0) {
+            console.log(`准备渲染 ${archiveData.industry_observations.length} 条行业观察到第二个容器（行业观察）`);
+            
+            archiveData.industry_observations.forEach((item, index) => {
                 const li = document.createElement('li');
                 li.className = 'motion-group-item';
                 const a = document.createElement('a');
@@ -128,9 +140,9 @@
                 });
             });
             
-            console.log(`✓ 已渲染 ${archiveData.industry_observations.length} 条行业观察`);
+            console.log(`✓ 已渲染 ${archiveData.industry_observations.length} 条行业观察到"行业观察"容器`);
         } else {
-            console.log('没有行业观察');
+            console.log('没有行业观察数据');
         }
         
         // 如果没有数据，显示提示
@@ -167,11 +179,16 @@
         const results = await Promise.all(promises);
 
         // 合并所有归档数据
+        let loadedCount = 0;
         results.forEach((archive, index) => {
             if (archive) {
-                console.log(`✓ 加载归档: ${dates[index]}`);
+                loadedCount++;
+                const malaysiaCount = archive.recent_observations?.['马来西亚']?.length || 0;
+                const singaporeCount = archive.recent_observations?.['新加坡']?.length || 0;
+                const industryCount = archive.industry_observations?.length || 0;
+                console.log(`✓ 加载归档: ${dates[index]} (政策类: ${malaysiaCount + singaporeCount} 条, 行业类: ${industryCount} 条)`);
                 
-                // 合并政策类新闻
+                // 合并政策类新闻（区域与政策观察）
                 if (archive.recent_observations) {
                     if (archive.recent_observations['马来西亚']) {
                         allArchives.recent_observations['马来西亚'].push(...archive.recent_observations['马来西亚']);
@@ -182,11 +199,17 @@
                 }
 
                 // 合并行业观察
-                if (archive.industry_observations) {
+                if (archive.industry_observations && Array.isArray(archive.industry_observations)) {
                     allArchives.industry_observations.push(...archive.industry_observations);
                 }
             }
         });
+        
+        console.log(`共加载 ${loadedCount} 个归档文件`);
+        console.log(`合并后数据统计:`);
+        console.log(`  政策类 - 马来西亚: ${allArchives.recent_observations['马来西亚'].length} 条`);
+        console.log(`  政策类 - 新加坡: ${allArchives.recent_observations['新加坡'].length} 条`);
+        console.log(`  行业观察: ${allArchives.industry_observations.length} 条`);
 
         // 按日期排序（最新的在前）
         const sortByDate = (a, b) => {
