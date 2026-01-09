@@ -683,18 +683,78 @@ def main():
     # 生成显示格式
     output_data = generate_display_format(news_data)
     
+    # 从当前数据中移除已归档的新闻（超过3天的）
+    today = datetime.now()
+    filtered_output = {
+        'recent_observations': {'马来西亚': [], '新加坡': []},
+        'industry_observations': [],
+        'last_updated': output_data['last_updated'],
+        'has_recent_observations': False,
+        'has_industry_observations': False
+    }
+    
+    # 过滤近期观察（只保留3天内的）
+    for region in ['马来西亚', '新加坡']:
+        for item in output_data.get('recent_observations', {}).get(region, []):
+            date_str = item.get('date', '')
+            if date_str:
+                try:
+                    parts = date_str.split('-')
+                    if len(parts) == 3:
+                        day, month, year = int(parts[0]), int(parts[1]), int(parts[2])
+                        if year < 100:
+                            year += 2000
+                        news_date = datetime(year, month, day)
+                        days_diff = (today - news_date).days
+                        if days_diff <= 3:
+                            filtered_output['recent_observations'][region].append(item)
+                except:
+                    # 如果日期解析失败，保留该项
+                    filtered_output['recent_observations'][region].append(item)
+            else:
+                # 如果没有日期，保留该项
+                filtered_output['recent_observations'][region].append(item)
+    
+    # 过滤行业观察（只保留3天内的）
+    for item in output_data.get('industry_observations', []):
+        date_str = item.get('date', '')
+        if date_str:
+            try:
+                parts = date_str.split('-')
+                if len(parts) == 3:
+                    day, month, year = int(parts[0]), int(parts[1]), int(parts[2])
+                    if year < 100:
+                        year += 2000
+                    news_date = datetime(year, month, day)
+                    days_diff = (today - news_date).days
+                    if days_diff <= 3:
+                        filtered_output['industry_observations'].append(item)
+            except:
+                # 如果日期解析失败，保留该项
+                filtered_output['industry_observations'].append(item)
+        else:
+            # 如果没有日期，保留该项
+            filtered_output['industry_observations'].append(item)
+    
+    # 设置标志
+    filtered_output['has_recent_observations'] = (
+        len(filtered_output['recent_observations']['马来西亚']) > 0 or
+        len(filtered_output['recent_observations']['新加坡']) > 0
+    )
+    filtered_output['has_industry_observations'] = len(filtered_output['industry_observations']) > 0
+    
     # 确保输出目录存在
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     
-    # 保存JSON文件
+    # 保存JSON文件（只包含3天内的新闻）
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-        json.dump(output_data, f, ensure_ascii=False, indent=2)
+        json.dump(filtered_output, f, ensure_ascii=False, indent=2)
     
     print(f"\n✓ 完成！已生成 {OUTPUT_FILE}")
-    print(f"  马来西亚: {len(output_data['recent_observations']['马来西亚'])} 条")
-    print(f"  新加坡: {len(output_data['recent_observations']['新加坡'])} 条")
-    print(f"  行业观察: {len(output_data['industry_observations'])} 条")
-    print(f"  更新时间: {output_data['last_updated']}")
+    print(f"  马来西亚: {len(filtered_output['recent_observations']['马来西亚'])} 条")
+    print(f"  新加坡: {len(filtered_output['recent_observations']['新加坡'])} 条")
+    print(f"  行业观察: {len(filtered_output['industry_observations'])} 条")
+    print(f"  更新时间: {filtered_output['last_updated']}")
     
     # 成本统计
     if openai_client and (cost_tracker['ai_filter_calls'] > 0 or cost_tracker['translation_calls'] > 0):
