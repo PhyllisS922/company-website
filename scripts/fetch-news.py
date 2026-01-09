@@ -524,15 +524,138 @@ def archive_old_news(current_data: Dict) -> None:
     except:
         return
     
-    # 归档昨天的数据（简化处理：每天运行一次，所以归档昨天的数据）
-    yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
-    archive_file_yesterday = ARCHIVE_DIR / f"{yesterday}.json"
+    if not old_data:
+        return
     
-    # 如果昨天的归档文件不存在，创建它
-    if not archive_file_yesterday.exists() and old_data:
-        with open(archive_file_yesterday, 'w', encoding='utf-8') as f:
-            json.dump(old_data, f, ensure_ascii=False, indent=2)
-        print(f"✓ 已归档到 {archive_file_yesterday}")
+    # 获取当前日期
+    today = datetime.now()
+    
+    # 归档所有超过3天的新闻
+    # 检查过去7天的数据，确保不会漏掉任何日期
+    archived_dates = set()
+    
+    # 收集所有需要归档的新闻（超过3天）
+    news_to_archive_by_date = {}  # {date: {recent_observations: {...}, industry_observations: [...]}}
+    
+    # 处理近期观察
+    for region in ['马来西亚', '新加坡']:
+        for item in old_data.get('recent_observations', {}).get(region, []):
+            # 从日期字符串解析日期（格式：DD-MM-YY）
+            date_str = item.get('date', '')
+            if not date_str:
+                continue
+            
+            try:
+                # 解析日期 DD-MM-YY
+                parts = date_str.split('-')
+                if len(parts) == 3:
+                    day, month, year = int(parts[0]), int(parts[1]), int(parts[2])
+                    # 处理年份：YY -> 20YY
+                    if year < 100:
+                        year += 2000
+                    news_date = datetime(year, month, day)
+                    
+                    # 计算天数差
+                    days_diff = (today - news_date).days
+                    
+                    # 如果超过3天，需要归档
+                    if days_diff > 3:
+                        date_key = news_date.strftime("%Y-%m-%d")
+                        if date_key not in news_to_archive_by_date:
+                            news_to_archive_by_date[date_key] = {
+                                'recent_observations': {'马来西亚': [], '新加坡': []},
+                                'industry_observations': []
+                            }
+                        news_to_archive_by_date[date_key]['recent_observations'][region].append(item)
+                        archived_dates.add(date_key)
+            except:
+                continue
+    
+    # 处理行业观察
+    for item in old_data.get('industry_observations', []):
+        date_str = item.get('date', '')
+        if not date_str:
+            continue
+        
+        try:
+            # 解析日期 DD-MM-YY
+            parts = date_str.split('-')
+            if len(parts) == 3:
+                day, month, year = int(parts[0]), int(parts[1]), int(parts[2])
+                # 处理年份：YY -> 20YY
+                if year < 100:
+                    year += 2000
+                news_date = datetime(year, month, day)
+                
+                # 计算天数差
+                days_diff = (today - news_date).days
+                
+                # 如果超过3天，需要归档
+                if days_diff > 3:
+                    date_key = news_date.strftime("%Y-%m-%d")
+                    if date_key not in news_to_archive_by_date:
+                        news_to_archive_by_date[date_key] = {
+                            'recent_observations': {'马来西亚': [], '新加坡': []},
+                            'industry_observations': []
+                        }
+                    news_to_archive_by_date[date_key]['industry_observations'].append(item)
+                    archived_dates.add(date_key)
+        except:
+            continue
+    
+    # 为每个日期创建归档文件（合并到已有文件或创建新文件）
+    for date_key in archived_dates:
+        archive_file = ARCHIVE_DIR / f"{date_key}.json"
+        
+        # 读取已有归档文件（如果存在）
+        existing_archive = {}
+        if archive_file.exists():
+            try:
+                with open(archive_file, 'r', encoding='utf-8') as f:
+                    existing_archive = json.load(f)
+            except:
+                existing_archive = {}
+        
+        # 合并数据
+        archive_data = news_to_archive_by_date[date_key]
+        
+        # 合并近期观察
+        for region in ['马来西亚', '新加坡']:
+            existing_items = existing_archive.get('recent_observations', {}).get(region, [])
+            new_items = archive_data['recent_observations'][region]
+            # 去重（基于link）
+            existing_links = {item.get('link') for item in existing_items}
+            for item in new_items:
+                if item.get('link') not in existing_links:
+                    existing_items.append(item)
+                    existing_links.add(item.get('link'))
+            
+            if 'recent_observations' not in existing_archive:
+                existing_archive['recent_observations'] = {}
+            existing_archive['recent_observations'][region] = existing_items
+        
+        # 合并行业观察
+        existing_industry = existing_archive.get('industry_observations', [])
+        new_industry = archive_data['industry_observations']
+        # 去重（基于link）
+        existing_industry_links = {item.get('link') for item in existing_industry}
+        for item in new_industry:
+            if item.get('link') not in existing_industry_links:
+                existing_industry.append(item)
+                existing_industry_links.add(item.get('link'))
+        existing_archive['industry_observations'] = existing_industry
+        
+        # 添加元数据
+        existing_archive['archived_date'] = date_key
+        existing_archive['last_updated'] = old_data.get('last_updated', '')
+        
+        # 保存归档文件
+        with open(archive_file, 'w', encoding='utf-8') as f:
+            json.dump(existing_archive, f, ensure_ascii=False, indent=2)
+        print(f"✓ 已归档 {date_key} 的数据到 {archive_file}")
+    
+    if archived_dates:
+        print(f"✓ 共归档 {len(archived_dates)} 个日期的数据: {', '.join(sorted(archived_dates))}")
 
 
 def main():

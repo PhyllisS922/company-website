@@ -54,6 +54,7 @@
         'main .usage-grid li', // 使用方式网格的列表项
         'main .media-title',
         'main .media-source',
+        'main a', // 所有main内的链接（包括"进入洞察"等）
         'nav a' // 导航链接（需要翻译链接文本）
     ];
 
