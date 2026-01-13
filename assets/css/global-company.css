@@ -1,98 +1,71 @@
 /*
 ====================================================
-COMPANY PAGE — ACTIVE WORKING FILE
+COMPANY PAGE
 File: global-company.css
-
-Status:
-✅ This is the ONLY file allowed to modify Company page layout
-✅ Section spacing, hierarchy, rhythm belong here
-
-Restrictions:
-❌ Do NOT override global h1/h2 font-size (unless necessary)
-❌ Do NOT use nth-of-type selectors (use class-based selectors instead)
-❌ Do NOT affect other pages
-
-Goal:
-Maintain Company page structure with clear, maintainable rules.
 ====================================================
 */
 
 /* ======================================================
-   1. CSS VARIABLES
+   1. TEXT & LAYOUT
    ====================================================== */
-
-:root {
-    /* 品牌色已在 global-brand-system.css 中定义，这里只定义页面特定变量 */
-    --border-subtle: var(--border-structural, #e0e0e0);
+body.company p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+    max-width: 72ch;
 }
 
-/* ======================================================
-   2. TYPOGRAPHY & STRUCTURE INDICATORS
-   ====================================================== */
-
-/* H1: 页面主标题 */
-body.company h1.accent-title {
-    position: relative;
-    padding-left: 20px !important; /* 使用 !important 确保不被覆盖 */
-}
-
-/* H1 橙色竖线：页面主标题的结构提示 */
-body.company h1.accent-title::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.15em;
-    width: 3px;
-    height: 1.2em;
-    background-color: var(--brand-solid);
-    opacity: 0.8;
-}
-
-/* H2.section-title: 一级模块标题 */
-body.company h2.section-title {
-    position: relative;
-    padding-left: 20px !important; /* 使用 !important 确保不被覆盖 */
-}
-
-/* H2.section-title 橙色竖线：一级模块的结构提示 */
-body.company h2.section-title::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.2em;
-    width: 3px;
-    height: 1em;
-    background-color: var(--brand-solid);
-    opacity: 0.7;
-}
-
-/* ======================================================
-   3. IMAGES
-   ====================================================== */
-
-/* 公司页为信息与信任页面，不需要视觉资产 */
-/* 但保留 header 中的 logo */
+/* Hide decorative images for pure info feel */
 body.company main img,
 body.company section img {
     display: none !important;
 }
 
-/* 隐藏所有媒体缩略图 */
-body.company .media-thumb {
-    display: none;
+/* ======================================================
+   2. MEDIA LIST
+   ====================================================== */
+body.company #media-coverage .motion-group-container {
+    margin-top: 40px;
 }
 
-/* 防止图片消失后产生多余间距 */
 body.company .media-item {
-    margin-bottom: 24px;
+    display: block;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border-structural);
+    transition: background-color 0.2s;
 }
 
-/* 标题与来源更紧凑 */
+body.company .media-item:hover {
+    padding-left: 12px; /* Slight indent on hover */
+    background-color: var(--surface-hover);
+    border-bottom-color: var(--brand-solid);
+}
+
 body.company .media-title {
-    margin-bottom: 4px;
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+body.company .media-source {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 /* ======================================================
-   END — Company page structure is now clean
+   3. SECTIONS
    ====================================================== */
+body.company section {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 64px;
+}
 
+body.company section:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}

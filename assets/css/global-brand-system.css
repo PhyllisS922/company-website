@@ -1,106 +1,123 @@
 /*
 ====================================================
-GLOBAL BRAND COLOR SYSTEM
+GLOBAL BRAND COLOR SYSTEM & INTERACTION
 File: global-brand-system.css
 
-Purpose:
-- Unified brand color usage across all pages
-- Consistent interactive feedback
-- Balanced distribution without noise
-
-Brand Color Usage Rules:
-1. Structure Indicators (橙色竖线) - H1, important H2
-2. Navigation Active State - Current page indicator
-3. Interactive Links - Hover states for important links
-4. Card Hover Feedback - Border color change (subtle)
-5. Primary CTAs - Buttons and main actions
-
-Design Principles:
-- Brand color indicates function, not decoration
-- Use sparingly to avoid visual noise
-- Consistent across all pages
-- Subtle and system-like, not promotional
+Core Color: #E65100 (Orange)
+Design Principle: Restrained usage, rich interaction.
 ====================================================
 */
 
 /* ======================================================
-   1. CSS VARIABLES
+   1. NAVIGATION STATES
    ====================================================== */
-
-:root {
-    --brand-solid: #E65100;
-    --transition-base: 0.2s ease;
+nav a:hover {
+    color: var(--brand-solid) !important;
 }
 
-/* ======================================================
-   2. NAVIGATION - UNIFIED ACTIVE STATE
-   ====================================================== */
-
-/* 全站导航 active 状态统一为品牌色 */
 nav a.active,
 nav a[aria-current="page"] {
     color: var(--brand-solid) !important;
     border-bottom-color: var(--brand-solid) !important;
 }
 
-/* 导航 hover 状态：使用品牌色 */
-nav a:hover {
+/* ======================================================
+   2. LINK INTERACTIONS
+   ====================================================== */
+/* Primary text links */
+a:not(nav a):not(.primary-cta):not(.lang-switch):hover {
+    color: var(--brand-solid);
+    transition: color 0.2s ease;
+}
+
+/* Secondary links (e.g., "View more") */
+.link-secondary {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s;
+}
+
+.link-secondary:hover {
+    color: var(--brand-solid);
+    transform: translateX(4px); /* Subtle motion hint */
+}
+
+/* Title links */
+.title-link:hover {
     color: var(--brand-solid) !important;
-    border-bottom-color: var(--border-structural, #e0e0e0);
-    transition: color var(--transition-base), border-bottom-color var(--transition-base);
 }
 
 /* ======================================================
-   3. INTERACTIVE LINKS - UNIFIED HOVER STATES
+   3. BUTTONS & CTA (Primary)
    ====================================================== */
-
-/* 重要链接 hover：使用品牌色 */
-a.title-link:hover,
-a.link-secondary:hover,
-.motion-group-item a:hover {
-    color: var(--brand-solid);
-    transition: color var(--transition-base);
-}
-
-/* 普通链接 hover：保持中性，避免过度使用品牌色 */
-a:not(.title-link):not(.link-secondary):not(.motion-group-item a):not(nav a):not(.primary-cta):hover {
-    color: var(--text-primary, #1a1a1a);
-}
-
-/* ======================================================
-   4. CARD HOVER FEEDBACK - UNIFIED BORDER EFFECT
-   ====================================================== */
-
-/* 卡片 hover：边框颜色变化（克制，不填充背景） */
-.course-scroll-item,
-.highlight-item {
-    transition: border-color var(--transition-base);
-}
-
-.course-scroll-item:hover,
-.highlight-item:hover {
-    border-color: var(--brand-solid);
-    /* 只改变边框，不改变背景，保持克制 */
-}
-
-/* ======================================================
-   5. PRIMARY CTAs - BUTTONS & MAIN ACTIONS
-   ====================================================== */
-
-/* 主 CTA 按钮：使用品牌色边框和文字 */
 .primary-cta {
-    border: 1px solid var(--brand-solid);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 500;
     color: var(--brand-solid);
+    border: 1px solid var(--brand-solid);
     background: transparent;
-    transition: background-color var(--transition-base), color var(--transition-base);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-decoration: none !important; /* Ensure no underline */
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
 }
 
 .primary-cta:hover {
-    background-color: var(--brand-solid);
-    color: #ffffff;
+    background: var(--brand-gradient);
+    color: #ffffff !important; /* Force white text */
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(230, 81, 0, 0.25); /* Orange glow */
+    transform: translateY(-1px);
+}
+
+.primary-cta:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(230, 81, 0, 0.15);
 }
 
 /* ======================================================
-   END — Global brand color system is now unified
+   4. CARD INTERACTIONS
    ====================================================== */
+/* Generic card hover effect */
+.course-scroll-item,
+.highlight-item,
+.motion-group-item,
+.archive-list li {
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+/* Subtle lift and orange border hint */
+.course-scroll-item:hover,
+.highlight-item:hover {
+    border-color: var(--brand-solid) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+    z-index: 1; /* Bring to front */
+}
+
+/* ======================================================
+   5. STRUCTURAL INDICATORS
+   ====================================================== */
+/* Orange vertical line for H1 and important H2 */
+.accent-title::before,
+.section-title::before {
+    background-color: var(--brand-solid) !important;
+    width: 4px !important; /* Slightly thicker */
+    border-radius: 2px;
+    opacity: 1 !important; /* Solid visibility */
+}
+
+/* Focus States for Accessibility */
+*:focus-visible {
+    outline: 2px solid var(--brand-solid);
+    outline-offset: 2px;
+}
