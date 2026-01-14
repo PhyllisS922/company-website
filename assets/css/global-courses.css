@@ -1,95 +1,375 @@
 /*
 ====================================================
-COURSES PAGE
+COURSES PAGE — ACTIVE WORKING FILE
 File: global-courses.css
+
+Status:
+✅ This is the ONLY file allowed to modify Courses page layout
+✅ Section spacing, columns, images, rhythm belong here
+
+Restrictions:
+❌ Do NOT override global h1/h2 font-size (unless necessary)
+❌ Do NOT use nth-of-type selectors
+❌ Do NOT affect other pages
+
+Goal:
+Maintain Courses page structure with clear, maintainable rules.
 ====================================================
 */
 
 /* ======================================================
-   1. LAYOUT & GRID
+   1. CSS VARIABLES
    ====================================================== */
+
+:root {
+    /* 品牌色已在 global-brand-system.css 中定义，这里只定义页面特定变量 */
+    --border-subtle: var(--border-structural, #e0e0e0);
+    --transition-base: 0.2s ease;
+    --bg-primary: var(--bg-base, #fafafa);
+    --bg-secondary: var(--surface-secondary, #f5f5f5);
+}
+
+/* ======================================================
+   2. BASE LAYOUT & STRUCTURE
+   ====================================================== */
+
+/* Container: 确保满宽显示 */
 body.courses .container {
-    max-width: 1280px; /* Wider for cards */
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* Course Series Section Styling */
+/* Section: 单列结构，统一间距（增加呼吸感） */
+body.courses main > .container > section {
+    display: block;
+    width: 100%;
+    margin-bottom: 120px; /* 从 72px 增加到 120px，增加模块间呼吸感 */
+}
+
+/* 禁止基于顺序的危险布局 */
+body.courses main > .container > section:nth-of-type(n) {
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+}
+
+/* 首屏节奏：压缩 header 与第一个 section 的间距 */
+body.courses header {
+    margin-bottom: 40px;
+}
+
+body.courses main > .container > section:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/* system-primary: 恢复为普通 section */
+body.courses section.system-primary {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom: 120px; /* 与普通 section 保持一致的大间距 */
+}
+
+/* 禁用伪元素制造的假分隔空间 */
+body.courses section::before,
+body.courses section::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* ======================================================
+   3. TITLE HIERARCHY
+   ====================================================== */
+
+/* H1: 页面主标题（课程概览） */
+body.courses h1.accent-title {
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 48px; /* 从 32px 增加到 48px，增加标题与内容间距 */
+    position: relative;
+    padding-left: 20px !important; /* 使用 !important 确保不被覆盖 */
+}
+
+/* H1 橙色竖线：页面主标题的结构提示 */
+body.courses h1.accent-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    width: 3px;
+    height: 1.2em;
+    background-color: var(--brand-solid);
+    opacity: 0.8; /* 稍微降低不透明度，更克制 */
+}
+
+/* H2.section-title: 一级模块标题（课程系列、课程使用方式） */
+body.courses h2.section-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 40px; /* 从 24px 增加到 40px，增加标题与内容间距 */
+    position: relative;
+    padding-left: 20px !important; /* 为橙色竖线预留空间 */
+}
+
+/* H2.section-title 橙色竖线：一级模块的结构提示 */
+body.courses h2.section-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 3px;
+    height: 1em;
+    background-color: var(--brand-solid);
+    opacity: 0.7; /* 与 .section-header h2 保持一致 */
+}
+
+/* .section-header h2: 课程系列标题（柔新经济特区、新马营商通识） */
 body.courses .section-header h2 {
-    color: var(--brand-solid); /* Series titles in brand color */
-    font-size: 1.5rem;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--brand-solid);
+    padding-left: 20px !important; /* 使用 !important 覆盖 style.css 的 padding: 0 */
+    margin-bottom: 24px; /* 增加标题与描述文字之间的间距 */
+    position: relative;
 }
 
-/* Use grid layout for multiple items if structure allows */
-/* Note: Based on provided structure, relying on scroll-track mostly */
-
-/* ======================================================
-   2. COURSE CARDS
-   ====================================================== */
-body.courses .course-scroll-item {
-    background: var(--bg-base);
-    border: 1px solid var(--border-structural);
-    border-radius: var(--radius-md);
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Equal height */
+/* 课程系列标题橙色竖线：核心课程的结构提示 */
+body.courses .section-header h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 3px;
+    height: 1em;
+    background-color: var(--brand-solid);
+    opacity: 0.7; /* 比 H1 稍弱，保持层级 */
 }
 
-body.courses .course-scroll-item h3 {
-    font-size: 1.25rem;
-    margin-top: 16px;
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
-
-body.courses .course-scroll-item p {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    margin-bottom: 0;
-    flex-grow: 1;
+/* H3: 二级标题 */
+body.courses section h3 {
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.45;
 }
 
 /* ======================================================
-   3. VISUAL ASSETS
+   4. IMAGES
    ====================================================== */
-/* Large Series Cover */
+
+/* 课程系列封面图：保持克制，不抢夺文字焦点 */
 body.courses .course-series-cover {
-    aspect-ratio: 21 / 9; /* Cinematic ratio */
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
-    margin-bottom: 32px;
+    width: 100%;
+    aspect-ratio: 16 / 4.5; /* 高度减半：从 16:9 改为 16:4.5 */
+    overflow: hidden;
+    margin-bottom: 2rem;
+    background-color: var(--surface-secondary, #f5f5f5);
+    display: block;
+    border-radius: 2px; /* 轻微圆角，保持系统感 */
 }
 
 body.courses .course-series-cover img {
-    filter: grayscale(10%); /* Slight desaturation for pro look */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* 降权处理：低饱和度、低对比度，不抢夺文字焦点 */
+    filter: grayscale(0.3) contrast(0.95) brightness(0.98);
+    opacity: 0.85;
+    transition: opacity 0.3s ease, filter 0.3s ease;
 }
 
+/* Hover 时稍微增强，但保持克制 */
 body.courses .course-series-cover:hover img {
-    filter: grayscale(0%);
-    transform: scale(1.01);
+    opacity: 0.95;
+    filter: grayscale(0.2) contrast(1) brightness(1);
+}
+
+/* 默认隐藏页面内容中的图片（Courses 页面为纯文本页面） */
+/* 但保留 header 中的 logo */
+body.courses main img:not(.course-series-cover img),
+body.courses section img:not(.course-series-cover img) {
+    display: none !important;
+}
+
+/* 隐藏图片容器，避免空白 */
+body.courses .course-series-thumb,
+body.courses .course-thumb {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* 修复因图片消失造成的多余间距 */
+body.courses .course-series-thumb + *,
+body.courses .course-thumb + * {
+    margin-top: 0 !important;
 }
 
 /* ======================================================
-   4. USAGE SCENARIOS (Grid Layout)
+   5. SPECIAL LAYOUTS
    ====================================================== */
+
+/* 课程使用方式：左右两列布局 */
 body.courses .course-usage .usage-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 64px;
-    padding: 40px;
-    background: var(--surface-secondary);
-    border-radius: var(--radius-md);
-    margin-top: 40px;
+    gap: 64px; /* 从 48px 增加到 64px，增加列之间的呼吸感 */
+    margin-top: 48px; /* 从 32px 增加到 48px */
 }
 
-body.courses .course-usage h3 {
+body.courses .course-usage .usage-labels h3 {
+    margin-bottom: 24px; /* 从 48px 减少到 24px，与列表项间距更协调 */
+    font-weight: 500;
+}
+
+body.courses .course-usage .usage-content ul {
+    margin-bottom: 32px; /* 从 48px 减少到 32px，与整体间距更协调 */
+    padding-left: 24px; /* 从 20px 增加到 24px */
+}
+
+body.courses .course-usage .usage-content ul:last-child {
+    margin-bottom: 0;
+}
+
+/* 横向滚动模块：唯一允许的横向布局 */
+body.courses .course-scroll-track {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    width: 100%;
+    margin-top: 16px;
+    padding-bottom: 8px;
+    position: relative;
+    /* 滚动条样式：更明显 */
+    scrollbar-width: thin;
+    scrollbar-color: var(--brand-solid, #E65100) var(--border-structural, #e0e0e0);
+}
+
+/* Webkit 滚动条样式 */
+body.courses .course-scroll-track::-webkit-scrollbar {
+    height: 6px;
+}
+
+body.courses .course-scroll-track::-webkit-scrollbar-track {
+    background: var(--border-structural, #e0e0e0);
+    border-radius: 3px;
+}
+
+body.courses .course-scroll-track::-webkit-scrollbar-thumb {
+    background-color: var(--brand-solid, #E65100);
+    border-radius: 3px;
+    opacity: 0.6;
+}
+
+body.courses .course-scroll-track::-webkit-scrollbar-thumb:hover {
+    opacity: 0.8;
+}
+
+/* 滑动提示：在包含滚动区域的 section 右侧添加箭头提示 */
+body.courses section:has(.course-scroll-track) {
+    position: relative;
+}
+
+/* 右侧箭头提示：提示可滑动 */
+body.courses section:has(.course-scroll-track)::after {
+    content: "→";
+    position: absolute;
+    right: 20px;
+    top: calc(16px + 50%); /* 与滚动区域垂直居中 */
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--brand-solid, #E65100);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 2;
+    font-weight: 300;
+    transition: opacity 0.3s ease;
+}
+
+/* 滚动时隐藏箭头提示 */
+body.courses .course-scroll-track:not(:hover) ~ *,
+body.courses section:has(.course-scroll-track:hover)::after {
+    opacity: 0.3;
+}
+
+body.courses .course-scroll-item {
+    flex: 0 0 auto;
+    padding: 20px; /* 从 12px 增加到 20px，增加卡片内部呼吸感 */
+    padding-top: 24px; /* 从 16px 增加到 24px */
+    border: 1px solid var(--border-subtle);
+    background-color: var(--bg-primary);
+    transition: border-color var(--transition-base);
+    margin-right: 20px; /* 增加卡片之间的间距 */
+}
+
+body.courses .course-scroll-item:hover {
+    border-color: var(--brand-solid);
+}
+
+body.courses .course-scroll-item h3 {
     margin-top: 0;
-    color: var(--brand-solid);
+    margin-bottom: 12px; /* 从 6px 增加到 12px，增加标题与描述间距 */
 }
 
-@media (max-width: 768px) {
-    body.courses .course-usage .usage-grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
-        padding: 24px;
-    }
+body.courses .course-scroll-item p {
+    margin-bottom: 0;
+    line-height: 1.6; /* 从 1.5 增加到 1.6，增加文字行间距 */
 }
+
+/* ======================================================
+   6. CONTENT SPACING & BREATHING ROOM
+   ====================================================== */
+
+/* 段落间距：增加文字呼吸感 */
+body.courses section p {
+    margin-bottom: 24px; /* 段落之间增加间距 */
+    line-height: 1.7; /* 增加行高，让文字更易读 */
+}
+
+body.courses section p:last-child {
+    margin-bottom: 0;
+}
+
+/* 列表间距：增加列表项之间的呼吸感 */
+body.courses section ul,
+body.courses section ol {
+    margin-top: 16px;
+    margin-bottom: 32px;
+    padding-left: 24px;
+    line-height: 1.7;
+}
+
+body.courses section li {
+    margin-bottom: 12px; /* 列表项之间增加间距 */
+}
+
+body.courses section li:last-child {
+    margin-bottom: 0;
+}
+
+/* section-header 与内容之间的间距 */
+body.courses .section-header {
+    margin-bottom: 32px; /* 增加 header 与描述文字之间的间距 */
+}
+
+/* 横向滚动模块与上方内容的间距 */
+body.courses .course-scroll-track {
+    margin-top: 32px; /* 从 16px 增加到 32px */
+}
+
+/* ======================================================
+   7. INTERACTIVE ELEMENTS
+   ====================================================== */
+
+/* 注意：导航 active、链接 hover 等交互状态
+   已统一在 global-brand-system.css 中定义
+   这里只保留页面特定的交互规则 */
+
+/* ======================================================
+   END — Courses page structure is now clean and maintainable
+   ====================================================== */

@@ -3,174 +3,247 @@
 GLOBAL VISUAL GRAMMAR
 File: global-visual-phase3.css
 
-Purpose: Global layout patterns, section rhythm, 
-and common component styling.
+Purpose:
+- Defines GLOBAL visual grammar only
+- Section system (system-primary, motion-entrance)
+- Global alignment and container rules
+- Image placeholder patterns
+
+Architecture:
+- This file contains ONLY rules that apply to ALL pages
+- NO page-specific selectors (body.home, body.courses, etc.)
+- NO nth-of-type selectors
+- NO overrides for specific pages
+
+Page-specific rules belong in:
+- global-index.css (homepage)
+- global-courses.css (courses page)
+- global-insights.css (insights page)
+- global-activities.css (activities page)
+- global-collaboration.css (collaboration page)
+- global-company.css (company page)
 ====================================================
 */
 
 /* =========================================================
-   1. SECTION RHYTHM
+   GLOBAL SECTION SYSTEM
    ========================================================= */
-main {
-    padding-top: 80px; /* Space from header */
-}
 
-section {
-    position: relative;
-    margin-bottom: var(--section-gap);
-    padding: 0;
-    border: none !important; /* Remove old borders */
-}
-
-/* System Primary Section (Core Modules) */
+/* system-primary: 核心模块标记（语义标记，无视觉样式） */
 section.system-primary {
-    margin-bottom: var(--section-gap);
+    background: transparent;
+    padding: 0;
+    margin: 0 0 var(--section-gap, 120px) 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
-/* Motion Entrance (Standard Modules) */
+/* 防止 system-primary 太密集 */
+section.system-primary + section.system-primary {
+    margin-top: 80px;
+}
+
+/* motion-entrance: 普通模块 */
 section.motion-entrance:not(.system-primary) {
-    margin-top: 0; /* Reset margins to control via gap */
+    padding-top: 0;
+    margin-top: 80px;
 }
 
-/* Reduce gap on mobile */
+/* 移除旧的"文档感分割线" */
+section {
+    border-top: none;
+}
+
+/* 响应式微调 */
 @media (max-width: 768px) {
-    main {
-        padding-top: 40px;
+    section.system-primary {
+        margin-bottom: 80px;
     }
 }
 
 /* =========================================================
-   2. SECTION HEADERS
+   GLOBAL TYPOGRAPHY RULES
    ========================================================= */
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end; /* Align baseline */
-    margin-bottom: 40px;
-    gap: 24px;
-    flex-wrap: wrap;
+
+/* 全局标题基础规则 */
+main h2 {
+    margin-top: 0;
 }
 
-.section-header h2 {
-    margin-bottom: 0;
-    flex: 1;
-    min-width: 200px;
+main h2 + p {
+    margin-top: 12px;
 }
 
 /* =========================================================
-   3. IMAGE PLACEHOLDERS & THUMBNAILS
+   GLOBAL ALIGNMENT RULES
    ========================================================= */
-/* Unified style for all thumbnails */
-.hero-image,
-.highlight-thumb,
-.course-series-thumb,
-.course-series-cover,
-.course-thumb,
-.insight-thumb,
-.event-thumb,
-.media-thumb {
-    background-color: var(--surface-secondary);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    position: relative;
-}
 
-/* Image behavior */
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-/* Hover effect on images */
-.course-scroll-item:hover img,
-.highlight-item:hover img {
-    transform: scale(1.03); /* Subtle zoom */
-}
-
-/* Specific Ratios */
-.hero-image { aspect-ratio: 16 / 9; }
-.course-series-cover { aspect-ratio: 21 / 9; }
-.thumb, .thumbnail { aspect-ratio: 4 / 3; }
-
-/* =========================================================
-   4. MOTION & ANIMATION CLASSES
-   ========================================================= */
-/* Entrance Animation */
-.motion-entrance {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.motion-entrance.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Group/Stagger Animation */
-.motion-group-item {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-}
-
-.motion-group-item.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* =========================================================
-   5. COMMON SCROLL TRACKS
-   ========================================================= */
-/* Horizontal scrolling container */
-.course-scroll-track,
-.highlights-track {
-    display: flex;
-    gap: 24px;
-    overflow-x: auto;
-    padding-bottom: 24px; /* Space for scrollbar/shadow */
-    margin-right: -40px; /* Extend to edge */
+/* 统一 container 内部对齐逻辑 */
+.container {
+    padding-left: 40px;
     padding-right: 40px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--brand-solid) var(--border-subtle);
 }
 
-.course-scroll-track::-webkit-scrollbar,
-.highlights-track::-webkit-scrollbar {
-    height: 4px;
+/* 确保 header 与 main 使用同一 container 对齐线 */
+header .container,
+main .container,
+footer .container {
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
-.course-scroll-track::-webkit-scrollbar-thumb,
-.highlights-track::-webkit-scrollbar-thumb {
-    background-color: var(--brand-solid);
-    border-radius: 4px;
+/* 防止"首段标题下沉/右移" */
+main > .container > section:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
 }
 
-.course-scroll-track::-webkit-scrollbar-track,
-.highlights-track::-webkit-scrollbar-track {
-    background-color: var(--border-subtle);
+/* =========================================================
+   GLOBAL IMAGE PLACEHOLDER PATTERNS
+   ========================================================= */
+
+/* Hero 图片占位 */
+.hero-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-top: 2rem;
 }
 
-/* Scroll Items */
-.course-scroll-item,
-.highlight-item {
-    flex: 0 0 320px; /* Fixed width cards */
-    min-width: 320px;
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-@media (max-width: 768px) {
-    .course-scroll-track,
-    .highlights-track {
-        margin-right: -20px;
-        padding-right: 20px;
-        gap: 16px;
-    }
-    .course-scroll-item,
-    .highlight-item {
-        flex: 0 0 280px;
-        min-width: 280px;
-    }
+/* Hero 背景图片（可选，用于全宽背景） */
+.hero-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.15;
+    z-index: -1;
 }
+
+/* 内容精选缩略图 */
+.highlight-thumb {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    background-color: var(--surface-secondary, #f5f5f5);
+}
+
+.highlight-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 课程系列缩略图（小尺寸，用于列表） */
+.course-series-thumb {
+    width: 100%;
+    max-width: 120px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    margin-right: 1.5rem;
+    flex-shrink: 0;
+}
+
+.course-series-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 课程系列封面图（大尺寸，用于模块顶部） */
+.course-series-cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    background-color: var(--surface-secondary, #f5f5f5);
+}
+
+.course-series-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 课程卡片占位图 */
+.course-thumb {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.course-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 洞察条目占位图 */
+.insight-thumb {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.insight-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 活动卡片占位图 */
+.event-thumb {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.event-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 合作页直接图片占位 */
+.course-scroll-item > img:first-child {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+/* 媒体报道占位图 */
+.media-thumb {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.media-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* =========================================================
+   END — Global visual grammar is now clean and maintainable
+   ========================================================= */

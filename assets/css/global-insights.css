@@ -1,52 +1,204 @@
 /*
 ====================================================
-INSIGHTS PAGE
+INSIGHTS PAGE — ACTIVE WORKING FILE
 File: global-insights.css
+
+Status:
+✅ This is the ONLY file allowed to modify Insights page layout
+✅ Section spacing, hierarchy, rhythm belong here
+
+Restrictions:
+❌ Do NOT override global h1/h2 font-size (unless necessary)
+❌ Do NOT use nth-of-type selectors (use class-based selectors instead)
+❌ Do NOT affect other pages
+
+Goal:
+Maintain Insights page structure with clear, maintainable rules.
 ====================================================
 */
 
 /* ======================================================
-   1. TYPOGRAPHY & READING
+   1. CSS VARIABLES
    ====================================================== */
-body.insights h1.accent-title {
-    margin-bottom: 64px;
-}
 
-/* Article list styling */
-body.insights .motion-group-container {
-    border-left: 1px solid var(--border-structural);
-    padding-left: 32px;
-}
-
-body.insights .motion-group-item {
-    margin-bottom: 32px;
-    position: relative;
-}
-
-body.insights h3 {
-    font-size: 1.25rem;
-    margin-top: 0;
-    margin-bottom: 8px;
-}
-
-body.insights p {
-    max-width: 70ch; /* Optimal reading length */
-    font-size: 1rem;
-    line-height: 1.7;
+:root {
+    /* 品牌色已在 global-brand-system.css 中定义，这里只定义页面特定变量 */
+    --border-subtle: var(--border-structural, #e0e0e0);
+    --border-fine: var(--border-structural, #e0e0e0);
 }
 
 /* ======================================================
-   2. INTERACTIVE TOOLTIP
+   2. BASE LAYOUT & STRUCTURE
    ====================================================== */
-.news-tooltip {
+
+/* 首屏节奏：压缩 header 与第一个 section 的间距 */
+body.insights header {
+    margin-bottom: 40px;
+}
+
+body.insights main > .container > section:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/* 引导段落与首个观察模块的间距 */
+body.insights section:first-of-type {
+    padding-bottom: 32px;
+}
+
+/* 观察模块统一间距（使用 class 选择器替代 nth-of-type） */
+body.insights section:has(h2.section-title) {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-top: 1px solid var(--border-subtle);
+    margin-bottom: 48px; /* 增加模块间距 */
+}
+
+/* 使用方法模块间距：减少空间占用 */
+body.insights section:has(h2:not(.section-title)) {
+    padding-top: 20px;
+    padding-bottom: 24px;
+    border-top: 1px solid var(--border-subtle);
+    margin-bottom: 0; /* 减少底部间距 */
+}
+
+/* 列表内容收敛，避免新闻流 */
+body.insights .motion-group-container {
+    max-width: 70ch;
+}
+
+/* ======================================================
+   3. TITLE HIERARCHY
+   ====================================================== */
+
+/* H1: 页面主标题 */
+body.insights h1 {
+    font-size: 2.2rem;
+    font-weight: 500;
+    position: relative;
+    padding-left: 20px !important; /* 使用 !important 确保不被覆盖 */
+}
+
+/* H1 橙色竖线：页面主标题的结构提示 */
+body.insights h1::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    width: 3px;
+    height: 1.2em;
+    background-color: var(--brand-solid);
+    opacity: 0.8;
+}
+
+/* H2.section-title: 主要观察模块标题（近期观察、行业观察） */
+body.insights h2.section-title {
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    position: relative;
+    padding-left: 20px !important;
+    margin-bottom: 12px;
+}
+
+/* H2.section-title 橙色竖线：主要观察模块的结构提示 */
+body.insights h2.section-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 3px;
+    height: 1em;
+    background-color: var(--brand-solid);
+    opacity: 0.7;
+}
+
+/* H2: 其他模块标题（使用方法等，无橙色竖线） */
+body.insights h2:not(.section-title) {
+    font-size: 1.35rem; /* 稍微减小字号 */
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 16px; /* 减少标题与内容间距 */
+    margin-top: 0;
+}
+
+/* 使用方法模块段落间距：减少空间占用 */
+body.insights section:has(h2:not(.section-title)) p {
+    margin-bottom: 16px; /* 减少段落间距 */
+    line-height: 1.6;
+}
+
+body.insights section:has(h2:not(.section-title)) p:last-child {
+    margin-bottom: 0;
+}
+
+/* ======================================================
+   4. IMAGES
+   ====================================================== */
+
+/* 隐藏页面内容中的图片（Insights 页面为纯文本页面） */
+/* 但保留 header 中的 logo */
+body.insights main img,
+body.insights section img {
+    display: none !important;
+}
+
+/* 隐藏图片容器，避免空白 */
+body.insights .image,
+body.insights .thumb,
+body.insights .thumbnail,
+body.insights .media,
+body.insights .media-block,
+body.insights .cover,
+body.insights .hero-image,
+body.insights .highlight-thumb,
+body.insights .course-thumb {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* 确保没有因为图片预期产生的多余留白 */
+body.insights section > div:empty {
+    display: none;
+}
+
+/* 明确：Insights 页面不参与任何图片相关布局 */
+body.insights {
+    --page-has-images: false;
+}
+
+/* ======================================================
+   5. INTERACTIVE ELEMENTS
+   ====================================================== */
+
+/* 注意：导航 active、链接 hover 等交互状态
+   已统一在 global-brand-system.css 中定义
+   这里只保留页面特定的交互规则 */
+
+/* 历史记录链接 */
+body.insights section:has(h2.section-title:last-of-type) .link-secondary {
+    display: inline-block;
+    margin-top: 16px;
+}
+
+/* ======================================================
+   6. TOOLTIP FOR NEWS SUMMARIES
+   ====================================================== */
+.motion-group-item {
+    position: relative;
+}
+
+.news-item-tooltip {
     visibility: hidden;
     opacity: 0;
     width: 300px;
     max-width: 90vw;
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
+    background-color: var(--bg-secondary, #fff);
+    color: var(--text-primary, #333);
     text-align: left;
-    border-radius: var(--radius-md);
+    border-radius: 4px;
     padding: 12px 16px;
     position: absolute;
     z-index: 1000;
@@ -54,32 +206,45 @@ body.insights p {
     left: 50%;
     transform: translateX(-50%);
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     font-size: 0.9rem;
     line-height: 1.5;
-    border: 1px solid var(--border-structural);
+    border: 1px solid var(--border-subtle, #e0e0e0);
     pointer-events: none;
     word-wrap: break-word;
 }
 
-.news-tooltip::after {
+.news-item-tooltip::after {
     content: "";
     position: absolute;
     top: 100%;
     left: 50%;
-    transform: translateX(-50%);
-    border-width: 6px;
+    margin-left: -8px;
+    border-width: 8px;
     border-style: solid;
-    border-color: var(--bg-secondary) transparent transparent transparent;
+    border-color: var(--bg-secondary, #fff) transparent transparent transparent;
 }
 
-.motion-group-item:hover .news-tooltip {
-    opacity: 1;
+.motion-group-item:hover .news-item-tooltip {
     visibility: visible;
+    opacity: 1;
 }
 
-/* Highlight the item being hovered */
-.motion-group-item:hover h3 {
-    color: var(--brand-solid);
-    cursor: help;
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .news-item-tooltip {
+        width: 90vw;
+        left: 5vw;
+        transform: translateX(0);
+        bottom: auto;
+        top: 125%;
+    }
+    .news-item-tooltip::after {
+        top: -8px;
+        border-color: transparent transparent var(--bg-secondary, #fff) transparent;
+    }
 }
+
+/* ======================================================
+   END — Insights page structure is now clean and maintainable
+   ====================================================== */
