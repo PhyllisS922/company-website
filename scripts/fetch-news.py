@@ -351,6 +351,32 @@ def fetch_and_filter_news(config: Dict) -> Dict:
                     "is_day_before": is_day_before
                 }
                 
+                # 预筛选：直接排除明显不相关的内容（在AI筛选之前）
+                # 只排除明显不适合企业网站的内容，让AI判断政策相关性
+                title_lower = title.lower()
+                summary_lower = summary.lower()
+                combined_text = f"{title_lower} {summary_lower}"
+                
+                # 排除关键词列表（这些内容明显不适合企业网站）
+                exclude_keywords = [
+                    'traffic accident', 'car crash', 'motorcycle accident', 'road accident', 'motorcyclist',  # 交通事故
+                    'safe deposit box', 'safe deposit', 'insurance box', 'treasure', 'gold bars', 'jewellery',  # 保险柜
+                    'cord blood', 'umbilical cord', 'cordlife', 'cord blood banking',  # 脐带血
+                    'actor', 'actress', 'celebrity charged', 'entertainment',  # 娱乐明星（仅限犯罪相关）
+                    'grievous injury', 'charged with grievous',  # 个人犯罪/事故
+                ]
+                
+                # 检查是否包含排除关键词（精确匹配，避免误判）
+                if any(keyword in combined_text for keyword in exclude_keywords):
+                    continue
+                
+                # 对于农业新闻，除非明确涉及重大政策、投资或经济特区，否则排除
+                # 农业政策目标、农业支持措施等通常不够相关
+                if any(kw in combined_text for kw in ['farming', 'agriculture', 'farm goal', 'farm support']):
+                    # 只保留涉及重大政策框架、投资政策、经济特区的农业新闻
+                    if not any(kw in combined_text for kw in ['economic zone', 'investment policy', 'trade policy', 'economic policy', 'major policy', 'policy framework']):
+                        continue
+                
                 # 根据数据源类型和AI筛选进行分类
                 if source_type == 'policy':
                     # 政策类：使用政策提示词筛选（所有地区都严格筛选）
