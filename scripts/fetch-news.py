@@ -353,19 +353,10 @@ def fetch_and_filter_news(config: Dict) -> Dict:
                 
                 # 根据数据源类型和AI筛选进行分类
                 if source_type == 'policy':
-                    # 政策类：使用政策提示词筛选
-                    # 对于新加坡的policy类型数据源，使用更宽松的筛选（因为可能包含政策相关但AI可能误判的新闻）
+                    # 政策类：使用政策提示词筛选（所有地区都严格筛选）
                     if ai_enabled and policy_prompt:
-                        if region == '新加坡':
-                            # 新加坡：如果AI判断不相关，仍然保留（因为可能包含政策相关内容）
-                            # 但会记录排除信息
-                            if not ai_check_relevance(title, summary, policy_prompt):
-                                # 对于新加坡，即使AI判断不相关，也保留（因为数据源本身就是policy类型）
-                                pass  # 不跳过，继续处理
-                        else:
-                            # 其他地区：严格使用AI筛选
-                            if not ai_check_relevance(title, summary, policy_prompt):
-                                continue
+                        if not ai_check_relevance(title, summary, policy_prompt):
+                            continue
                     
                     # 政策类新闻进入recent_observations
                     # 如果region是"东盟"，根据内容判断是否与新马相关，或默认分配到两个地区
