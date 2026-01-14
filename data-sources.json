@@ -34,11 +34,11 @@
       "name": "海峡时报 - 新加坡新闻",
       "url": "https://www.straitstimes.com/news/singapore/rss.xml",
       "region": "新加坡",
-      "type": "media",
+      "type": "policy",
       "keywords": [],
       "enabled": true,
       "priority": 1,
-      "note": "新马权威主流媒体"
+      "note": "政策类，主要依赖AI筛选，包含新加坡政策、制度、监管相关新闻"
     },
     {
       "name": "海峡时报 - 商业新闻",

@@ -83,10 +83,22 @@ def format_date(date_str: str) -> str:
 def get_news_date(entry: Dict) -> Optional[datetime]:
     """获取新闻的发布日期（datetime对象）"""
     try:
+        # 优先使用published_parsed（更可靠）
+        if hasattr(entry, 'published_parsed') and entry.published_parsed:
+            from time import mktime
+            return datetime.fromtimestamp(mktime(entry.published_parsed))
+        # 如果没有published_parsed，尝试解析published字符串
         published = entry.get('published', '')
         if published:
-            return feedparser._parse_date(published)
-    except:
+            # 尝试使用feedparser的parse方法
+            try:
+                return feedparser._parse_date(published)
+            except:
+                # 如果失败，尝试使用published_parsed（如果entry是feedparser对象）
+                if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                    from time import mktime
+                    return datetime.fromtimestamp(mktime(entry.published_parsed))
+    except Exception as e:
         pass
     return None
 
@@ -342,14 +354,26 @@ def fetch_and_filter_news(config: Dict) -> Dict:
                 # 根据数据源类型和AI筛选进行分类
                 if source_type == 'policy':
                     # 政策类：使用政策提示词筛选
+                    # 对于新加坡的policy类型数据源，使用更宽松的筛选（因为可能包含政策相关但AI可能误判的新闻）
                     if ai_enabled and policy_prompt:
-                        if not ai_check_relevance(title, summary, policy_prompt):
-                            continue
+                        if region == '新加坡':
+                            # 新加坡：如果AI判断不相关，仍然保留（因为可能包含政策相关内容）
+                            # 但会记录排除信息
+                            if not ai_check_relevance(title, summary, policy_prompt):
+                                # 对于新加坡，即使AI判断不相关，也保留（因为数据源本身就是policy类型）
+                                pass  # 不跳过，继续处理
+                        else:
+                            # 其他地区：严格使用AI筛选
+                            if not ai_check_relevance(title, summary, policy_prompt):
+                                continue
                     
                     # 政策类新闻进入recent_observations
                     # 如果region是"东盟"，根据内容判断是否与新马相关，或默认分配到两个地区
                     if region in ['新加坡', '马来西亚']:
                         policy_news.append(news_item)
+                        # 调试：记录新加坡新闻
+                        if region == '新加坡':
+                            print(f"  ✓ 新加坡政策类新闻: {title[:60]}...")
                     elif region == '东盟':
                         # 东盟的政策类新闻，如果标题或摘要包含新马关键词，分配到相应地区
                         # 否则同时添加到两个地区（因为东盟政策通常影响整个区域）
@@ -400,6 +424,14 @@ def fetch_and_filter_news(config: Dict) -> Dict:
     today_policy = [item for item in policy_news if item.get('is_today', False)]
     today_industry = [item for item in industry_news if item.get('is_today', False)]
     
+    # 调试：统计policy_news中的地区分布
+    policy_region_counts = {}
+    for item in policy_news:
+        region = item.get('region', '未知')
+        policy_region_counts[region] = policy_region_counts.get(region, 0) + 1
+    print(f"\n调试：policy_news地区分布: {policy_region_counts}")
+    print(f"调试：today_policy数量: {len(today_policy)}")
+    
     # 如果当天新闻不足，扩展到昨天和前天
     if len(today_policy) < 10:  # 政策类目标10条
         yesterday_policy = [item for item in policy_news if item.get('is_yesterday', False) and item not in today_policy]
@@ -432,14 +464,23 @@ def fetch_and_filter_news(config: Dict) -> Dict:
     # 分配政策类新闻到各地区（控制数量：每个地区固定5条）
     target_per_region = 5  # 马来西亚和新加坡各5条
     
+    # 调试：统计policy_news_filtered中的地区分布
+    region_counts = {}
+    for item in policy_news_filtered:
+        region = item.get('region', '未知')
+        region_counts[region] = region_counts.get(region, 0) + 1
+    print(f"\n调试：policy_news_filtered地区分布: {region_counts}")
+    
     policy_items_to_translate = []
     for item in policy_news_filtered:
-        region = item['region']
+        region = item.get('region', '')
         if region in all_news['recent_observations']:
             current_count = len(all_news['recent_observations'][region])
             if current_count < target_per_region:
                 all_news['recent_observations'][region].append(item)
                 policy_items_to_translate.append(item)
+                if region == '新加坡':
+                    print(f"  ✓ 分配到新加坡: {item.get('title', '')[:60]}...")
     
     # 分配行业类新闻（控制数量）
     industry_items_to_translate = []
