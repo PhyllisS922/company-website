@@ -1,187 +1,195 @@
 {
   "recent_observations": {
-    "马来西亚": [],
+    "马来西亚": [
+      {
+        "text": "[03-02-26 · 马来西亚] Secretary-General of ASEAN Receives Courtesy Call from Joint-Chairman of the Malaysian Industry–Government Group for High Technology (MIGHT)",
+        "text_zh": "[03-02-26 · 马来西亚] Secretary-General of ASEAN Receives Courtesy Call from Joint-Chairman of the Malaysian Industry–Government Group for High Technology (MIGHT)",
+        "link": "https://asean.org/secretary-general-of-asean-receives-courtesy-call-from-joint-chairman-of-the-malaysian-industry-government-group-for-high-technology-might/",
+        "summary": "<p>Secretary-General of ASEAN, Dr. Kao Kim Hourn, today received Professor Emeritus Tan Sri Zakri Abdul Hamid, Joint-Chairman of the Malaysian Industry–Government Group for High Technology (MIGHT), at",
+        "summary_zh": "<p>Secretary-General of ASEAN, Dr. Kao Kim Hourn, today received Professor Emeritus Tan Sri Zakri Abdul Hamid, Joint-Chairman of the Malaysian Industry–Government Group for High Technology (MIGHT), at"
+      }
+    ],
     "新加坡": [
       {
-        "text": "[02-02-26 · 新加坡] Over 12,000 vehicle owners in S’pore yet to rectify faulty Takata airbags that killed man in 2022",
-        "text_zh": "[02-02-26 · 新加坡] Over 12,000 vehicle owners in S’pore yet to rectify faulty Takata airbags that killed man in 2022",
-        "link": "https://www.straitstimes.com/singapore/transport/over-12000-vehicle-owners-in-spore-yet-to-rectify-faulty-takata-airbags-that-killed-man-in-2022",
-        "summary": "<p>A Singaporean driver was killed when a defective Takata airbag in his steering wheel ejected a metal fragment that pierced his head.</p>",
-        "summary_zh": "<p>A Singaporean driver was killed when a defective Takata airbag in his steering wheel ejected a metal fragment that pierced his head.</p>"
+        "text": "[03-02-26 · 新加坡] Ex-Scoot crew member who pocketed nearly $40k tells court he wants to pay back full amount",
+        "text_zh": "[03-02-26 · 新加坡] Ex-Scoot crew member who pocketed nearly $40k tells court he wants to pay back full amount",
+        "link": "https://www.straitstimes.com/singapore/courts-crime/ex-scoot-crew-member-who-pocketed-nearly-40k-tells-court-he-wants-to-pay-back-full-amount",
+        "summary": "<p>Luqman Hakim Shahfawi, 31, has made a partial restitution of $10,000 so far.</p>",
+        "summary_zh": "<p>Luqman Hakim Shahfawi, 31, has made a partial restitution of $10,000 so far.</p>"
       },
       {
-        "text": "[02-02-26 · 新加坡] FairPrice supermarkets to extend opening hours for Chinese New Year",
-        "text_zh": "[02-02-26 · 新加坡] FairPrice supermarkets to extend opening hours for Chinese New Year",
-        "link": "https://www.straitstimes.com/singapore/fairprice-supermarkets-extend-opening-hours-for-chinese-new-year",
-        "summary": "<p>On the first day of Chinese New Year, 156 FairPrice stores across Singapore will remain open.</p>",
-        "summary_zh": "<p>On the first day of Chinese New Year, 156 FairPrice stores across Singapore will remain open.</p>"
+        "text": "[03-02-26 · 新加坡] Public sector to use only full NRIC numbers, instead of partial, for identification: Jasmin Lau",
+        "text_zh": "[03-02-26 · 新加坡] Public sector to use only full NRIC numbers, instead of partial, for identification: Jasmin Lau",
+        "link": "https://www.straitstimes.com/singapore/politics/public-sector-to-use-full-nric-numbers-or-nothing-partial-nric-numbers-not-reliable-for",
+        "summary": "<p>Partial NRIC numbers are not reliable for identifying people, she added.</p>",
+        "summary_zh": "<p>Partial NRIC numbers are not reliable for identifying people, she added.</p>"
       },
       {
-        "text": "[02-02-26 · 新加坡] World’s first airport testbed for open-fan aircraft engines among 8 agreements inked by CAAS",
-        "text_zh": "[02-02-26 · 新加坡] World’s first airport testbed for open-fan aircraft engines among 8 agreements inked by CAAS",
-        "link": "https://www.straitstimes.com/singapore/transport/worlds-first-airport-testbed-for-open-fan-aircraft-engines-among-8-agreements-inked-by-caas",
-        "summary": "<p>The agreement aims to study the possibility of incorporating these engines into Singapore’s aviation operations.</p>",
-        "summary_zh": "<p>The agreement aims to study the possibility of incorporating these engines into Singapore’s aviation operations.</p>"
+        "text": "[03-02-26 · 新加坡] NTU unveils Singapore-made aircraft prototype at Singapore Airshow",
+        "text_zh": "[03-02-26 · 新加坡] NTU unveils Singapore-made aircraft prototype at Singapore Airshow",
+        "link": "https://www.straitstimes.com/singapore/transport/ntu-unveils-spore-made-aircraft-prototype-at-singapore-airshow",
+        "summary": "<p>The hope is for the prototype to become a commercial endeavour that can carry people and cargo.</p>",
+        "summary_zh": "<p>The hope is for the prototype to become a commercial endeavour that can carry people and cargo.</p>"
       },
       {
-        "text": "[02-02-26 · 新加坡] Google starts rolling out age-verification safeguards for under-18s in Singapore",
-        "text_zh": "[02-02-26 · 新加坡] Google starts rolling out age-verification safeguards for under-18s in Singapore",
-        "link": "https://www.straitstimes.com/singapore/google-starts-rolling-out-age-verification-safeguards-for-under-18s-in-singapore",
-        "summary": "<p>The measures are designed to automatically provide age-appropriate content for those below 18.</p>",
-        "summary_zh": "<p>The measures are designed to automatically provide age-appropriate content for those below 18.</p>"
+        "text": "[03-02-26 · 新加坡] Jail for ex-watch shop employee who cheated 14 people of nearly $495k for luxury watch purchases",
+        "text_zh": "[03-02-26 · 新加坡] Jail for ex-watch shop employee who cheated 14 people of nearly $495k for luxury watch purchases",
+        "link": "https://www.straitstimes.com/singapore/courts-crime/jail-for-ex-watch-shop-employee-who-cheated-14-people-of-nearly-495k-for-luxury-watch-purchases",
+        "summary": "<p>Soh Jian Kun, 33, also lied that his mother had been hospitalised or had died to dupe victims of cash.</p>",
+        "summary_zh": "<p>Soh Jian Kun, 33, also lied that his mother had been hospitalised or had died to dupe victims of cash.</p>"
       },
       {
-        "text": "[02-02-26 · 新加坡] ‘Global aviation did not grow by accident’: Jeffrey Siow calls for further collaboration at summit",
-        "text_zh": "[02-02-26 · 新加坡] ‘Global aviation did not grow by accident’: Jeffrey Siow calls for further collaboration at summit",
-        "link": "https://www.straitstimes.com/singapore/transport/global-aviation-did-not-grow-by-accident-jeffrey-siow-calls-for-further-collaboration-at-aviation",
-        "summary": "<p>He said countries are instinctively turning inward, as the rules-based international order is being disrupted.</p>",
-        "summary_zh": "<p>He said countries are instinctively turning inward, as the rules-based international order is being disrupted.</p>"
+        "text": "[03-02-26 · 新加坡] Jail for man who bribed 4 Certis officers over $9k in cigarette smuggling operation",
+        "text_zh": "[03-02-26 · 新加坡] Jail for man who bribed 4 Certis officers over $9k in cigarette smuggling operation",
+        "link": "https://www.straitstimes.com/singapore/courts-crime/jail-for-man-who-gave-bribes-totalling-over-9k-to-4-certis-officers-in-cigarette-smuggling-operation",
+        "summary": "<p>He was behind one of the most extensive corruption schemes targeting Singapore’s border security in recent years.</p>",
+        "summary_zh": "<p>He was behind one of the most extensive corruption schemes targeting Singapore’s border security in recent years.</p>"
       }
     ]
   },
   "industry_observations": [
     {
-      "text": "[02-02-26 · 其他] Gold, silver selloff deepens after CME hikes margins",
-      "text_zh": "[02-02-26 · 其他] Gold, silver selloff deepens after CME hikes margins",
-      "link": "https://www.channelnewsasia.com/business/gold-silver-selloff-deepens-after-cme-hikes-margins-5900396",
+      "text": "[03-02-26 · 科技] Price competition likely to limit cost impact of beverage container return scheme on consumers: MSE",
+      "text_zh": "[03-02-26 · 科技] Price competition likely to limit cost impact of beverage container return scheme on consumers: MSE",
+      "link": "https://www.channelnewsasia.com/singapore/beverage-container-return-scheme-costs-consumers-10-cents-5902836",
+      "summary": "The experience in other jurisdictions showed that the deposit return schemes did not have a significant direct impact on beverage prices or beverage sales, said Senior Minister of State for Sustainabi",
+      "summary_zh": "The experience in other jurisdictions showed that the deposit return schemes did not have a significant direct impact on beverage prices or beverage sales, said Senior Minister of State for Sustainabi"
+    },
+    {
+      "text": "[03-02-26 · 科技] Police open fire at passenger after knife threat causes panic at Iloilo airport",
+      "text_zh": "[03-02-26 · 科技] Police open fire at passenger after knife threat causes panic at Iloilo airport",
+      "link": "https://www.channelnewsasia.com/asia/shooting-iloilo-airport-police-passenger-knife-baggage-screening-5902781",
+      "summary": "The passenger was&nbsp;told repeatedly to surrender a knife found during baggage screening, but he allegedly refused to comply.\n&nbsp;",
+      "summary_zh": "The passenger was&nbsp;told repeatedly to surrender a knife found during baggage screening, but he allegedly refused to comply.\n&nbsp;"
+    },
+    {
+      "text": "[03-02-26 · 其他] Inside Trump’s $550bn ‘shakedown’ of Japan Inc",
+      "text_zh": "[03-02-26 · 其他] Inside Trump’s $550bn ‘shakedown’ of Japan Inc",
+      "link": "https://www.ft.com/content/78d16000-83ae-4cf4-ba0f-6668c37e415e",
+      "summary": "Tokyo signed the US president’s biggest deal yet. Will the investments ever materialise?",
+      "summary_zh": "Tokyo signed the US president’s biggest deal yet. Will the investments ever materialise?"
+    },
+    {
+      "text": "[03-02-26 · 其他] ST Headstart: Stocks or stuff - which one should you invest in?",
+      "text_zh": "[03-02-26 · 其他] ST Headstart: Stocks or stuff - which one should you invest in?",
+      "link": "https://www.straitstimes.com/business/st-headstart-stocks-or-stuff-which-one-should-you-invest-in",
       "summary": "",
       "summary_zh": ""
     },
     {
-      "text": "[02-02-26 · 科技] Indonesia imports 1,300 cows from Australia in ambitious dairy plan",
-      "text_zh": "[02-02-26 · 科技] Indonesia imports 1,300 cows from Australia in ambitious dairy plan",
-      "link": "https://www.channelnewsasia.com/business/indonesia-imports-1300-cows-australia-in-ambitious-dairy-plan-5900401",
+      "text": "[03-02-26 · 其他] Death toll from heavy Japan snow hits 30",
+      "text_zh": "[03-02-26 · 其他] Death toll from heavy Japan snow hits 30",
+      "link": "https://www.channelnewsasia.com/east-asia/japan-heavy-snow-weather-death-toll-30-5902896",
       "summary": "",
       "summary_zh": ""
     },
     {
-      "text": "[02-02-26 · 其他] Japan's top business lobby invites activist fund Elliott for governance talks",
-      "text_zh": "[02-02-26 · 其他] Japan's top business lobby invites activist fund Elliott for governance talks",
-      "link": "https://www.channelnewsasia.com/business/japans-top-business-lobby-invites-activist-fund-elliott-governance-talks-5900326",
+      "text": "[03-02-26 · 其他] Firms rolling out physical gold-backed insurance in S’pore amid heightened interest",
+      "text_zh": "[03-02-26 · 其他] Firms rolling out physical gold-backed insurance in S’pore amid heightened interest",
+      "link": "https://www.straitstimes.com/business/banking/firms-rolling-out-physical-gold-backed-insurance-in-spore-amid-heightened-interest",
+      "summary": "<p>Other options include gold exchange-traded funds, gold unit trusts or buying physical gold.</p>",
+      "summary_zh": "<p>Other options include gold exchange-traded funds, gold unit trusts or buying physical gold.</p>"
+    },
+    {
+      "text": "[03-02-26 · 其他] Venezuela, US talk 'transition' post-Maduro",
+      "text_zh": "[03-02-26 · 其他] Venezuela, US talk 'transition' post-Maduro",
+      "link": "https://www.channelnewsasia.com/world/venezuela-us-talks-transition-rodriguez-maduro-ouster-5902711",
+      "summary": "In addition to meeting with the United States' top diplomat in her country, Venezuela's interim president Delcy&nbsp;Rodriguez made several key appointments to her presidential cabinet.",
+      "summary_zh": "In addition to meeting with the United States' top diplomat in her country, Venezuela's interim president Delcy&nbsp;Rodriguez made several key appointments to her presidential cabinet."
+    },
+    {
+      "text": "[03-02-26 · 其他] China to ban hidden car door handles from 2027 in industry shift",
+      "text_zh": "[03-02-26 · 其他] China to ban hidden car door handles from 2027 in industry shift",
+      "link": "https://www.channelnewsasia.com/east-asia/china-ban-hidden-car-door-handles-2027-electric-vehicles-5902881",
+      "summary": "Car door handles will need to have both interior and exterior mechanical releases, and Chinese car models already approved for launch will have an additional two years to achieve compliance.",
+      "summary_zh": "Car door handles will need to have both interior and exterior mechanical releases, and Chinese car models already approved for launch will have an additional two years to achieve compliance."
+    },
+    {
+      "text": "[03-02-26 · 其他] Patriots' Gonzalez set to make Super Bowl history as first Colombian heritage player",
+      "text_zh": "[03-02-26 · 其他] Patriots' Gonzalez set to make Super Bowl history as first Colombian heritage player",
+      "link": "https://www.channelnewsasia.com/sport/patriots-gonzalez-set-make-super-bowl-history-first-colombian-heritage-player-5902886",
       "summary": "",
       "summary_zh": ""
     },
     {
-      "text": "[02-02-26 · 科技] Nearly 1,800 Chinese among thousands held in huge Cambodian raid on scam compound",
-      "text_zh": "[02-02-26 · 科技] Nearly 1,800 Chinese among thousands held in huge Cambodian raid on scam compound",
-      "link": "https://www.channelnewsasia.com/asia/cambodia-raids-scam-compound-crackdown-china-pressure-5900121",
-      "summary": "The latest raid \"truly reflects\" that the Cambodian government will never loosen crackdowns on online scammers, says an Interior Ministry spokesman.",
-      "summary_zh": "The latest raid \"truly reflects\" that the Cambodian government will never loosen crackdowns on online scammers, says an Interior Ministry spokesman."
+      "text": "[03-02-26 · 科技] Over 12,000 employers on Iras auto-inclusion scheme failed to file taxes on time in 2025",
+      "text_zh": "[03-02-26 · 科技] Over 12,000 employers on Iras auto-inclusion scheme failed to file taxes on time in 2025",
+      "link": "https://www.straitstimes.com/business/companies-markets/over-12000-employers-on-iras-auto-inclusion-scheme-failed-to-file-taxes-on-time-in-2025",
+      "summary": "<p>A total of 1,207 repeat offenders were prosecuted in 2025.</p>",
+      "summary_zh": "<p>A total of 1,207 repeat offenders were prosecuted in 2025.</p>"
     },
     {
-      "text": "[02-02-26 · 其他] Bad Bunny wins album of the year at 2026 Grammy Awards, a first for a Spanish-language album",
-      "text_zh": "[02-02-26 · 其他] Bad Bunny wins album of the year at 2026 Grammy Awards, a first for a Spanish-language album",
-      "link": "https://www.channelnewsasia.com/entertainment/grammy-awards-2026-bad-bunny-kendrick-lamar-billie-eilish-ice-5900281",
-      "summary": "Other winners include&nbsp;Billie Eilish for song of the year, Lady Gaga for pop vocal album,&nbsp; and&nbsp;Kendrick Lamar and SZA for record of the year.&nbsp;",
-      "summary_zh": "Other winners include&nbsp;Billie Eilish for song of the year, Lady Gaga for pop vocal album,&nbsp; and&nbsp;Kendrick Lamar and SZA for record of the year.&nbsp;"
+      "text": "[03-02-26 · 科技] Taiwanese singer and music producer Yuan Weiren dies at 57",
+      "text_zh": "[03-02-26 · 科技] Taiwanese singer and music producer Yuan Weiren dies at 57",
+      "link": "https://www.channelnewsasia.com/entertainment/taiwanese-singer-songwriter-yuan-weiren-dies-5902636",
+      "summary": "The singer-songwriter had worked with Chinese singer Faye Wong and Taiwanese girl group SHE, and also served as a judge on the Taiwanese singing competition One Million Star.&nbsp;",
+      "summary_zh": "The singer-songwriter had worked with Chinese singer Faye Wong and Taiwanese girl group SHE, and also served as a judge on the Taiwanese singing competition One Million Star.&nbsp;"
     },
     {
-      "text": "[02-02-26 · 科技] Nvidia CEO says pledge to invest US$100 billion in OpenAI ‘never a commitment’; Korea stocks sink",
-      "text_zh": "[02-02-26 · 科技] Nvidia CEO says pledge to invest US$100 billion in OpenAI ‘never a commitment’; Korea stocks sink",
-      "link": "https://www.straitstimes.com/business/companies-markets/nvidia-ceo-says-pledge-to-invest-us100-billion-in-openai-never-a-commitment-korean-stocks-sink",
-      "summary": "<p>WSJ reported on Jan 30 that the investment plan announced in September 2025 had stalled.</p>",
-      "summary_zh": "<p>WSJ reported on Jan 30 that the investment plan announced in September 2025 had stalled.</p>"
-    },
-    {
-      "text": "[02-02-26 · 其他] The ‘deep fried’ stocks that spurred a market meltdown",
-      "text_zh": "[02-02-26 · 其他] The ‘deep fried’ stocks that spurred a market meltdown",
-      "link": "https://www.ft.com/content/e96efe7b-5fd4-4a66-a898-b529b23e2642",
-      "summary": "Index provider MSCI’s threatened downgrade has underlined the opacity of the Indonesian market",
-      "summary_zh": "Index provider MSCI’s threatened downgrade has underlined the opacity of the Indonesian market"
-    },
-    {
-      "text": "[02-02-26 · 其他] Indonesia reports $2.52 billion trade surplus in December, above forecast",
-      "text_zh": "[02-02-26 · 其他] Indonesia reports $2.52 billion trade surplus in December, above forecast",
-      "link": "https://www.channelnewsasia.com/business/indonesia-reports-252-billion-trade-surplus-in-december-above-forecast-5900226",
+      "text": "[03-02-26 · 其他] Australia's Hazlewood unlikely to be fit for half of World Cup, Cummins says",
+      "text_zh": "[03-02-26 · 其他] Australia's Hazlewood unlikely to be fit for half of World Cup, Cummins says",
+      "link": "https://www.channelnewsasia.com/sport/australias-hazlewood-unlikely-be-fit-half-world-cup-cummins-says-5902801",
       "summary": "",
       "summary_zh": ""
     },
     {
-      "text": "[02-02-26 · 科技] Blackpink's Lisa takes on new role as Thailand’s tourism ambassador",
-      "text_zh": "[02-02-26 · 科技] Blackpink's Lisa takes on new role as Thailand’s tourism ambassador",
-      "link": "https://www.channelnewsasia.com/entertainment/blackpink-lisa-thailand-tourism-ambassador-5900066",
-      "summary": "The Thai-born K-pop star was unveiled on Jan 28 as the face of the Tourism Authority of Thailand’s Feel All The Feelings campaign, which aims to attract travellers worldwide in 2026.",
-      "summary_zh": "The Thai-born K-pop star was unveiled on Jan 28 as the face of the Tourism Authority of Thailand’s Feel All The Feelings campaign, which aims to attract travellers worldwide in 2026."
+      "text": "[03-02-26 · 其他] Removing a child from home is the ‘last resort’: Inside the work of a child protection officer",
+      "text_zh": "[03-02-26 · 其他] Removing a child from home is the ‘last resort’: Inside the work of a child protection officer",
+      "link": "https://www.channelnewsasia.com/singapore/child-protection-officer-family-support-child-abuse-domestic-violence-5901011",
+      "summary": "Decisions are made only after extensive discussions within teams to ensure accountability.",
+      "summary_zh": "Decisions are made only after extensive discussions within teams to ensure accountability."
     },
     {
-      "text": "[02-02-26 · 其他] CPF Board rolls out safety switch, trusted contact notifications to curb scams",
-      "text_zh": "[02-02-26 · 其他] CPF Board rolls out safety switch, trusted contact notifications to curb scams",
-      "link": "https://www.channelnewsasia.com/singapore/cpf-antiscam-safety-switch-trusted-contact-notification-5900071",
-      "summary": "The new&nbsp;trusted contact notification service and safety switch build on existing anti-scam safeguards for Central Provident Fund&nbsp;members.",
-      "summary_zh": "The new&nbsp;trusted contact notification service and safety switch build on existing anti-scam safeguards for Central Provident Fund&nbsp;members."
+      "text": "[03-02-26 · 其他] Pritam Singh moved to new seat in parliament following removal as Leader of the Opposition",
+      "text_zh": "[03-02-26 · 其他] Pritam Singh moved to new seat in parliament following removal as Leader of the Opposition",
+      "link": "https://www.channelnewsasia.com/singapore/pritam-singh-new-parliament-seat-leader-opposition-removed-5902736",
+      "summary": "Former Leader of the Opposition Pritam Singh previously sat directly across from Prime Minister Lawrence Wong.",
+      "summary_zh": "Former Leader of the Opposition Pritam Singh previously sat directly across from Prime Minister Lawrence Wong."
     },
     {
-      "text": "[02-02-26 · 科技] Impeachment complaints filed against Philippine VP Sara Duterte",
-      "text_zh": "[02-02-26 · 科技] Impeachment complaints filed against Philippine VP Sara Duterte",
-      "link": "https://www.channelnewsasia.com/asia/impeachment-complaints-filed-against-philippine-vp-sara-duterte-5900211",
+      "text": "[03-02-26 · 科技] Asia’s super rich families risk losing fortunes without a cohesive wealth transfer plan",
+      "text_zh": "[03-02-26 · 科技] Asia’s super rich families risk losing fortunes without a cohesive wealth transfer plan",
+      "link": "https://www.straitstimes.com/business/asias-super-rich-families-risk-losing-fortunes-without-a-cohesive-wealth-transfer-plan",
+      "summary": "<p>Family offices plan to increase their investment in AI but their enthusiasm is tempered by anxiety.</p>",
+      "summary_zh": "<p>Family offices plan to increase their investment in AI but their enthusiasm is tempered by anxiety.</p>"
+    },
+    {
+      "text": "[03-02-26 · 科技] How Thailand became the ‘sick man’ of Asia",
+      "text_zh": "[03-02-26 · 科技] How Thailand became the ‘sick man’ of Asia",
+      "link": "https://www.ft.com/content/e766f94f-7626-4b60-b997-44ca1b18a4e7",
+      "summary": "Once a regional tiger economy with double-digit growth, its pivotal drivers of consumption, manufacturing and tourism are in decline",
+      "summary_zh": "Once a regional tiger economy with double-digit growth, its pivotal drivers of consumption, manufacturing and tourism are in decline"
+    },
+    {
+      "text": "[03-02-26 · 科技] India’s ‘unspectacular’ budget overlooks needed reforms",
+      "text_zh": "[03-02-26 · 科技] India’s ‘unspectacular’ budget overlooks needed reforms",
+      "link": "https://www.ft.com/content/0e4875b0-c563-4336-ab91-e0a08c487502",
+      "summary": "Also in this newsletter: US litigation against Adani, and Uday Shankar’s mantra",
+      "summary_zh": "Also in this newsletter: US litigation against Adani, and Uday Shankar’s mantra"
+    },
+    {
+      "text": "[03-02-26 · 其他] Romero criticises Tottenham's 'disgraceful' squad shortage",
+      "text_zh": "[03-02-26 · 其他] Romero criticises Tottenham's 'disgraceful' squad shortage",
+      "link": "https://www.channelnewsasia.com/sport/romero-criticises-tottenhams-disgraceful-squad-shortage-5902731",
       "summary": "",
       "summary_zh": ""
     },
     {
-      "text": "[02-02-26 · 科技] Japan says rare earth found in sediment retrieved on deep-sea mission",
-      "text_zh": "[02-02-26 · 科技] Japan says rare earth found in sediment retrieved on deep-sea mission",
-      "link": "https://www.channelnewsasia.com/east-asia/japan-rare-earth-sediment-retrieved-deep-sea-mission-5900196",
-      "summary": "The sediment containing rare earth was retrieved from a depth of 6,000m, Japan's government said.",
-      "summary_zh": "The sediment containing rare earth was retrieved from a depth of 6,000m, Japan's government said."
+      "text": "[03-02-26 · 其他] South Korea celebrates K-pop's Golden historic Grammy win",
+      "text_zh": "[03-02-26 · 其他] South Korea celebrates K-pop's Golden historic Grammy win",
+      "link": "https://www.channelnewsasia.com/entertainment/golden-kpop-demon-hunters-grammy-award-win-5901001",
+      "summary": "However, there is debate over whether Golden, an English-language pop song from a Sony Pictures Animation film, qualifies as K-pop.&nbsp;",
+      "summary_zh": "However, there is debate over whether Golden, an English-language pop song from a Sony Pictures Animation film, qualifies as K-pop.&nbsp;"
     },
     {
-      "text": "[02-02-26 · 其他] Philippine economy to rebound in 2026 with at least 5% growth, says minister",
-      "text_zh": "[02-02-26 · 其他] Philippine economy to rebound in 2026 with at least 5% growth, says minister",
-      "link": "https://www.channelnewsasia.com/business/philippine-economy-rebound-in-2026-least-5-growth-says-minister-5900166",
-      "summary": "",
-      "summary_zh": ""
-    },
-    {
-      "text": "[02-02-26 · 科技] LTA uncovers 3,200 more vehicles affected by recall of defective Takata airbags that killed man in 2022",
-      "text_zh": "[02-02-26 · 科技] LTA uncovers 3,200 more vehicles affected by recall of defective Takata airbags that killed man in 2022",
-      "link": "https://www.channelnewsasia.com/singapore/takata-airbag-3200-vehicles-affected-lta-recall-5900101",
-      "summary": "LTA worked with authorised motor dealers to uncover the 3,200 vehicles, whose parallel importers are no longer in operation.",
-      "summary_zh": "LTA worked with authorised motor dealers to uncover the 3,200 vehicles, whose parallel importers are no longer in operation."
-    },
-    {
-      "text": "[02-02-26 · 其他] South Korea's Hanwha Aerospace signs US$922 million deal with Norway to supply rocket launchers",
-      "text_zh": "[02-02-26 · 其他] South Korea's Hanwha Aerospace signs US$922 million deal with Norway to supply rocket launchers",
-      "link": "https://www.channelnewsasia.com/east-asia/south-korea-norway-rocket-launcher-922-million-deal-5900091",
-      "summary": "Hanwha plans to build a guided rocket production facility in Poland by 2030, boosting its European presence.",
-      "summary_zh": "Hanwha plans to build a guided rocket production facility in Poland by 2030, boosting its European presence."
-    },
-    {
-      "text": "[02-02-26 · 科技] Japan PM Takaichi did not stress weak yen's benefits, government says",
-      "text_zh": "[02-02-26 · 科技] Japan PM Takaichi did not stress weak yen's benefits, government says",
-      "link": "https://www.channelnewsasia.com/business/japan-pm-takaichi-did-not-stress-weak-yens-benefits-government-says-5900096",
-      "summary": "",
-      "summary_zh": ""
-    },
-    {
-      "text": "[02-02-26 · 其他] Hong Kong regulator targets March for first stablecoin licences",
-      "text_zh": "[02-02-26 · 其他] Hong Kong regulator targets March for first stablecoin licences",
-      "link": "https://www.channelnewsasia.com/business/hong-kong-regulator-targets-march-first-stablecoin-licences-5900056",
-      "summary": "",
-      "summary_zh": ""
-    },
-    {
-      "text": "[02-02-26 · 其他] Arsenal's Merino to undergo foot surgery",
-      "text_zh": "[02-02-26 · 其他] Arsenal's Merino to undergo foot surgery",
-      "link": "https://www.channelnewsasia.com/sport/arsenals-merino-undergo-foot-surgery-5900036",
-      "summary": "",
-      "summary_zh": ""
-    },
-    {
-      "text": "[02-02-26 · 其他] Trump hopeful of Iran deal after Tehran warns of regional war",
-      "text_zh": "[02-02-26 · 其他] Trump hopeful of Iran deal after Tehran warns of regional war",
-      "link": "https://www.channelnewsasia.com/world/trump-hopeful-iran-deal-after-tehran-warns-regional-war-5899596",
-      "summary": "",
-      "summary_zh": ""
-    },
-    {
-      "text": "[02-02-26 · 科技] CDL’s Newport Residences at Anson Road sells 57% or 140 of its units at launch",
-      "text_zh": "[02-02-26 · 科技] CDL’s Newport Residences at Anson Road sells 57% or 140 of its units at launch",
-      "link": "https://www.straitstimes.com/business/property/cdls-newport-residences-at-anson-road-sells-57-or-140-of-its-units-at-launch",
-      "summary": "<p>Meanwhile, Narra Residences in the Dairy Farm area recorded a take-up rate of about 25 per cent.</p>",
-      "summary_zh": "<p>Meanwhile, Narra Residences in the Dairy Farm area recorded a take-up rate of about 25 per cent.</p>"
+      "text": "[03-02-26 · 科技] Malaysia has potential to be a global leader in rare earth production: French special envoy",
+      "text_zh": "[03-02-26 · 科技] Malaysia has potential to be a global leader in rare earth production: French special envoy",
+      "link": "https://www.channelnewsasia.com/asia/malaysia-france-envoy-benjamin-gallezot-rare-earth-interview-5902671",
+      "summary": "French special envoy Benjamin Gallezot tells CNA how a partnership between Malaco and Carester could help Malaysia develop a full rare earth value chain and attract interest from foreign investors.",
+      "summary_zh": "French special envoy Benjamin Gallezot tells CNA how a partnership between Malaco and Carester could help Malaysia develop a full rare earth value chain and attract interest from foreign investors."
     }
   ],
-  "last_updated": "2026-02-02 05:55:51",
+  "last_updated": "2026-02-03 05:38:13",
   "has_recent_observations": true,
   "has_industry_observations": true
 }
